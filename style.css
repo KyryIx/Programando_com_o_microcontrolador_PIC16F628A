@@ -1,0 +1,147 @@
+body{
+				font-family: arial;
+				font-size: 12pt;
+				text-align: justify;
+}
+
+a:link{
+	text-decoration: none;
+}
+a:visited{
+	color: blue;
+}
+a:hover{
+	color: hotpink;
+	text-decoration: underline;
+}
+a:active{
+	color: green;
+}
+
+p.title{
+	font-weight: bold;
+	text-align: center;
+}
+
+span.titlePrincipal{
+	font-size: 33pt;
+}
+
+span.titleSecondary{
+	font-size: 24pt;
+}
+
+span.about{
+	font-size: 12pt;
+}
+
+.page{
+	margin: 50px 10px 50px 10px;
+	border-style: solid;
+	border-width: 1px 5px 10px 20px;
+	border-color: gray;
+	padding: 5px 50px 5px 50px;
+}
+
+.page h1{
+	text-align: center;
+}
+
+hr.indice{
+	width: 90%;
+	height: 5px;
+	background-color: black;
+}
+
+ol.indice{
+	font-size: 16pt;
+	font-weight: bold;
+	list-style-type: none;
+}
+
+ol.indice li{
+	padding: 1em 1em 0em 0em;
+}
+
+ol.indice a:link {
+	color: black;
+}
+
+ol.indice a:hover{
+	color: hotpink;
+	text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+.voltarIndice{
+	text-align: right;
+}
+
+.citacaoTemporary{
+	color: red;
+	font-weight: bold;
+}
+
+.listaTemporary{
+	border: 1px solid gray;
+}
+
+.c34{
+	font-weight: bold;
+}
+
+.c39{
+	color: red;
+}
+
+p.c11{
+	border: 1px solid gray;
+}
+
+.x189{
+	background-color: rgb(250,255,255);
+}
+
+.c776{
+	text-align: center;
+}
+
+.c56{
+	border: 1px solid red;
+	margin: 10px auto 10px auto;
+}
+
+table.c56 td{
+	border: 1px solid black;
+}
+
+table.image{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid blue;
+	padding: 30px;
+}
+
+table.image td{
+	text-align: center;
+}
+
+.definesASM1{
+	font-family: consolas;
+}
+
+.linkDoc1{
+	font-family: consolas;
+}
+
+.textoVermelho{
+	color: red;
+}
