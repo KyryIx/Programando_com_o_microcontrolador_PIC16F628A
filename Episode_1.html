@@ -1,0 +1,195 @@
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		
+		<!-- https://highlightjs.org/download/ -->
+		<!--
+			https://mg.pov.lt/restview/
+			pip install restview
+			
+		-->
+		<link rel="stylesheet" href="./lib/highlight/styles/default.css">
+		<script src="./lib/highlight/highlight.pack.js"></script>
+		<script>hljs.highlightAll();</script>
+		
+		<link rel="stylesheet" href="./style.css">
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div class="page">
+			<h1 id="h.b2hb51dkz9wq">Epis&oacute;dio 1: Conhecendo o inv&oacute;lucro do componente, a pinagem, o diagrama de blocos e a tabela de memoria do PIC16F628A</h1>
+			<p class="voltarIndice"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<hr class="indice"/>
+			
+			<p class="c11 x189">O microcontrolador PIC16F628A, conforme o <i>datasheet</i> dispon&iacute;vel em <span class="citacaoTemporary">Microchip (2020a)</span> tem as seguintes caracter&iacute;sticas:</p>
+			
+			<ul class="listaTemporary">
+				<li class="c31">
+					<i>clock</i> de opera&ccedil;&atilde;o at&eacute; 20 MHz;</li>
+				<li class="c31">
+					8 n&iacute;veis de pilha;</li>
+				<li class="c31">
+					apenas 35 instru&ccedil;&otilde;es;</li>
+				<li class="c31">
+					oscilador interno de 4 MHz ou de 48 kHz (para baixo consumo);</li>
+				<li class="c31">
+					modo dormir (<i>sleep</i>) para economia de energia;</li>
+				<li class="c31">
+					programa&ccedil;&atilde;o dos estados <i>de pull-up</i> sobre os pinos em <span class="c34">PORTB</span>;</li>
+				<li class="c31">
+					tens&atilde;o de opera&ccedil;&atilde;o de 2 a 5,5 volts;</li>
+				<li class="c31">
+					16 pinos de entrada/sa&iacute;da;</li>
+				<li class="c31">
+					1 m&oacute;dulo comparador com 2 comparadores anal&oacute;gicos;</li>
+				<li class="c31">
+					3 m&oacute;dulos de temporizadores/contadores com 2 m&oacute;dulos de 8 <i>bits</i> e 1 de 16 <i>bits</i>com suas diferen&ccedil;as;</li>
+				<li class="c31">
+					1 m&oacute;dulo de capturar (16 bits), comparar (16 bits) e PWM (10 bits);</li>
+				<li class="c31">
+					1 m&oacute;dulo de comunica&ccedil;&atilde;o USART;</li>
+				<li class="c31">
+					2048 palavras de mem&oacute;ria de programa;</li>
+				<li class="c31">
+					224 bytes de mem&oacute;ria SRAM (dados);</li>
+				<li class="c31">
+					128 bytes de mem&oacute;ria EEPROM (dados);</li>
+			</ul>
+			
+			<p class="c11 x189">Na mesma documenta&ccedil;&atilde;o, encontram-se os modelos de encapsulamentos dispon&iacute;veis para o PIC16F628A, os quais s&atilde;o PDIP, SOIC, SSOP e QFN. Nesta sequ&ecirc;ncia de epis&oacute;dios, baseamos o estudo no encapsulamento PDIP (<i>Plastic Dual In-line Package</i>) de 18 pinos conforme Figura 1.1 e Figura 1.2.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="c34">Figura 1.1 -</span>PIC16F628A com inv&oacute;lucro PDIP
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="c21">
+						<td class="c206">
+							<img alt="" src="figures/PIC16F628_package.png" style="width: 213.61px; height: 132.88px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="PIC16F628 DIP package" alt="PIC16F628 DIP package"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (a)</span></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="c34">Figura 1.2 -</span>Pinagem do PIC16F628A
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="c21">
+						<td class="c206">
+							<img alt="" src="figures/PIC16F628_pinout.png" style="width: 398.89px; height: 242.18px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="PIC16F628 pinout" alt="PIC16F628 pinout"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020b pag. 4</span></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="c11 x189">O PIC16F628A &eacute; um microcontrolador com arquitetura RISC(<i>Reduced Instruction Set Computer</i>) e conforme <span class="citacaoTemporary">Wikipedia (2020)</span>, esse tipo de arquitetura &eacute; favorecida por um conjunto simples e pequeno de instru&ccedil;&otilde;es no qual levam aproximadamente a mesma quantidade de tempo para serem executadas, e elas podem ser vistas na Figura 1.3.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="c34">Figura 1.3 -</span>Conjuntos de instru&ccedil;&otilde;es assembly para PIC16F628A
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="c21">
+						<td class="c206">
+							<img alt="" src="figures/PIC16F628_instructions.png" style="width: 587.00px; height: 554.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="PIC16F628A map instructions" alt="PIC16F628 map instructions"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) pag. 118</span></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="c11 x189">Esse conjunto de instru&ccedil;&otilde;es reduzidas, s&atilde;o separadas em instru&ccedil;&otilde;es com <i>bytes</i> associados a registradores, com <i>bits</i> de registradores, literais (n&uacute;meros de 8 <i>bits</i>) diretamente e instru&ccedil;&otilde;es de controle de fluxo de rotinas entre outros.</p>
+			
+			<p class="c11 x189">Outra qualidade do PIC16F628A &eacute; o seu controle atrav&eacute;s de registradores dispon&iacute;veis em quatro bancos de mem&oacute;ria (<i>Bank</i> 0, <i>Bank</i> 1, <i>Bank</i> 2 e <i>Bank</i> 3) e exibido na Figura 1.4.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="c34">Figura 1.4 -</span>Mapa de mem&oacute;ria de dados
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="c21">
+						<td class="c206">
+							<img alt="" src="figures/PIC16F628_memory_bank.png" style="width: 484.88px; height: 606.72px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="PIC16F628 memory banks">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) pag. 118</span></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="c11 x189">Al&eacute;m dos registradores para controle do microcontrolador, h&aacute; dispon&iacute;veis tamb&eacute;m registradores para uso geral (<i>general purpose register</i>), que utilizaremos para armazenar estados, quantidades e outros valores relativos a l&oacute;gica de programa&ccedil;&atilde;o que abordaremos com exemplos nestes epis&oacute;dios.</p>
+			
+			<p class="c11 x189">O relacionamento entre as estruturas internas do PIC16F628A e seus m&oacute;dulos podem ser vistos na Figura 1.5, a qual abordaremos todos os m&oacute;dulos dispon&iacute;veis atrav&eacute;s de exemplos pr&aacute;ticos.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="c34">Figura 1.5 -</span>Diagrama de blocos
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="c21">
+						<td class="c206">
+							<img alt="" src="figures/PIC16F628_blocks_diagram.png" style="width: 590.00px; height: 560.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="PIC16F628 blocks and functions diagram">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td>
+							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) pag. 12</span></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="c11 x189">No pr&oacute;ximo epis&oacute;dio veremos como criar nosso primeiro projeto e entenderemos o relacionamento dos c&oacute;digos com o microcontrolador PIC16F628A.</p>
+		</div>
+	</body>
+</html>

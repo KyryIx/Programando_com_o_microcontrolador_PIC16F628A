@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		
+		<!-- https://highlightjs.org/download/ -->
+		<!--
+			https://mg.pov.lt/restview/
+			pip install restview
+			
+		-->
+		<link rel="stylesheet" href="./lib/highlight/styles/default.css">
+		<script src="./lib/highlight/highlight.pack.js"></script>
+		<script>hljs.highlightAll();</script>
+		
+		<link rel="stylesheet" href="./style.css">
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div>
+			<p class="title">
+				<span class="titlePrincipal">Conhecendo o PIC16F628A</span>
+				<br/>
+				<span class="titleSecondary">com exemplos</span>
+				<br/>
+				<span class="about">por <a href="http://www.everton.mat.br" target="_blank">Everton Pereira da Cruz</a></span>
+			</p>
+			<div class="page">
+				<h1 class="indice"><a id="h.indice">&Iacute;ndice</a></h1>
+				<hr class="indice"/>
+				<ol class="indice">
+					<li>
+						<a href="./Episode_1.html">Epis&oacute;dio 1: Conhecendo o inv&oacute;lucro do componente, a pinagem, o diagrama de blocos e a tabela de memoria do PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_2.html">Epis&oacute;dio 2: Conhecendo o MPLAB X IDE, a estrutura de um arquivo em assembly, b&aacute;sico de n&uacute;meros bin&aacute;rios, octais e hexadecimais, e esquema de clock e ciclo de instru&ccedil;&atilde;o.</a></li>
+					<li>
+						<a href="./Episode_3.html">Epis&oacute;dio 3: Conhecendo os registradores STATUS, OPTION (OPTION_REG), INTCON, W e o registradores de uso geral para o usu&aacute;rio do PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_4.html">Epis&oacute;dio 4: Conhecendo os registradores PORTA, PORTB, TRISA e TRISB do PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_5.html">Epis&oacute;dio 5: Conhecendo as instru&ccedil;&otilde;es GOTO, MOVLW, MOVWF, MOVF, BCF, BSF, BTFSC e BTFSS para o PIC16F628A. Execu&ccedil;&atilde;o passo a passo do c&oacute;digo</a></li>
+					<li>
+						<a href="./Episode_6.html">Epis&oacute;dio 6: Exemplo 1 - Controle de estados dos pinos do PIC16F628A e uso do simulador SimulIDE</a></li>
+					<li>
+						<a href="./Episode_7.html">Epis&oacute;dio 7: Grava&ccedil;&atilde;o do PIC16F628A com os hardwares K150 e o PICKIT3</a></li>
+					<li>
+						<a href="./Episode_8.html">Epis&oacute;dio 8: Conhecendo as instru&ccedil;&otilde;es ADDLW, ADDWF, INCF, INCFSZ, SUBLW, SUBWF, DECF, DECFSZ, ANDLW, ANDWF, IORLW, IORWF, XORLW, XORWF e COMF para o PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_9.html">Epis&oacute;dio 9: Conhecendo as instru&ccedil;&otilde;es CLRF, CLRW, NOP, RLF, RRF e SWAPF para o PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_10.html">Epis&oacute;dio 10: Exemplo 2 - Criando delay no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_11.html">Epis&oacute;dio 11: Criando e chamando subrotinas com CALL, RETURN e RETLW no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_12.html">Epis&oacute;dio 12: Conhecendo a interrup&ccedil;&atilde;o externa em RB0 e a instru&ccedil;&atilde;o RETFIE no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_13.html">Epis&oacute;dio 13: Conhecendo a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados em RB4 a RB7 no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_14.html">Epis&oacute;dio 14: Conhecendo a interrup&ccedil;&atilde;o por estouro em Timer0 (registrador TMR0 de 8 bits) de 8 bits no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_15.html">Epis&oacute;dio 15: Conhecendo a interrup&ccedil;&atilde;o por estouro em Timer1 (registradores TMR1H, TMR1L e T1CON de 8 bits) de 16 bits no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_16.html">Epis&oacute;dio 16: Conhecendo a interrup&ccedil;&atilde;o por coincid&ecirc;ncia em Timer2 (registrador TMR2, PR2 e T2CON de 8 bits) de 8 bits no PIC16F628A</a></li>
+					<li>
+						<a href="./Episode_17.html">Epis&oacute;dio 17: Conhecendo o m&oacute;dulo CCP - Modo capturar e a interrup&ccedil;&atilde;o associada</a></li>
+					<li>
+						<a href="./Episode_18.html">Epis&oacute;dio 18: Conhecendo o m&oacute;dulo CCP - Modo comparar e a interrup&ccedil;&atilde;o associada</a></li>
+					<li>
+						<a href="./Episode_19.html">Epis&oacute;dio 19: Conhecendo o m&oacute;dulo CCP - Modo de Modula&ccedil;&atilde;o por Largura de Pulso (PWM)</a></li>
+					<li>
+						<a href="./Episode_20.html">Epis&oacute;dio 20: Conhecendo o m&oacute;dulo Comparador e a interrup&ccedil;&atilde;o associada</a></li>
+					<li>
+						<a href="./Episode_21.html">Epis&oacute;dio 21: Conhecendo o m&oacute;dulo de tens&atilde;o el&eacute;trica de refer&ecirc;ncia</a></li>
+					<li>
+						<a href="./Episode_22.html">Epis&oacute;dio 22: Conhecendo a escrita e a leitura na mem&oacute;ria EEPROM</a></li>
+					<li>
+						<a href="./Episode_23.html">Epis&oacute;dio 23: Conhecendo o m&oacute;dulo USART - Transmiss&atilde;o ass&iacute;ncrona e a interrup&ccedil;&atilde;o associada</a></li>
+					<li>
+						<a href="./Episode_24.html">Epis&oacute;dio 24: Conhecendo o m&oacute;dulo USART - Recep&ccedil;&atilde;o ass&iacute;ncrona e a interrup&ccedil;&atilde;o associada</a></li>
+					<li>
+						<a href="./Episode_25.html">Epis&oacute;dio 25: Conhecendo o Watchdog Timer (WDT) e a instru&ccedil;&atilde;o CLRWDT</a></li>
+					<li>
+						<a href="./Episode_26.html">Epis&oacute;dio 26: Conhecendo o modo sleep (dormir) e a instru&ccedil;&atilde;o SLEEP</a></li>
+					<li>
+						<a href="./Episode_27.html">Epis&oacute;dio 27: Exemplo 3 - Integra&ccedil;&atilde;o dos epis&oacute;dios anteriores em um projeto de controle de acesso</a></li>
+					<li>
+						<a href="./Episode_28.html">Epis&oacute;dio 28: Desenvolvimento de c&oacute;digo em C para o PIC16F628A</a></li>
+				</ol>
+			</div>
+		</div>
+	</body>
+</html>
