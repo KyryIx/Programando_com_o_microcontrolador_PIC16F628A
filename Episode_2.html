@@ -1,80 +1,70 @@
 <html>
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		
-		<!-- https://highlightjs.org/download/ -->
-		<!--
-			https://mg.pov.lt/restview/
-			pip install restview
-			
-		-->
-		<link rel="stylesheet" href="./lib/highlight/styles/default.css">
-		<script src="./lib/highlight/highlight.pack.js"></script>
-		<script>hljs.highlightAll();</script>
-		
 		<link rel="stylesheet" href="./style.css">
-		<style type="text/css">
-		</style>
+		<script src="./functions.js"></script>
 	</head>
 	<body>
-		<div class="page">
-			<h1 id="h.s62fszs3wsiu">Epis&oacute;dio 2: Conhecendo o MPLAB X IDE, a estrutura de um arquivo em assembly, b&aacute;sico de n&uacute;meros bin&aacute;rios, octais e hexadecimais, e esquema de clock e ciclo de instru&ccedil;&atilde;o.</h1>
-			<p class="voltarIndice"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 2: Conhecendo o MPLAB X IDE, a estrutura de um arquivo em assembly, b&aacute;sico de n&uacute;meros bin&aacute;rios, octais e hexadecimais, e esquema de clock e ciclo de instru&ccedil;&atilde;o.</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_1.html">Voltar ao Epis&oacute;dio 1</a></p>
+			<p class="forwardPage"><a href="./Episode_3.html">Ir para Epis&oacute;dio 3</a></p>
 			<hr class="indice"/>
 			
-			<p class="c11 x189">Neste epis&oacute;dio veremos como &eacute; o processo de cria&ccedil;&atilde;o de um projeto no MPLAB X IDE, cria&ccedil;&atilde;o de um arquivo em <i>assembly</i> (ASM) com sua estrutura (diretiva <i>include</i>, <i>bits</i>de configura&ccedil;&atilde;o em <span class="definesASM1">_CONFIG</span>, diretivas <span class="definesASM1">define</span> para defini&ccedil;&otilde;es de espa&ccedil;os de mem&oacute;ria ou procedimento e endere&ccedil;o do vetor <i>reset</i>(<span class="definesASM1">0x00</span>) e interrup&ccedil;&atilde;o (<span class="definesASM1">0x04</span>)).</p>
+			<p class="principal">Neste epis&oacute;dio veremos como &eacute; o processo de cria&ccedil;&atilde;o de um projeto no MPLAB X IDE, cria&ccedil;&atilde;o de um arquivo em <i>assembly</i> (ASM) com sua estrutura (diretiva <span class="diretive">INCLUDE</span>, <i>bits</i> de configura&ccedil;&atilde;o em <span class="diretive">_CONFIG</span>, diretivas <span class="diretive">DEFINE</span> para defini&ccedil;&otilde;es de espa&ccedil;os de mem&oacute;ria ou procedimento e endere&ccedil;o do vetor <i>reset</i> (<span class="diretive">0x00</span>) e interrup&ccedil;&atilde;o (<span class="diretive">0x04</span>)).</p>
 			
-			<p class="c11 x189">Come&ccedil;aremos conhecendo o MPLAB X IDE 5.30, dispon&iacute;vel no endere&ccedil;o <span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive&amp;sa=D&amp;source=editors&amp;ust=1619797898942000&amp;usg=AOvVaw2rcvFPOSIim8AbDJrdFdH6">https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive</a></span> e na Figura 2.1 pode ser visto a interface da IDE, sendo que esta (MPLAB X IDE) &eacute; a IDE oficial da Microchip para edi&ccedil;&atilde;o de projetos para microcontroladores PIC.</p>
+			<p class="principal">Come&ccedil;aremos conhecendo o MPLAB X IDE 5.30, dispon&iacute;vel no endere&ccedil;o <span class="citacaoLink"><a href="https://www.google.com/url?q=https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive&amp;sa=D&amp;source=editors&amp;ust=1619797898942000&amp;usg=AOvVaw2rcvFPOSIim8AbDJrdFdH6" target="_blank">https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive</a></span> e na Figura 2.1 pode ser visto a interface da IDE, sendo que esta (MPLAB X IDE) &eacute; a IDE oficial da Microchip para edi&ccedil;&atilde;o de projetos para microcontroladores PIC.</p>
 			
-			<p class="c11 x189">Na Figura 2.1 h&aacute; 6 ret&acirc;ngulos que representam as partes da tela da IDE, onde o ret&acirc;ngulo em vermelho representa a barra dos menus, o segundo ret&acirc;ngulo laranja &eacute; a barra de ferramentas, o terceiro ret&acirc;ngulo em rosa &eacute; a <span class="textoVermelho">caixa</span> de projetos, o quarto ret&acirc;ngulo em azul &eacute; a &aacute;rea de informa&ccedil;&otilde;es de inicializa&ccedil;&atilde;o da IDE e tamb&eacute;m principalmente, onde s&atilde;o exibidos os arquivos para edi&ccedil;&atilde;o do c&oacute;digo, o quinto ret&acirc;ngulo em verde a caixa de <i>Dashboard</i>, e o sexto e &uacute;ltimo ret&acirc;ngulo, em amarelo, &eacute; a <span class="textoVermelho">caixa</span>de informa&ccedil;&otilde;es (compila&ccedil;&atilde;o) ou configura&ccedil;&otilde;es (<i>debug</i>) dos processos terminados ou em execu&ccedil;&atilde;o.</p>
+			<p class="principal">Na Figura 2.1 h&aacute; 6 ret&acirc;ngulos que representam as partes da tela da IDE, onde o ret&acirc;ngulo em vermelho representa a barra dos menus, o segundo ret&acirc;ngulo laranja &eacute; a barra de ferramentas, o terceiro ret&acirc;ngulo em rosa &eacute; o "box" de projetos, o quarto ret&acirc;ngulo em azul &eacute; a &aacute;rea de informa&ccedil;&otilde;es de inicializa&ccedil;&atilde;o da IDE e tamb&eacute;m principalmente, onde s&atilde;o exibidos os arquivos para edi&ccedil;&atilde;o do c&oacute;digo, o quinto ret&acirc;ngulo em verde a caixa de <i>Dashboard</i>, e o sexto e &uacute;ltimo ret&acirc;ngulo, em amarelo, &eacute; o "box" de informa&ccedil;&otilde;es (compila&ccedil;&atilde;o) ou configura&ccedil;&otilde;es (<i>debug</i>) dos processos terminados ou em execu&ccedil;&atilde;o.</p>
 			
-			<p class="c11 x189">Conhecendo a tela inicial do programa, podemos criar nosso primeiro projeto para o PIC16F628A, seguindo os seguintes passos</p>
+			<p class="principal">Conhecendo a tela inicial do programa, podemos criar nosso primeiro projeto para o PIC16F628A, seguindo os seguintes passos:</p>
 			
-			<ol class="c80 lst-kix_ssjd6oi9nk5d-0 start" start="1">
-				<li class="c31">
-					Acesse o meu <span class="c6 c34 c37">File</span>e escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">New Project</span>;</li>
-				<li class="c31">
-					Em <span class="c6 c34 c37">Choose Project</span>, conforme Figura 2.2, na op&ccedil;&atilde;o <span class="c6 c34 c37">categories</span>escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">Microchip Embedded</span>e na op&ccedil;&atilde;o <span class="c6 c34 c37">projects</span>escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">Standalone Project</span>e ap&oacute;s clique no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
-				<li class="c31">
-					Em <span class="c6 c34 c37">Select Device</span>, conforme Figura 2.3, na op&ccedil;&atilde;o <span class="c6 c34 c37">Family</span>escolha <span class="c6 c34 c37">All Families</span>e op&ccedil;&atilde;o <span class="c6 c34 c37">Device</span>digite <span class="c6 c34 c37">PIC16F628A</span>e clique no item respondido pela consulta e tamb&eacute;m no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
-				<li class="c31">
-					Em <span class="c6 c34 c37">Select Header</span>, conforme Figura 2.4, n&atilde;o modifique nada e apenas clique no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
-				<li class="c31">
-					Em <span class="c6 c34 c37">Select Tool (Optional)</span>, conforme Figura 2.5, na op&ccedil;&atilde;o <span class="c6 c34 c37">Hardware Tools</span>, escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">Simulator</span>e clique no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
-				<li class="c31">
-					Em <span class="c6 c34 c37">Select Compiler</span>, conforme Figura 2.6, na op&ccedil;&atilde;o <span class="c6 c34 c37">Compiler Toolchains</span>, em mpasm escolha </span><span class="c6 c34 c37">mpasm (v5.86)</span> (montador <i>assembly</i>) e clique no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
+			<ol class="list">
+				<li>
+					Acesse o meu <span class="options">File</span> e escolha a op&ccedil;&atilde;o <span class="options">New Project</span>;</li>
+				<li>
+					Em <span class="options">Choose Project</span>, conforme Figura 2.2, na op&ccedil;&atilde;o <span class="options">categories</span> escolha a op&ccedil;&atilde;o <span class="options">Microchip Embedded</span> e na op&ccedil;&atilde;o <span class="options">projects</span> escolha a op&ccedil;&atilde;o <span class="options">Standalone Project</span> e ap&oacute;s clique no bot&atilde;o <span class="options">Next</span>;</li>
+				<li>
+					Em <span class="options">Select Device</span>, conforme Figura 2.3, na op&ccedil;&atilde;o <span class="options">Family</span> escolha <span class="options">All Families</span> e op&ccedil;&atilde;o <span class="options">Device</span> digite <span class="options">PIC16F628A</span> e clique no item respondido pela consulta e tamb&eacute;m no bot&atilde;o <span class="options">Next</span>;</li>
+				<li>
+					Em <span class="options">Select Header</span>, conforme Figura 2.4, n&atilde;o modifique nada e apenas clique no bot&atilde;o <span class="options">Next</span>;</li>
+				<li>
+					Em <span class="options">Select Tool (Optional)</span>, conforme Figura 2.5, na op&ccedil;&atilde;o <span class="options">Hardware Tools</span>, escolha a op&ccedil;&atilde;o <span class="options">Simulator</span> e clique no bot&atilde;o <span class="options">Next</span>;</li>
+				<li>
+					Em <span class="options">Select Compiler</span>, conforme Figura 2.6, na op&ccedil;&atilde;o <span class="options">Compiler Toolchains</span>, em mpasm escolha <span class="options">mpasm (v5.86)</span> (montador <i>assembly</i>) e clique no bot&atilde;o <span class="options">Next</span>;</li>
 			</ol>
 			
-			<p class="c11 c49 x189">
-				<span class="c6 c39 c34">IMPORTANTE:</span> Essas vers&otilde;es de compiladores e IDE s&atilde;o obtidas em <span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive&amp;sa=D&amp;source=editors&amp;ust=1619797898945000&amp;usg=AOvVaw2CEATHTOHbv-5U7i4fxNoT">https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive</a></span></p>
-			<ol class="c80 lst-kix_ssjd6oi9nk5d-0" start="7">
-				<li class="c31">
-					Em <span class="c6 c34 c37">Select Project Name and Folder</span>, conforme Figura 2.7, no campo <span class="c6 c34 c37">Project Name</span>coloca-se o nome do projeto que neste caso foi usado <i>FIRST_PROJECT_PIC16F628A</i>, e em <span class="c6 c34 c37">Project Location</span>pode-se escolher o diret&oacute;rio onde ser&aacute; armazenado o projeto, sendo que neste caso foi em <i>C:\Users\Engineer\MPLABXProjects</i>. Ao final desse passo clique no bot&atilde;o <span class="c6 c34 c37">Finish</span>.</li>
+			<p class="important"><span class="important">IMPORTANTE:</span> Essas vers&otilde;es de compiladores e IDE s&atilde;o obtidas em <span class="citacaoLink"><a href="https://www.google.com/url?q=https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive&amp;sa=D&amp;source=editors&amp;ust=1619797898945000&amp;usg=AOvVaw2CEATHTOHbv-5U7i4fxNoT" target="_blank">https://www.microchip.com/development-tools/pic-and-dspic-downloads-archive</a></span></p>
+			
+			<ol class="list" start="7">
+				<li>
+					Em <span class="options">Select Project Name and Folder</span>, conforme Figura 2.7, no campo <span class="options">Project Name</span> coloca-se o nome do projeto que neste caso foi usado <i>FIRST_PROJECT_PIC16F628A</i>, e em <span class="options">Project Location</span> pode-se escolher o diret&oacute;rio onde ser&aacute; armazenado o projeto, sendo que neste caso foi em <i>C:\Users\Engineer\MPLABXProjects</i>. Ao final desse passo clique no bot&atilde;o <span class="options">Finish</span>.</li>
 			</ol>
 			
-			<p class="c11 c49 x189">
-				<span class="c6 c39 c34">IMPORTANTE:</span> Caso necessite voltar ainda aqui neste assistente de cria&ccedil;&atilde;o de projeto, utilize o bot&atilde;o <span class="c6 c34 c37">Back</span>.
-			</p>
+			<p class="important"><span class="important">IMPORTANTE:</span> Caso necessite voltar ainda aqui neste assistente de cria&ccedil;&atilde;o de projeto, utilize o bot&atilde;o <span class="options">Back</span>.</p>
 			
 			<table class="image">
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.1 -</span>Tela do MPLAB X IDE 5.30
+							<span class="figureTitle">Figura 2.1 -</span> Tela do MPLAB X IDE 5.30
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_painel.png" style="width: 604.72px; height: 496.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Intial window MPLAB X IDE 5.30" alt="Intial window MPLAB X IDE 5.30"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_painel.png" style="width: 604.72px; height: 496.00px;" title="Intial window MPLAB X IDE 5.30" alt="Intial window MPLAB X IDE 5.30"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -84,21 +74,21 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.2 -</span> Escolha do tipo de projeto
+							<span class="figureTitle">Figura 2.2 -</span> Escolha do tipo de projeto
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_selection_type_project.png" style="width: 461.56px; height: 378.72px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Choose project type" alt="Selection project type"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_selection_type_project.png" style="width: 461.56px; height: 378.72px;" title="Choose project type" alt="Selection project type"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -108,21 +98,21 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.3 -</span> Sele&ccedil;&atilde;o do modelo do microcontrolador
+							<span class="figureTitle">Figura 2.3 -</span> Sele&ccedil;&atilde;o do modelo do microcontrolador
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_selection_selection_microcontroller_model.png" style="width: 468.14px; height: 384.11px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Choose microcontroller model" alt="Selection microcontroller model"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_selection_selection_microcontroller_model.png" style="width: 468.14px; height: 384.11px;" title="Choose microcontroller model" alt="Selection microcontroller model"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -132,21 +122,21 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.4 -</span> Sele&ccedil;&atilde;o de cabe&ccedil;alho
+							<span class="figureTitle">Figura 2.4 -</span> Sele&ccedil;&atilde;o de cabe&ccedil;alho
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_selection_header_work.png" style="width: 469.80px; height: 384.72px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Choose header for work" alt="Selection header for work"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_selection_header_work.png" style="width: 469.80px; height: 384.72px;" title="Choose header for work" alt="Selection header for work"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -156,21 +146,21 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.5 -</span> Sele&ccedil;&atilde;o da ferramenta de depura&ccedil;&atilde;o e grava&ccedil;&atilde;o
+							<span class="figureTitle">Figura 2.5 -</span> Sele&ccedil;&atilde;o da ferramenta de depura&ccedil;&atilde;o e grava&ccedil;&atilde;o
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_selection_tool_to_debug_and_burn.png" style="width: 469.76px; height: 384.69px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Choose tool to debug and burn" alt="Selection tool to debug and burn"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_selection_tool_to_debug_and_burn.png" style="width: 469.76px; height: 384.69px;" title="Choose tool to debug and burn" alt="Selection tool to debug and burn"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -180,21 +170,21 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.6 -</span> Sele&ccedil;&atilde;o do compilador
+							<span class="figureTitle">Figura 2.6 -</span> Sele&ccedil;&atilde;o do compilador
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img alt="" src="./figures/MPLAB_X_IDE_selection_Of_compiler.png" style="width: 469.11px; height: 383.72px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Selection of compiler"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_selection_Of_compiler.png" style="width: 469.11px; height: 383.72px;" title="Selection of compiler" alt="Selection of compiler"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
@@ -204,727 +194,673 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.7 -</span> Nome e sele&ccedil;&atilde;o do diret&oacute;rio para o projeto
+							<span class="figureTitle">Figura 2.7 -</span> Nome e sele&ccedil;&atilde;o do diret&oacute;rio para o projeto
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img src="./figures/MPLAB_X_IDE_directory_name_of_project.png" style="width: 469.75px; height: 385.11px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Directory name of project" alt="Directory name of project"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_directory_name_of_project.png" style="width: 469.75px; height: 385.11px;" title="Directory name of project" alt="Directory name of project"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
 			</table>	
 			
-			<p class="c11 x189">
-				Os procedimentos anteriores para a cria&ccedil;&atilde;o, apenas disponibilizam a cria&ccedil;&atilde;o do projeto, sem a inclus&atilde;o de arquivo base para a codifica&ccedil;&atilde;o e para isso teremos que criar um arquivo para podermos conhecer o padr&atilde;o de codifica&ccedil;&atilde;o no PIC16F628A.
-			</p>
+			<p class="principal">Os procedimentos anteriores para a cria&ccedil;&atilde;o, apenas disponibilizam a cria&ccedil;&atilde;o do projeto, sem a inclus&atilde;o de arquivo base para a codifica&ccedil;&atilde;o e para isso teremos que criar um arquivo para podermos conhecer o padr&atilde;o de codifica&ccedil;&atilde;o no PIC16F628A.</p>
 			
-			<p class="c11 x189">
-				Para a cria&ccedil;&atilde;o do arquivo <span class="c6 c34 c37">.asm</span>, siga os seguintes passo:
-			</p>
+			<p class="principal">Para a cria&ccedil;&atilde;o do arquivo <span class="register">.asm</span>, siga os seguintes passo:</p>
 			
-			<ol class="c80 lst-kix_tudr15gsxq98-0 start" start="1">
-				<li class="c31">
-					Acesse o menu <span class="c6 c34 c37">File</span>;</li>
-				<li class="c31">
-					Escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">New File</span>;</li>
-				<li class="c31">
-					Na tela de <span class="c6 c34 c37">Choose File Type</span>, escolha a op&ccedil;&atilde;o <span class="c6 c34 c37">Assembler</span>em <span class="c6 c34 c37">Categories</span>;</li>
-				<li class="c31">
-					Agora selecione a op&ccedil;&atilde;o <span class="c6 c34 c37">AssemblyFile.asm</span>em <span class="c6 c34 c37">File Types</span>e clique no bot&atilde;o <span class="c6 c34 c37">Next</span>;</li>
-				<li class="c31">
-					Neste passo final, na tela <span class="c6 c34 c37">Name and Location</span>, no campo <span class="c6 c34 c37">File Name</span>, coloque o nome do arquivo <i>assembly</i>que ser&aacute; <span class="c6 c34 c37">main</span>, o qual a extens&atilde;o asm &eacute; inserida automaticamente pela IDE;</li>
-				<li class="c31">
-					Clique posteriormente no bot&atilde;o<span class="c6 c34 c37">Finish</span>e o arquivo aberto &eacute; visto na Figura 2.8.</li>
+			<ol class="list" start="1">
+				<li>
+					Acesse o menu <span class="options">File</span>;</li>
+				<li>
+					Escolha a op&ccedil;&atilde;o <span class="options">New File</span>;</li>
+				<li>
+					Na tela de <span class="options">Choose File Type</span>, escolha a op&ccedil;&atilde;o <span class="options">Assembler</span> em <span class="options">Categories</span>;</li>
+				<li>
+					Agora selecione a op&ccedil;&atilde;o <span class="options">AssemblyFile.asm</span> em <span class="options">File Types</span> e clique no bot&atilde;o <span class="options">Next</span>;</li>
+				<li>
+					Neste passo final, na tela <span class="options">Name and Location</span>, no campo <span class="options">File Name</span>, coloque o nome do arquivo <i>assembly</i> que ser&aacute; <span class="options">main</span>, o qual a extens&atilde;o <span class="filename">.asm</span> &eacute; inserida automaticamente pela IDE;</li>
+				<li>
+					Clique posteriormente no bot&atilde;o <span class="options">Finish</span> e o arquivo aberto &eacute; visto na Figura 2.8.</li>
 			</ol>
 			
 			<table class="image">
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.8 -</span> Arquivo <i>main.asm</I>criado e aberto para edi&ccedil;&atilde;o
+							<span class="figureTitle">Figura 2.8 -</span> Arquivo <i>main.asm</i> criado e aberto para edi&ccedil;&atilde;o
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img src="./figures/MPLAB_X_IDE_opening_main_asm_file_in_IDE.png" style="width: 604.72px; height: 496.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Opening main.asm file in IDE" alt="Opening main.asm file in IDE"/>
-						</td>
-					</tr>
-				</tbody>
-				<tfoot>
 					<tr>
 						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Fonte: Autor 2020</span></span>
-						</td>
-					</td>
-				</tfoot>
-			</table>
-			
-			<p class="c11 x189">
-				Na Figura 2.8, o arquivo <span class="c6 c34 c37">main.asm</span>foi aberto automaticamente ao final do processo de cria&ccedil;&atilde;o dele, por&eacute;m ele est&aacute; vazio decorrente de ainda n&atilde;o ter sido feito uso de comandos de programa&ccedil;&atilde;o, que veremos a seguir.
-			</p>
-			
-			<p class="c11 x189">
-				Come&ccedil;aremos conhecendo o arquivo base para o nosso trabalho, que ser&aacute; usado at&eacute; o 27&ordm; epis&oacute;dio (pois do epis&oacute;dio 1 ao 27 usa-se a linguagem <i>assembly</i>enquanto que o 28&ordm; epis&oacute;dio faz uso de linguagem C) desta s&eacute;rie de uso do microcontrolador PIC16F628A, sendo que o arquivo base "Codigo 2.1 - Exemplo base.asm" &eacute; exibido no C&oacute;digo 2.1 e o download pode ser feito em <span class="linkDoc1"><a href="https://www.google.com/url?q=https://github.com/KyryIx/programando-com-o-microcontrolador-PIC16F628A&amp;sa=D&amp;source=editors&amp;ust=1619797898951000&amp;usg=AOvVaw1vdSXmMdySKWjypCDn3L7n">https://github.com/KyryIx/programando-com-o-microcontrolador-PIC16F628A</a></span>.
-			</p>
-			
-			<p class="c11 x189">
-				O C&oacute;digo 2.1 &eacute; o nosso arquivo base para <i>assembly</i>, no qual foi inserido a numera&ccedil;&atilde;o de linhas &agrave; esquerda como forma de facilitar a refer&ecirc;ncia no texto, mas que n&atilde;o comp&otilde;em o padr&atilde;o de arquivo.
-			</p>
-			
-			<p class="c11 x189">
-				Come&ccedil;amos notando que as linhas 1, 2 e 3 iniciam com o caracter <span class="c34">;</span>que em assembly representa linha de coment&aacute;rio, e assim essas linhas foram usadas como coment&aacute;rio inicial do arquivo base.
-			</p>
-			
-			<p class="c12">
-				<span class="c34">C&oacute;digo 2.1 -</span> Exemplo base
-			</p>
-			
-<pre><code class="x86asm">
-   ; DESENVOLVIDO POR EVERTON P. CRUZ
-   ; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS
-   ; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A
-   #INCLUDE <P16F628A.INC>
-   LIST P=16F628A
-   __CONFIG _BOREN_ON & _CP_OFF & _PWRTE_ON & _WDT_OFF & _LVP_OFF & _MCLRE_OFF & _INTRC_OSC_NOCLKOUT
-    
-  ; DEFINICAO DE CONSTANTES E VARIAVEIS
-  #DEFINE BOTAO	    PORTB, RB0
-  #DEFINE CONTADOR  0x20
-    
-  ORG     0x00       ; TRATAMENTO DO RESET
-  GOTO    SETUP_PROCESSO
-
-  ORG     0x04       ; TRATAMENTO DAS INTERRUPCOES
-  RETFIE
-    
-SETUP_PROCESSO:
-  ; SELECIONA O BANCO 1 DE MEMORIA
-  BCF     STATUS, RP1
-  BSF     STATUS, RP0
-
-  BSF	PCON, OSCF ; CONF. FREQÜÊNCIA DO OSCILADOR INTERNO EM 4 MHz
-  
-  ; CONFIGURACOES DO REGISTRADOR OPTION
-  MOVLW	B'10000000'
-  ; 1 - NOT_RBPU    -> DESATIVA RESISTORES PULL-UP
-  ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0
-  ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO
-  ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4
-  ; 0 - PSA         -> PRESCALER ASSOCIADO AO TIMER 0
-  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:2
-  MOVWF   OPTION_REG
-    
-  ; MODIFICA O COMPORTAMENTO DA PORTA
-  MOVLW   B'11111111'
-  ; 1 - PINO RA7 COMO ENTRADA
-  ; 1 - PINO RA6 COMO ENTRADA
-  ; 1 - PINO RA5 COMO ENTRADA
-  ; 1 - PINO RA4 COMO ENTRADA
-  ; 1 - PINO RA3 COMO ENTRADA
-  ; 1 - PINO RA2 COMO ENTRADA
-  ; 1 - PINO RA1 COMO ENTRADA
-  ; 1 - PINO RA0 COMO ENTRADA
-  MOVWF   TRISA ; CONFIGURAÇÕES DO TRISA
-    
-  ; MODIFICA O COMPORTAMENTO DA PORTB
-  MOVLW   B'11111111'
-  ; 1 - PINO RB7 COMO ENTRADA
-  ; 1 - PINO RB6 COMO ENTRADA
-  ; 1 - PINO RB5 COMO ENTRADA
-  ; 1 - PINO RB4 COMO ENTRADA
-  ; 1 - PINO RB3 COMO ENTRADA
-  ; 1 - PINO RB2 COMO ENTRADA
-  ; 1 - PINO RB1 COMO ENTRADA
-  ; 1 - PINO RB0 COMO ENTRADA
-  MOVWF   TRISB ; CONFIGURAÇÕES DO TRISB	    
-    
-  ; SELECIONA O BANCO 0 DE MEMORIA
-  BCF     STATUS, RP1
-  BCF     STATUS, RP0	    
-    
-  ; DEFINE O MODO DE OPERACAO DO COMP. ANALOG. DESLIGADOS
-  MOVLW   B'00000111'
-  MOVWF   CMCON	    
-    
-  ; CONFIGURACOES DE INTERRUPCOES
-  MOVLW   B'00000000'  
-  ; 0 - GIE  -> DESATIVA INT./CHAVE GERAL
-  ; 0 - EEIE -> DESATIVA INT. DA EEPROM
-  ; 0 - T0IE -> DESATIVA INT. NO TMR0
-  ; 0 - INTE -> DESATIVA INT. NO RB0/INT
-  ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4>
-  ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0
-  ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT
-  ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4>
-  MOVWF   INTCON
-    
-  ; VARIAVEL CONTADOR COM VALOR 0
-  CLRF    CONTADOR
-    
-PROGRAMAPRINCIPAL:
-  BTFSC   BOTAO
-  GOTO    PROGRAMAPRINCIPAL
-  GOTO    CONTARPRODUTO
-
-CONTARPRODUTO:
-  INCF    CONTADOR, 1	    ; INCREMENTA CONTADOR
-LOOP_CALCULAR:
-  BTFSC   BOTAO
-  GOTO    PROGRAMAPRINCIPAL
-  GOTO    LOOP_CALCULAR
-    
-  END
-</code></pre>
-			
-			<p class="c11 x189">
-				A linha 4 do C&oacute;digo 2.1 representa a inclus&atilde;o (<span class="c38 c6 c44">INCLUDE</span>) de um arquivo de cabe&ccedil;alho de microcontrolador usado no projeto, que neste caso &eacute; o PIC16F628A e ele &eacute; acess&iacute;vel no endere&ccedil;o <i>C:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</i>, no qual tem as defini&ccedil;&otilde;es de nome dos registros e seus respectivos endere&ccedil;os de mem&oacute;ria, como nomes de <i>bits</i> e suas posi&ccedil;&otilde;es no <i>byte</i>.
-			</p>
-			
-			<p class="c11 x189">
-				J&aacute; a linha 5 do C&oacute;digo 2.1, ela &eacute; a linha que lista (<span class="c3">LIST</span>) o microcontrolador em uso no projeto, enquanto que a linha 6 &eacute; respons&aacute;vel pelas configura&ccedil;&otilde;es (<span class="c38 c6 c44">__CONFIG</span>) de par&acirc;metros para uso do microcontrolador e eles s&atilde;o visto na Tabela 2.1 e esta informa&ccedil;&atilde;o est&aacute; conforme item 14.0 (<i>SPECIAL FEATURES OF THE CPU</i>) do <i>datasheet</i>, contido na p&aacute;gina 98.
-			</p>
-			
-			<p class="c12 c776">
-				<span class="c34">Tabela 2.1 -</span>Bits de configura&ccedil;&atilde;o</span>
-			</p>
-			
-			<table class="c56">
-				<thead>
-					<tr>
-						<th>Configura&ccedil;&atilde;o</th>
-						<th>Fun&ccedil;&atilde;o</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="c21">
-						<td class="c107">
-							<span class="c60 c38 c6 c44">_BOREN_ON</span>
-						</td>
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "<span class="c6 c34 c37">B<i>rown-</i><span class="c6 c34 c37">o<i>ut </i><span class="c6 c34 c37">R<i>eset </i><span class="c6 c34 c37">En<i>able&rdquo;</i> que representa quando a tens&atilde;o baixou at&eacute; um limite inferior aceit&aacute;vel, abaixo disso o microcontrolador &eacute; resetado, no qual a tens&atilde;o V <sub>BOR</sub>&eacute; tipicamente de 4 V e ativado quando T <sub>BOR</sub>for maior que 72 ms.
-							</p>
-							
-							<p class="c67">
-								Os estados s&atilde;o:
-							</p>
-							
-							<ul class="c80 lst-kix_30thcegsz8y6-0 start">
-								<li class="c19 c31 li-bullet-0">
-									<span class="c38 c6 c44">_BOREN_ON</span>: ativado</li>
-								<li class="c19 c31 li-bullet-0">
-									<span class="c38 c6 c44">_BOREN_OFF</span><span class="definesASM1">: </span>desativado</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_CP_OFF</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "<i>Flash Program Memory</i> <span class="c6 c34 c37">C<i>ode </i><span class="c6 c34 c37">P<i>rotection</i>" que atua sobre a permiss&atilde;o de prote&ccedil;&atilde;o de leitura da mem&oacute;ria de programa do PIC16F628A.
-							</p>
-							
-							<p class="c67">
-								Os estados s&atilde;o:
-							</p>
-							
-							<ul class="c80 lst-kix_p3qxonbqfu68-0 start">
-								<li class="c19 c31 li-bullet-0">
-									<span class="c38 c6 c44">_CP_ON</span>: ativado permiss&atilde;o de c&oacute;pia</li>
-								<li class="c19 c31 li-bullet-0">
-									<span class="c38 c6 c44">_CP_OFF</span>: desativado permiss&atilde;o de c&oacute;pia</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_PWRTE_ON</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit "<span class="c6 c34 c37">P<i>o</i><span class="c6 c34 c37">w<i>e</i><span class="c6 c34 c37">r<i>-up</i> <span class="c6 c34 c37">T<i>imer</i> <span class="c6 c34 c37">E<i>nable</i>" prov&eacute;m um tempo fixo de 72 ms na inicializa&ccedil;&atilde;o do microcontrolador como forma de permitir a estabiliza&ccedil;&atilde;o da tens&atilde;o de alimenta&ccedil;&atilde;o e ap&oacute;s isso iniciar o PIC16F628A.
-							</p>
-							
-							<p class="c19">
-								Os estados s&atilde;o:
-							</p>
-							
-							<ul class="c80 lst-kix_654ap9hwcauo-0 start">
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_PWRTE_ON</span>: ativado o tempo de espera de 72 ms para iniciar o PIC16F628A quando alimentado</li>
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_PWRTE_OFF</span>: desativado o tempo de 72 ms ao alimentar o PIC16F628A</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_WDT_OFF</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "<span class="c6 c34 c37">W<i>atch</i><span class="c6 c34 c37">d<i>og </i><span class="c6 c34 c37">T<i>imer Enable</i>&rdquo; no qual prov&eacute;m uma inicializa&ccedil;&atilde;o do microcontrolador ap&oacute;s 72 ms se o estado dele n&atilde;o for limpo (veremos o uso do WDT no epis&oacute;dio 25).
-							</p>
-							
-							<ul class="c80 lst-kix_trnjdkbmm24v-0 start">
-								<li class="c19 c31 li-bullet-0">
-									<span class="c38 c6 c44">_WDT_ON</span>: ativa o Watchdog Timer Enable</li>
-								<li class="c19 c31 li-bullet-0"><span class="c38 c6 c44">_WDT_OFF</span>: desativa o Watchdog Timer Enable</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_LVP_OFF</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "<span class="c6 c34 c37">L<i>ow-</i><span class="c6 c34 c37">V<i>oltage </i><span class="c6 c34 c37">P<i>rogramming Enable</i>" no qual representa a ativa&ccedil;&atilde;o de grava&ccedil;&atilde;o em baixa tens&atilde;o el&eacute;trica.
-							</p>
-							
-							<ul class="c80 lst-kix_tsfp2ex45nc1-0 start">
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_LVP_ON</span>: ativa grava&ccedil;&atilde;o em baixa tens&atilde;o e RB4 &eacute; PGM</li>
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_LVP_OFF</span>: n&atilde;o ativa grava&ccedil;&atilde;o em baixa tens&atilde;o e RB4 &eacute; um I/O e a alta tens&atilde;o &eacute; aplicada sobre o pino MCLR.</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_MCLRE_OFF</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "RA5/MCLR/VPP <i>Pin Function Select</i>" o qual representa se o pino RA5 ser&aacute; usado como Master clear.
-							</p>
-							
-							<ul class="c80 lst-kix_rz2f5tewy68r-0 start">
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_MCLRE_ON</span>: pino RA5 ser&aacute; usado como <i>Master clear</i> (<i>reset</i>);</li>
-								<li class="c67 c31 li-bullet-0">
-									<span class="c38 c6 c44">_MCLRE_OFF</span>: pino RA5 n&atilde;o ser&aacute; usado como <i>Master clear</i>(<i>reset</i>) e sim como pino I/O.</li>
-							</ul>
-						</td>
-					</tr>
-					
-					<tr class="c21">
-						<td class="c107">
-							<p class="c19">
-								<span class="c60 c38 c6 c44">_INTRC_OSC_NOCLKOUT</span>
-							</p>
-						</td>
-						
-						<td class="c97">
-							<p class="c67">
-								<i>Bit</i> "<i>Oscillator Selection</i>" no qual <span class="c38 c6 c44">_INTRC_OSC_NOCLKOUT</span>representa que o clock ser&aacute; pelo oscilador RC interno e os pinos RA6 e RA7 s&atilde;o pinos de I/O. Para saber mais sobre essas configura&ccedil;&otilde;es leia os coment&aacute;rios em <i>C:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</i>
-							</p>
+							<img src="./figures/MPLAB_X_IDE_opening_main_asm_file_in_IDE.png" style="width: 604.72px; height: 496.00px;" title="Opening main.asm file in IDE" alt="Opening main.asm file in IDE"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="2">
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) 98</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
 			</table>
 			
-			<p class="c11">
-				As linhas 9 e 10 s&atilde;o as linhas de defini&ccedil;&atilde;o de constantes ou vari&aacute;veis, sendo que neste exemplo foi definido que a palavra <span class="definesASM1">SENSOR</span>que representar&aacute; o bit <span class="c47 c6 c34">RB0</span>do registrador <span class="c47 c6 c34">PORTB</span>enquanto que a palavra <span class="definesASM1">CONTADOR</span>representa o valor <span class="definesASM1">0x20</span>(em hexadecimal), que ser&aacute; usado neste exemplo como endere&ccedil;o de mem&oacute;ria.
-			</p>
+			<p class="principal">Na Figura 2.8, o arquivo <span class="filename">main.asm</span> foi aberto automaticamente ao final do processo de cria&ccedil;&atilde;o dele, por&eacute;m ele est&aacute; vazio decorrente de ainda n&atilde;o ter sido feito uso de comandos de programa&ccedil;&atilde;o, que veremos a seguir.</p>
 			
-			<p class="c11">
-				Iremos fazer uso da diretiva <span class="c38 c6 c44">#DEFINE</span>para definir constantes ou endere&ccedil;os de registradores que iremos associar a estados ou quantidades que desejamos armazenar.
-			</p>
+			<p class="principal">Come&ccedil;aremos conhecendo o arquivo base para o nosso trabalho, que ser&aacute; usado at&eacute; o 27&ordm; epis&oacute;dio (pois do epis&oacute;dio 1 ao 27 usa-se a linguagem <i>assembly</i> enquanto que o 28&ordm; epis&oacute;dio faz uso da linguagem C) desta s&eacute;rie de uso do microcontrolador PIC16F628A, sendo que o arquivo base "Codigo 2.1 - Exemplo base.asm" &eacute; exibido no C&oacute;digo 2.1 e o download pode ser feito em <span class="citacaoLink"><a href="https://www.google.com/url?q=https://github.com/KyryIx/programando-com-o-microcontrolador-PIC16F628A&amp;sa=D&amp;source=editors&amp;ust=1619797898951000&amp;usg=AOvVaw1vdSXmMdySKWjypCDn3L7n" target="_blank">https://github.com/KyryIx/programando-com-o-microcontrolador-PIC16F628A</a></span>.</p>
 			
-			<p class="c11">
-				As linhas 12 e 15 s&atilde;o linhas de endere&ccedil;os de mem&oacute;ria de programa&ccedil;&atilde;o onde <span class="definesASM1">0x00</span>representa o endere&ccedil;o de <i>reset</i>do microcontrolador, onde o microcontrolador inicializa, e &eacute; neste endere&ccedil;o que ele come&ccedil;a a execu&ccedil;&atilde;o de c&oacute;digo, enquanto que o endere&ccedil;o <span class="definesASM1">0x04</span>&eacute; o endere&ccedil;o no qual h&aacute; a primeira instru&ccedil;&atilde;o a ser executada apenas quando houver uma interrup&ccedil;&atilde;o e a chave geral das interrup&ccedil;&otilde;es estiverem ativas como tamb&eacute;m as respectivas chaves individuais das interrup&ccedil;&otilde;es.
-			</p>
+			<p class="principal">O C&oacute;digo 2.1 &eacute; o nosso arquivo base para <i>assembly</i>, no qual foi inserido a numera&ccedil;&atilde;o de linhas &agrave; esquerda como forma de facilitar a refer&ecirc;ncia no texto, mas que n&atilde;o comp&otilde;em o padr&atilde;o de arquivo.</p>
 			
-			<p class="c11">
-				Na linha 13 h&aacute; a instru&ccedil;&atilde;o <span class="c3">GOTO</span>, que salta (<i>GO TO</i>) para o r&oacute;tulo <span class="definesASM1">SETUP_PROCESSO</span>, que est&aacute; na linha 18, enquanto que na linha 16 h&aacute; a instru&ccedil;&atilde;o <span class="c3">RETFIE</span>, que &eacute; respons&aacute;vel por retornar de uma subrotina de interrup&ccedil;&atilde;o (<span class="c6 c34 c37">RET<i>urn </i><span class="c6 c34 c37">F<i>rom</i> <span class="c6 c34 c37">I<i>nt</i><span class="c6 c34 c37">E<i>rrupt</i>).
-			</p>
+			<p class="principal">Come&ccedil;amos notando que as linhas 1, 2 e 3 iniciam com o caracter <span class="register comment">;</span> que em assembly representa linha de coment&aacute;rio, e assim essas linhas foram usadas como coment&aacute;rio inicial do arquivo base.</p>
 			
-			<p class="c11">
-				J&aacute; nas linhas 18, 82, 87 e 89 est&atilde;o os r&oacute;tulos para uso em subrotinas, no qual podem ser criados v&aacute;rios r&oacute;tulos para serem tratados com subrotinas e facilitar o desenvolvimento da aplica&ccedil;&atilde;o.
-			</p>
-			
-			<p class="c11">
-				Na linha 94 tem a instru&ccedil;&atilde;o de finaliza&ccedil;&atilde;o do c&oacute;digo/arquivo <i>assembly</i>e nela cont&eacute;m a diretiva <span class="c6 c243">END.</span>
-			</p>
-			
-			<p class="c11">
-				As outras linhas contidas no arquivo <i>assembly</i>, s&atilde;o linhas de instru&ccedil;&atilde;o necess&aacute;rias para a l&oacute;gica da solu&ccedil;&atilde;o proposta para um determinado problema e veremos essas instru&ccedil;&otilde;es ao longo dos epis&oacute;dios
-			</p>
-			
-			<p class="c11">
-				Conforme visto no arquivo <i>assembly</i>, existem linhas que cont&ecirc;m comando que fazem uso de n&uacute;meros escritos como <span class="definesASM1">0x04</span>e outros como <span class="definesASM1">B&#39;11111111&#39;</span>. Essas formas de escrever n&uacute;meros permitem fazer uso aqui de dois tipos de sistema num&eacute;rico, sendo eles o sistema num&eacute;rico hexadecimal (base 16) e o sistema num&eacute;rico bin&aacute;rio (base 2).
-			</p>
-			
-			<p class="c11">
-				No sistema num&eacute;rico decimal como conhecemos, fazemos uso de 10 algarismos para representar qualquer quantidade, fazendo um de um sistema posicional, e assim esses algarismos s&atilde;o 0, 1, 2, 3, 4, 5, 6, 7, 8 e 9. J&aacute; no sistema num&eacute;rico hexadecimal, h&aacute; 16 algarismos para fazer uso no sistema posicional e eles s&atilde;o 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E e F, e como isso o mesmo n&uacute;mero 10 na base decimal &eacute; igual ao n&uacute;mero A na base hexadecimal, enquanto que o n&uacute;mero FE na base hexadecimal &eacute; igual a n&uacute;mero 254 na base decimal
-			</p>
-			
-			<p class="c11">
-				Ao escrever c&oacute;digos para PIC16F628A pode-se tamb&eacute;m utilizar de n&uacute;meros no sistema num&eacute;rico bin&aacute;rio (base 2) no qual existem apenas 2 algarismos para uso sendo eles o 0 e o 1.
-			</p>
-			
-			<p class="c11">
-				O mesmo n&uacute;mero 10 em decimal, A em hexadecimal, ser&aacute; 1010 em bin&aacute;rio. E por &uacute;ltimo existe ainda o sistema num&eacute;rico octal composto dos algarismo 0, 1, 2, 3, 4, 5, 6 e 7, no qual &eacute; pouco utilizado, mas que &eacute; bom conhecer e assim conforme a Tabela 2.2, tem-se a rela&ccedil;&atilde;o entre os quatro sistemas num&eacute;ricos.
-			</p>
-			
-			<p class="c12">
-				<span class="c34">Tabela 2.2 -</span> Equival&ecirc;ncia de n&uacute;meros nos sistemas num&eacute;ricos
-			</p>
-			
-			<table class="c56">
+			<table class="code">
 				<thead>
 					<tr>
-						<th>valor decimal</th>
-						<th>valor bin&aacute;rio</th>
-						<th>valor octal</th>
-						<th>valor hexadecimal</th>
+						<th>
+							<span class="codeTitle">C&oacute;digo 2.1 -</span> Exemplo base
+						</th>
 					</tr>
 				</thead>
-				
 				<tbody>
-					<tr class="c83">
-						<td>0</td>
-						<td>0</td>
-						<td>0</td>
-						<td>0</td>
-					</tr>
-					<tr class="c21">
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-						<td>1</td>
-					</tr>
-					<tr class="c21">
-						<td>2</td>
-						<td>10</td>
-						<td>2</td>
-						<td>2</td>
-					</tr>
-					<tr class="c21">
-						<td>3</td>
-						<td>11</td>
-						<td>3</td>
-						<td>3</td>
-					</tr>
-					<tr class="c21">
-						<td>4</td>
-						<td>100</td>
-						<td>4</td>
-						<td>4</td>
-					</tr>
-					<tr class="c21">
-						<td>5</td>
-						<td>101</td>
-						<td>5</td>
-						<td>5</td>
-					</tr>
-					<tr class="c21">
-						<td>6</td>
-						<td>110</td>
-						<td>6</td>
-						<td>6</td>
-					</tr>
-					<tr class="c21">
-						<td>7</td>
-						<td>111</td>
-						<td>7</td>
-						<td>7</td>
-					</tr>
-					<tr class="c21">
-						<td>8</td>
-						<td>1000</td>
-						<td>10</td>
-						<td>8</td>
-					</tr>
-					<tr class="c21">
-						<td>9</td>
-						<td>1001</td>
-						<td>11</td>
-						<td>9</td>
-					</tr>
-					<tr class="c21">
-						<td>10</td>
-						<td>1010</td>
-						<td>12</td>
-						<td>A</td>
-					</tr>
-						<tr class="c21">
-						<td>11</td>
-						<td>1011</td>
-						<td>13</td>
-						<td>B</td>
-					</tr>
-					<tr class="c21">
-						<td>12</td>
-						<td>1100</td>
-						<td>14</td>
-						<td>C</td>
-					</tr>
-					<tr class="c21">
-						<td>13</td>
-						<td>1101</td>
-						<td>15</td>
-						<td>D</td>
-					</tr>
-					<tr class="c21">
-						<td>14</td>
-						<td>1110</td>
-						<td>16</td>
-						<td>E</td>
-					</tr>
-					<tr class="c21">
-						<td>15</td>
-						<td>1111</td>
-						<td>17</td>
-						<td>F</td>
-					</tr>
-					<tr class="c21">
-						<td>16</td>
-						<td>10000</td>
-						<td>20</td>
-						<td>10</td>
-					</tr>
-					<tr class="c21">
-						<td>...</td>
-						<td>...</td>
-						<td>...</td>
-						<td>...</td>
+					<tr>
+						<td>
+<pre class="code">
+<code>   ; DESENVOLVIDO POR EVERTON P. CRUZ</code>
+<code>   ; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS</code>
+<code>   ; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A</code>
+<code>   #INCLUDE &lt;P16F628A.INC></code>
+<code>   LIST P=16F628A</code>
+<code>   __CONFIG _BOREN_ON & _CP_OFF & _PWRTE_ON & _WDT_OFF & _LVP_OFF & _MCLRE_OFF & _INTRC_OSC_NOCLKOUT</code>
+<code>    </code>
+<code>  ; DEFINICAO DE CONSTANTES E VARIAVEIS</code>
+<code>  #DEFINE BOTAO	  PORTB, RB0</code>
+<code>  #DEFINE CONTADOR  0x20</code>
+<code>    </code>
+<code>  ORG     0x00       ; TRATAMENTO DO RESET</code>
+<code>  GOTO    SETUP_PROCESSO</code>
+<code></code>
+<code>  ORG     0x04       ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>  RETFIE</code>
+<code>    </code>
+<code>SETUP_PROCESSO:</code>
+<code>  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code>  BCF     STATUS, RP1</code>
+<code>  BSF     STATUS, RP0</code>
+<code></code>
+<code>  BSF	PCON, OSCF ; CONF. FREQÜÊNCIA DO OSCILADOR INTERNO EM 4 MHz</code>
+<code>  </code>
+<code>  ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>  MOVLW	B'10000000'</code>
+<code>  ; 1 - NOT_RBPU    -> DESATIVA RESISTORES PULL-UP</code>
+<code>  ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>  ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>  ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>  ; 0 - PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:2</code>
+<code>  MOVWF   OPTION_REG</code>
+<code>    </code>
+<code>  ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code>  MOVLW   B'11111111'</code>
+<code>  ; 1 - PINO RA7 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA6 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA5 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA4 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA3 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA2 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA1 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA0 COMO ENTRADA</code>
+<code>  MOVWF   TRISA ; CONFIGURAÇÕES DO TRISA</code>
+<code>    </code>
+<code>  ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code>  MOVLW   B'11111111'</code>
+<code>  ; 1 - PINO RB7 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB6 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB5 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB4 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB3 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB2 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB1 COMO ENTRADA</code>
+<code>  ; 1 - PINO RB0 COMO ENTRADA</code>
+<code>  MOVWF   TRISB ; CONFIGURAÇÕES DO TRISB	    </code>
+<code>    </code>
+<code>  ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code>  BCF     STATUS, RP1</code>
+<code>  BCF     STATUS, RP0	    </code>
+<code>    </code>
+<code>  ; DEFINE O MODO DE OPERACAO DO COMP. ANALOG. DESLIGADOS</code>
+<code>  MOVLW   B'00000111'</code>
+<code>  MOVWF   CMCON	    </code>
+<code>    </code>
+<code>  ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>  MOVLW   B'00000000'  </code>
+<code>  ; 0 - GIE  -> DESATIVA INT./CHAVE GERAL</code>
+<code>  ; 0 - EEIE -> DESATIVA INT. DA EEPROM</code>
+<code>  ; 0 - T0IE -> DESATIVA INT. NO TMR0</code>
+<code>  ; 0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>  ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>  ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>  ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>  ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code>  MOVWF   INTCON</code>
+<code>    </code>
+<code>  ; VARIAVEL CONTADOR COM VALOR 0</code>
+<code>  CLRF    CONTADOR</code>
+<code>    </code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>  BTFSC   BOTAO</code>
+<code>  GOTO    PROGRAMAPRINCIPAL</code>
+<code>  GOTO    CONTARPRODUTO</code>
+<code></code>
+<code>CONTARPRODUTO:</code>
+<code>  INCF    CONTADOR, 1	    ; INCREMENTA CONTADOR</code>
+<code>LOOP_CALCULAR:</code>
+<code>  BTFSC   BOTAO</code>
+<code>  GOTO    PROGRAMAPRINCIPAL</code>
+<code>  GOTO    LOOP_CALCULAR</code>
+<code>    </code>
+<code>  END</code>
+</pre>
+						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="2">
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">Autor 2020</span></span>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
 						</td>
 					</td>
 				</tfoot>
 			</table>
+			<p class="principal">A linha 4 do C&oacute;digo 2.1 representa a inclus&atilde;o (<span class="diretive">INCLUDE</span>) de um arquivo de cabe&ccedil;alho de microcontrolador usado no projeto, que neste caso &eacute; o PIC16F628A e ele &eacute; acess&iacute;vel no endere&ccedil;o <span class="filename">C:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</span>, no qual tem as defini&ccedil;&otilde;es de nome dos registros e seus respectivos endere&ccedil;os de mem&oacute;ria, como nomes de <i>bits</i> e suas posi&ccedil;&otilde;es no <i>byte</i>.</p>
 			
-			<p class="c11">
-				Para saber mais sobre sistemas num&eacute;ricos recomendo ler <span class="textoVermelho">(BORBA, 2020)</span>e v&iacute;deos sobre opera&ccedil;&otilde;es e convers&otilde;es sobre estes sistemas em <span class="textoVermelho">(CRUZ, 2020).
-			</p>
+			<p class="principal">J&aacute; a linha 5 do C&oacute;digo 2.1, ela &eacute; a linha que lista (<span class="diretive">LIST</span>) o microcontrolador em uso no projeto, enquanto que a linha 6 &eacute; respons&aacute;vel pelas configura&ccedil;&otilde;es (<span class="diretive">__CONFIG</span>) de par&acirc;metros para uso do microcontrolador e eles s&atilde;o visto na Tabela 2.1 e esta informa&ccedil;&atilde;o est&aacute; conforme item 14.0 (<i>SPECIAL FEATURES OF THE CPU</i>) do <i>datasheet</i> (<span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">Microchip 2020 (b) pag. 98</a></span>).</p>
 			
-			<p class="c11">
-				Agora que sabemos como funcionam os sistemas num&eacute;ricos, veremos como representar eles dentro do MPASM&trade; Assembler da Microchip e para isso faz-se uso do documento <span class="textoVermelho">(MICROCHIP, 2013 p&aacute;gina 67)</span>no qual disp&otilde;e da Tabela 2.3 que especifica o formato dos n&uacute;meros no montador <i>assembly</i> MPASM.
-			</p>
-			
-			<p class="c11">
-				Assim, quando houver necessidade de tratar individualmente estados ou endere&ccedil;os de mem&oacute;ria, iremos fazer uso do sistema num&eacute;rico bin&aacute;rio, octal ou hexadecimal e quando houver necessidade de contagem de objetos, iremos usar o sistema num&eacute;rico decimal.
-			</p>
-			
-			<p class="c11">
-				Agora ap&oacute;s vermos a estrutura do arquivo base em <i>assembly</i> e a forma de expressar quantidades e estados com 4 sistemas num&eacute;ricos, veremos como &eacute; feito a execu&ccedil;&atilde;o das instru&ccedil;&otilde;es, sem adentrar no escopo do que cada instru&ccedil;&atilde;o faz, pois ser&atilde;o abordados nos pr&oacute;ximos epis&oacute;dios.
-			</p>
-			
-			<p class="c12">
-				<span class="c34">Tabela 2.3 -</span> Nota&ccedil;&atilde;o dos n&uacute;meros no montador MPASM
-			</p>
-				
-			<table class="c56">
+			<table class="data">
 				<thead>
 					<tr>
-						<th>Tipo</th>
-						<th>Sintaxe</th>
-						<th>Exemplos</th>
+						<th>
+							<span class="dataTitle">Tabela 2.1 -</span> Bits de configura&ccedil;&atilde;o
+						</th>
 					</tr>
 				</thead>
-				
 				<tbody>
 					<tr>
-						<td class="c32">Bin&aacute;rio</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">B&#39;d&iacute;gitos_binarios&#39;</span>
-						</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">B&#39;00000111&#39;</span>
-							<br/>
-							<span class="c60 c8 c6 c53">B&#39;10100101&#39;</span>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="c32">Octal</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">O&#39;d&iacute;gitos_octais&#39;</span>
-						</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">O&#39;767&#39;</span>
-							<br/>
-							<span class="c60 c8 c6 c53">O&#39;081&#39;</span>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="c32">Decimal</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">D&#39;d&iacute;gitos_decimais&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">.d&iacute;gitos_decimais</span>
-						</td>
-						<td class="c32">
-							<span class="definesASM1">D&#39;97&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">.97</span>
-							<br/>ou<br/>
-							<span class="definesASM1">D&#39;253&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">.253</span>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="c32">Hexadecimal</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">H&#39;d&iacute;gitos_hexadecimais&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">0xd&iacute;gitos_hexadecimais</span>
-						</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">H&#39;9f&#39; ou 0x9f</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">H&#39;9F&#39; ou 0x9F</span>
-						</td>
-					</tr>
-					
-					<tr>
-						<td class="c32">ASCII</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">A&#39;caracter&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">&#39;caracter&#39;</span>
-						</td>
-						<td class="c32">
-							<span class="c60 c8 c6 c53">A&#39;C&#39;</span>
-							<br/>ou<br/>
-							<span class="c60 c8 c6 c53">&#39;C&#39;</span>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Configura&ccedil;&atilde;o</th>
+										<th>Fun&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span class="diretive">_BOREN_ON</span>
+										</td>
+										<td>
+											<p><i>Bit</i> "<i><b>B</b>rown-<b>o</b>ut <b>R</b>eset <b>En</b>able&rdquo;</i> que representa quando a tens&atilde;o baixou at&eacute; um limite inferior aceit&aacute;vel, abaixo disso o microcontrolador &eacute; resetado, no qual a tens&atilde;o V <sub>BOR</sub>&eacute; tipicamente de 4 V e ativado quando T <sub>BOR</sub>for maior que 72 ms.</p>
+											
+											<p>Os estados s&atilde;o:</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_BOREN_ON</span>: ativado</li>
+												<li><span class="diretive">_BOREN_OFF</span>: </span>desativado</li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_CP_OFF</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<i>Flash Program Memory <b>C</b>ode <b>P</b>rotection</i>" que atua sobre a permiss&atilde;o de prote&ccedil;&atilde;o de leitura da mem&oacute;ria de programa do PIC16F628A.</p>
+											
+											<p>Os estados s&atilde;o:</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_CP_ON</span>: ativado permiss&atilde;o de c&oacute;pia</li>
+												<li><span class="diretive">_CP_OFF</span>: desativado permiss&atilde;o de c&oacute;pia</li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_PWRTE_ON</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<i><b>P</b>o<b>W</b>e<b>R</b>-up <b>T</b>imer <b>E</b>nable</i>" prov&eacute;m um tempo fixo de 72 ms na inicializa&ccedil;&atilde;o do microcontrolador como forma de permitir a estabiliza&ccedil;&atilde;o da tens&atilde;o de alimenta&ccedil;&atilde;o e ap&oacute;s isso iniciar o PIC16F628A.</p>
+											
+											<p>Os estados s&atilde;o:</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_PWRTE_ON</span>: ativado o tempo de espera de 72 ms para iniciar o PIC16F628A quando alimentado</li>
+												<li><span class="diretive">_PWRTE_OFF</span>: desativado o tempo de 72 ms ao alimentar o PIC16F628A</li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_WDT_OFF</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<i><b>W</b>atch <b>D</b>og <b>T</b>imer Enable</i>&rdquo; no qual prov&eacute;m uma inicializa&ccedil;&atilde;o do microcontrolador ap&oacute;s 72 ms se o estado dele n&atilde;o for limpo (veremos o uso do WDT no epis&oacute;dio 25).</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_WDT_ON</span>: ativa o <i>Watchdog Timer Enable</i></li>
+												<li><span class="diretive">_WDT_OFF</span>: desativa o <i>Watchdog Timer Enable</i></li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_LVP_OFF</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<i><b>L</b>ow-<b>V</b>oltage <b>P</b>rogramming Enable</i>" no qual representa a ativa&ccedil;&atilde;o de grava&ccedil;&atilde;o em baixa tens&atilde;o el&eacute;trica.</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_LVP_ON</span>: ativa grava&ccedil;&atilde;o em baixa tens&atilde;o e RB4 &eacute; PGM</li>
+												<li><span class="diretive">_LVP_OFF</span>: n&atilde;o ativa grava&ccedil;&atilde;o em baixa tens&atilde;o e RB4 &eacute; um I/O e a alta tens&atilde;o &eacute; aplicada sobre o pino MCLR.</li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_MCLRE_OFF</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<span class="register">RA5</span>/<span class="register">MCLR</span>/<span class="register">VPP</span> <i>Pin Function Select</i>" o qual representa se o pino <span class="register">RA5</span> ser&aacute; usado como <i>Master clear</i>.</p>
+											
+											<ul class="list">
+												<li><span class="diretive">_MCLRE_ON</span>: pino <span class="register">RA5</span> ser&aacute; usado como <i>Master clear</i> (<i>reset</i>);</li>
+												<li><span class="diretive">_MCLRE_OFF</span>: pino <span class="register">RA5</span> n&atilde;o ser&aacute; usado como <i>Master clear</i>(<i>reset</i>) e sim como pino I/O.</li>
+											</ul>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>
+											<span class="diretive">_INTRC_OSC_NOCLKOUT</span>
+										</td>
+										
+										<td>
+											<p><i>Bit</i> "<i>Oscillator Selection</i>" no qual <span class="diretive">_INTRC_OSC_NOCLKOUT</span> representa que o <i>clock</i> ser&aacute; pelo oscilador RC interno e os pinos <span class="diretive">RA6</span> e <span class="diretive">RA7</span> s&atilde;o pinos de I/O. Para saber mais sobre essas configura&ccedil;&otilde;es leia os coment&aacute;rios em <span class="filename">C:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</span>.</p>
+										</td>
+									</tr>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				</tbody>
-				
 				<tfoot>
 					<tr>
-						<td colspan="2">
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (c) pag. 67</span></span>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">Microchip 2020 (b) pag. 98</a></span>
 						</td>
 					</td>
 				</tfoot>
 			</table>
 			
-			<p class="c11">
-				Conforme a Figura 2.9, pode-se ver que na posi&ccedil;&atilde;o de mem&oacute;ria 000h (<span class="definesASM1">0x000</span>) tem-se o vetor de <i>reset</i>, na posi&ccedil;&atilde;o 0004h (<span class="definesASM1">0x0004</span>) o vetor de interrup&ccedil;&atilde;o, da posi&ccedil;&atilde;o 0005h (<span class="definesASM1">0x0005)</span>em diante tem-se a mem&oacute;ria de programa inclu&iacute;da no chip.
+			<p class="principal">As linhas 9 e 10 do C&oacute;digo 2.1 s&atilde;o as linhas de defini&ccedil;&atilde;o de constantes ou vari&aacute;veis, sendo que neste exemplo foi definido que a palavra <span class="coding">BOTAO</span> que representar&aacute; o bit <span class="register">RB0</span> do registrador <span class="register">PORTB</span> enquanto que a palavra <span class="coding">CONTADOR</span> representa o valor <span class="register">0x20</span> (em hexadecimal), que ser&aacute; usado neste exemplo como endere&ccedil;o de mem&oacute;ria.</p>
+			
+			<p class="principal">Iremos fazer uso da diretiva <span class="diretive">#DEFINE</span> para definir constantes ou endere&ccedil;os de registradores que iremos associar a estados ou quantidades que desejamos armazenar.</p>
+			
+			<p class="principal">As linhas 12 e 15 do C&oacute;digo 2.1 s&atilde;o linhas de endere&ccedil;os de mem&oacute;ria de programa&ccedil;&atilde;o onde <span class="register">0x00</span> representa o endere&ccedil;o de <i>reset</i> do microcontrolador, onde o microcontrolador inicializa, e &eacute; neste endere&ccedil;o que ele come&ccedil;a a execu&ccedil;&atilde;o de c&oacute;digo, enquanto que o endere&ccedil;o <span class="register">0x04</span> &eacute; o endere&ccedil;o no qual h&aacute; a primeira instru&ccedil;&atilde;o a ser executada apenas quando houver uma interrup&ccedil;&atilde;o e a chave geral das interrup&ccedil;&otilde;es estiverem ativas como tamb&eacute;m as respectivas chaves individuais das interrup&ccedil;&otilde;es.
 			</p>
 			
-			<p class="c11">
-				Na Figura 2.9 pode-se ver ainda que a mem&oacute;ria de programa do PIC16F628A come&ccedil;a em 0005h e vai at&eacute; 07FFh totalizando 2048 palavras (000h at&eacute; 07FFh).
+			<p class="principal">Na linha 13 h&aacute; a instru&ccedil;&atilde;o <span class="instruction">GOTO</span>, que salta (<i>GO TO</i>) para o r&oacute;tulo <span class="label">SETUP_PROCESSO</span>, que est&aacute; na linha 18, enquanto que na linha 16 h&aacute; a instru&ccedil;&atilde;o <span class="instruction">RETFIE</span>, que &eacute; respons&aacute;vel por retornar de uma subrotina de interrup&ccedil;&atilde;o (<i><b>RET</b>urn <b>F</b>rom <b>I</b>nt<b>E</b>rrupt</i>).
 			</p>
 			
-			<p class="c11">
-				Na Figura 2.9 ainda h&aacute; a pilha (<i>stack</i>) que &eacute; composta de 8 n&iacute;veis no qual pode ser usado para armazenar chamadas de subrotinas.
-			</p>
+			<p class="principal">J&aacute; nas linhas 18, 82, 87 e 89 est&atilde;o os r&oacute;tulos para uso em subrotinas, no qual podem ser criados v&aacute;rios r&oacute;tulos para serem tratados com subrotinas e facilitar o desenvolvimento da aplica&ccedil;&atilde;o.</p>
 			
-			<p class="c11">
-				E agora para terminarmos este epis&oacute;dio,n&oacute;s veremos o esquema de <i>clock</i> e ciclo de instru&ccedil;&atilde;o que nos ajudar&aacute; a entender como funciona o conceito de tempo dentro do PIC16F628A.
-			</p>
+			<p class="principal">Na linha 94 tem a instru&ccedil;&atilde;o de finaliza&ccedil;&atilde;o do c&oacute;digo/arquivo <i>assembly</i>e nela cont&eacute;m a diretiva <span class="diretive">END</span>.</p>
 			
-			<p class="c11">
-				Na Figura 2.10 pode-se ver que h&aacute; uma linha com o nome de OSC1 (<i>clock</i> de entrada), no qual pode ser inserido pelo pino <span class="c47 c6 c34">RA7</span>ou gerado internamente, e esse <i>clock</i> &eacute; divido por 4 gerando Q1, Q2, Q3 e Q4. Assim, internamente o contador de programa (<i>Program Counter - PC</i>) &eacute; incrementado em Q1, e a instru&ccedil;&atilde;o &eacute; decodificada e executada durante o ciclo Q1 at&eacute; ciclo Q4, mas enquanto uma instru&ccedil;&atilde;o est&aacute; sendo carregada (<i>Fetch INST (PC)</i>), a anterior que j&aacute; foi carregada est&aacute; sendo executada (<i>Execute INST (PC - 1)</i>) conforme Figura 2.10. Assim, um ciclo de instru&ccedil;&atilde;o consiste dos quatro ciclos, Q1 a Q4.
-			</p>
+			<p class="principal">As outras linhas contidas no arquivo <i>assembly</i>, s&atilde;o linhas de instru&ccedil;&atilde;o necess&aacute;rias para a l&oacute;gica da solu&ccedil;&atilde;o proposta para um determinado problema e veremos essas instru&ccedil;&otilde;es ao longo dos epis&oacute;dios.</p>
+			
+			<p class="principal">Conforme visto no arquivo <i>assembly</i>, existem linhas que cont&ecirc;m comando que fazem uso de n&uacute;meros escritos como <span class="register">0x04</span> e outros como <span class="number">B&#39;11111111&#39;</span>. Essas formas de escrever n&uacute;meros permitem fazer uso aqui de dois tipos de sistema num&eacute;rico, sendo eles o sistema num&eacute;rico hexadecimal (base 16) e o sistema num&eacute;rico bin&aacute;rio (base 2).</p>
+			
+			<p class="principal">No sistema num&eacute;rico decimal como conhecemos, fazemos uso de 10 algarismos para representar qualquer quantidade, fazendo um de um sistema posicional, e assim esses algarismos s&atilde;o 0, 1, 2, 3, 4, 5, 6, 7, 8 e 9. J&aacute; no sistema num&eacute;rico hexadecimal, h&aacute; 16 algarismos para fazer uso no sistema posicional e eles s&atilde;o 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E e F, e como isso o mesmo n&uacute;mero 10 na base decimal &eacute; igual ao n&uacute;mero A na base hexadecimal, enquanto que o n&uacute;mero FE na base hexadecimal &eacute; igual a n&uacute;mero 254 na base decimal.</p>
+			
+			<p class="principal">Ao escrever c&oacute;digos para PIC16F628A pode-se tamb&eacute;m utilizar de n&uacute;meros no sistema num&eacute;rico bin&aacute;rio (base 2) no qual existem apenas 2 algarismos para uso sendo eles o 0 e o 1.</p>
+			
+			<p class="principal">O mesmo n&uacute;mero 10 em decimal, A em hexadecimal, ser&aacute; 1010 em bin&aacute;rio. E por &uacute;ltimo existe ainda o sistema num&eacute;rico octal composto dos algarismo 0, 1, 2, 3, 4, 5, 6 e 7, no qual &eacute; pouco utilizado, mas que &eacute; bom conhecer e assim conforme a Tabela 2.2, tem-se a rela&ccedil;&atilde;o entre os quatro sistemas num&eacute;ricos.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 2.2 -</span> Equival&ecirc;ncia de n&uacute;meros nos sistemas num&eacute;ricos
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>valor decimal</th>
+										<th>valor bin&aacute;rio</th>
+										<th>valor octal</th>
+										<th>valor hexadecimal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="c83">
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>10</td>
+										<td>2</td>
+										<td>2</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>11</td>
+										<td>3</td>
+										<td>3</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>100</td>
+										<td>4</td>
+										<td>4</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>101</td>
+										<td>5</td>
+										<td>5</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>110</td>
+										<td>6</td>
+										<td>6</td>
+									</tr>
+									<tr>
+										<td>7</td>
+										<td>111</td>
+										<td>7</td>
+										<td>7</td>
+									</tr>
+									<tr>
+										<td>8</td>
+										<td>1000</td>
+										<td>10</td>
+										<td>8</td>
+									</tr>
+									<tr>
+										<td>9</td>
+										<td>1001</td>
+										<td>11</td>
+										<td>9</td>
+									</tr>
+									<tr>
+										<td>10</td>
+										<td>1010</td>
+										<td>12</td>
+										<td>A</td>
+									</tr>
+										<tr>
+										<td>11</td>
+										<td>1011</td>
+										<td>13</td>
+										<td>B</td>
+									</tr>
+									<tr>
+										<td>12</td>
+										<td>1100</td>
+										<td>14</td>
+										<td>C</td>
+									</tr>
+									<tr>
+										<td>13</td>
+										<td>1101</td>
+										<td>15</td>
+										<td>D</td>
+									</tr>
+									<tr>
+										<td>14</td>
+										<td>1110</td>
+										<td>16</td>
+										<td>E</td>
+									</tr>
+									<tr>
+										<td>15</td>
+										<td>1111</td>
+										<td>17</td>
+										<td>F</td>
+									</tr>
+									<tr>
+										<td>16</td>
+										<td>10000</td>
+										<td>20</td>
+										<td>10</td>
+									</tr>
+									<tr>
+										<td>...</td>
+										<td>...</td>
+										<td>...</td>
+										<td>...</td>
+									</tr>
+								</tbody>
+							</table>
+						<td>
+					<tr>
+				<tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Para saber mais sobre sistemas num&eacute;ricos recomendo ler <span class="citacao">(<a href="./Reference.html#borba_2020" target="_blank">BORBA, 2020</a>)</span> e v&iacute;deos sobre opera&ccedil;&otilde;es e convers&otilde;es sobre estes sistemas em <span class="citacao">(<a href="./Reference.html#cruz_2020" target="_blank">CRUZ, 2020</a>)</span>.</p>
+			
+			<p class="principal">Agora que sabemos como funcionam os sistemas num&eacute;ricos, veremos como representar eles dentro do MPASM&trade; Assembler da Microchip e para isso faz-se uso do documento <span class="citacao">(<a href="Reference.html#microchip_2013" target="_blank">Microchip 2013 pag. 67</a>)</span> no qual disp&otilde;e da Tabela 2.3 que especifica o formato dos n&uacute;meros no montador <i>assembly</i> MPASM.</p>
+			
+			<p class="principal">Assim, quando houver necessidade de tratar individualmente estados ou endere&ccedil;os de mem&oacute;ria, iremos fazer uso do sistema num&eacute;rico bin&aacute;rio, octal ou hexadecimal e quando houver necessidade de contagem de objetos, iremos usar o sistema num&eacute;rico decimal.</p>
+			
+			<p class="principal">Agora ap&oacute;s vermos a estrutura do arquivo base em <i>assembly</i> e a forma de expressar quantidades e estados com 4 sistemas num&eacute;ricos, veremos como &eacute; feito a execu&ccedil;&atilde;o das instru&ccedil;&otilde;es, sem adentrar no escopo do que cada instru&ccedil;&atilde;o faz, pois ser&atilde;o abordados nos pr&oacute;ximos epis&oacute;dios.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 2.3 -</span> Nota&ccedil;&atilde;o dos n&uacute;meros no montador MPASM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Tipo</th>
+										<th>Sintaxe</th>
+										<th>Exemplos</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Bin&aacute;rio</td>
+										<td>
+											<span class="coding">B&#39;d&iacute;gitos_binarios&#39;</span>
+										</td>
+										<td>
+											<span class="number">B&#39;00000111&#39;</span>
+											<br/>
+											<span class="number">B&#39;10100101&#39;</span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>Octal</td>
+										<td>
+											<span class="coding">O&#39;d&iacute;gitos_octais&#39;</span>
+										</td>
+										<td>
+											<span class="number">O&#39;767&#39;</span>
+											<br/>
+											<span class="number">O&#39;081&#39;</span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>Decimal</td>
+										<td>
+											<span class="coding">D&#39;d&iacute;gitos_decimais&#39;</span>
+											<br/>ou<br/>
+											<span class="coding">.d&iacute;gitos_decimais</span>
+										</td>
+										<td>
+											<span class="number">D&#39;97&#39;</span>
+											<br/>ou<br/>
+											<span class="number">.97</span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>Hexadecimal</td>
+										<td>
+											<span class="coding">H&#39;d&iacute;gitos_hexadecimais&#39;</span>
+											<br/>ou<br/>
+											<span class="coding">0xd&iacute;gitos_hexadecimais</span>
+										</td>
+										<td>
+											<span class="number">H&#39;9f&#39; ou 0x9f</span>
+											<br/>ou<br/>
+											<span class="number">H&#39;9F&#39; ou 0x9F</span>
+										</td>
+									</tr>
+									
+									<tr>
+										<td>ASCII</td>
+										<td>
+											<span class="coding">A&#39;caracter&#39;</span>
+											<br/>ou<br/>
+											<span class="coding">&#39;caracter&#39;</span>
+										</td>
+										<td>
+											<span class="number">A&#39;C&#39;</span>
+											<br/>ou<br/>
+											<span class="number">&#39;C&#39;</span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						<td>
+					<tr>
+				<tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2013" target="_blank">Microchip 2013 pag. 67</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Conforme a Figura 2.9, pode-se ver que na posi&ccedil;&atilde;o de mem&oacute;ria 000h (<span class="register">0x000</span>) tem-se o vetor de <i>reset</i>, na posi&ccedil;&atilde;o 0004h (<span class="register">0x0004</span>) o vetor de interrup&ccedil;&atilde;o, da posi&ccedil;&atilde;o 0005h (<span class="register">0x0005)</span> em diante tem-se a mem&oacute;ria de programa inclu&iacute;da no chip.</p>
+			
+			<p class="principal">Na Figura 2.9 ainda, pode-se ver ainda que a mem&oacute;ria de programa do PIC16F628A come&ccedil;a em 0005h e vai at&eacute; 07FFh totalizando 2048 palavras (000h at&eacute; 07FFh). Temos ainda a pilha (<i>stack</i>) que &eacute; composta de 8 n&iacute;veis no qual pode ser usado para armazenar chamadas de subrotinas.</p>
 			
 			<table class="image">
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.9 -</span>Mapa de mem&oacute;ria de programa e pilha
+							<span class="figureTitle">Figura 2.9 -</span> Mapa de mem&oacute;ria de programa e pilha
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img src="./figures/MPLAB_X_IDE_memory_map_of_stack_and_program.png" style="width: 246.00px; height: 586.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Memory map of stack and program" alt="Memory map of stack and program">
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_memory_map_of_stack_and_program.png" style="width: 246.00px; height: 586.00px;" title="Memory map of stack and program" alt="Memory map of stack and program"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) pag. 17</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">Microchip (2020b) pag. 17</a></span>
 						</td>
 					</td>
 				</tfoot>
 			</table>
 			
-			<p class="c11">
-				Quando chegarmos no epis&oacute;dio 10, no qual falaremos em contagem de tempo, voltaremos a Figura 2.10 para utilizarmos o conceito de <i>clock</i>e ciclo de instru&ccedil;&atilde;o para cria&ccedil;&atilde;o de subrotinas de temporizadores (<i>delays</i>).
-			</p>
+			<p class="principal">E agora para terminarmos este epis&oacute;dio,n&oacute;s veremos o esquema de <i>clock</i> e ciclo de instru&ccedil;&atilde;o que nos ajudar&aacute; a entender como funciona o conceito de tempo dentro do PIC16F628A.</p>
+			
+			<p class="principal">Na Figura 2.10 pode-se ver que h&aacute; uma linha com o nome de OSC1 (<i>clock</i> de entrada), no qual pode ser inserido pelo pino <span class="register">RA7</span> ou gerado internamente, e esse <i>clock</i> &eacute; divido por 4 gerando Q1, Q2, Q3 e Q4. Assim, internamente o contador de programa (<i><b>P</b>rogram <b>C</b>ounter - <b>PC</b></i>) &eacute; incrementado em Q1, e a instru&ccedil;&atilde;o &eacute; decodificada e executada durante o ciclo Q1 at&eacute; ciclo Q4, mas enquanto uma instru&ccedil;&atilde;o est&aacute; sendo carregada (<i>Fetch INST (PC)</i>), a anterior que j&aacute; foi carregada est&aacute; sendo executada (<i>Execute INST (PC - 1)</i>) conforme Figura 2.10. Assim, um ciclo de instru&ccedil;&atilde;o consiste dos quatro ciclos, Q1 a Q4.</p>
 			
 			<table class="image">
 				<thead>
 					<tr>
 						<th>
-							<span class="c34">Figura 2.10 -<i>Clock</i> e ciclo de instru&ccedil;&atilde;o
+							<span class="figureTitle">Figura 2.10 -</span> <i>Clock</i> e ciclo de instru&ccedil;&atilde;o
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr class="c21">
-						<td class="c206">
-							<img src="./figures/MPLAB_X_IDE_instruction_clock_and_cycle.png" style="width: 590.00px; height: 210.67px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title="Instruction clock and cycle" alt="Instruction clock and cycle"/>
+					<tr>
+						<td>
+							<img src="./figures/MPLAB_X_IDE_instruction_clock_and_cycle.png" style="width: 590.00px; height: 210.67px;" title="Instruction clock and cycle" alt="Instruction clock and cycle"/>
 						</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td>
-							<span class="citacaoFigura">Fonte: <span class="citacaoTemporary">MICROCHIP 2020 (b) pag. 15</span></span>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">Microchip (2020b) pag. 15</a></span>
 						</td>
 					</td>
 				</tfoot>
 			</table>
-				
-				<hr style="page-break-before:always;display:none;">
+			
+			<p class="principal">Quando chegarmos no epis&oacute;dio 10, no qual falaremos em contagem de tempo, voltaremos a Figura 2.10 para utilizarmos o conceito de <i>clock</i>e ciclo de instru&ccedil;&atilde;o para cria&ccedil;&atilde;o de subrotinas de temporizadores (<i>delays</i>).</p>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_1.html">Voltar ao Epis&oacute;dio 1</a></p>
+			<p class="forwardPage"><a href="./Episode_3.html">Ir para Epis&oacute;dio 3</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
 		</div>
 	</body>
 </html>

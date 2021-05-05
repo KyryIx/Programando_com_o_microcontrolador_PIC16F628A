@@ -1,9 +1,8 @@
 body{
-				font-family: arial;
-				font-size: 12pt;
-				text-align: justify;
+	font-family: arial;
+	font-size: 12pt;
+	text-align: justify;
 }
-
 a:link{
 	text-decoration: none;
 }
@@ -18,23 +17,26 @@ a:active{
 	color: green;
 }
 
+/**********************************************************
+ ************************* TITLES *************************
+ **********************************************************/
+span.titlePrincipal{
+	font-size: 33pt;
+}
 p.title{
 	font-weight: bold;
 	text-align: center;
 }
-
-span.titlePrincipal{
-	font-size: 33pt;
-}
-
 span.titleSecondary{
 	font-size: 24pt;
 }
-
 span.about{
 	font-size: 12pt;
 }
 
+/**********************************************************
+ ************************** PAGES *************************
+ **********************************************************/
 .page{
 	margin: 50px 10px 50px 10px;
 	border-style: solid;
@@ -42,59 +44,286 @@ span.about{
 	border-color: gray;
 	padding: 5px 50px 5px 50px;
 }
-
 .page h1{
 	text-align: center;
 }
-
+p.backPage{
+	text-align: right;
+}
+p.forwardPage{
+	text-align: right;
+}
 hr.indice{
 	width: 90%;
 	height: 5px;
 	background-color: black;
 }
 
-ol.indice{
-	font-size: 16pt;
+/**********************************************************
+ ************************ PARAGRAPHS **********************
+ **********************************************************/
+p.principal{
+	line-height: 1.6;
+}
+p.important{
+	background-color: rgb(255,255,0);
+	padding: 10px;
+}
+span.important{
 	font-weight: bold;
-	list-style-type: none;
-}
-
-ol.indice li{
-	padding: 1em 1em 0em 0em;
-}
-
-ol.indice a:link {
-	color: black;
-}
-
-ol.indice a:hover{
-	color: hotpink;
-	text-decoration: underline;
-}
-
-
-
-
-
-
-
-
-.voltarIndice{
-	text-align: right;
-}
-
-.citacaoTemporary{
 	color: red;
+}
+
+/**********************************************************
+ ************************** REFERENCE *********************
+ **********************************************************/
+span.citacao{
 	font-weight: bold;
 }
+.citacaoLink{
+	font-family: "Lucida Console";
+}
+.citacaoLink::before{
+	content: "[";
+	color: blue;
+	font-weight: bold;
+}
+.citacaoLink::after{
+	content: "]";
+	color: blue;
+	font-weight: bold;
+}
+.filename{
+	font-family: Consolas;
+	font-weight: bold;
+}
+
+/**********************************************************
+ ***************************** LIST ***********************
+ **********************************************************/
+ul.list li{
+	padding: 10px 3px 3px 3px;
+}
+
+ol.list li{
+	padding: 10px 3px 3px 3px;
+	line-height: 1.5;
+}
+
+/**********************************************************
+ ********************** ASSEMBLY/CODE *********************
+ **********************************************************/
+span.register{ /* c34 */
+	font-family: Consolas;
+	font-weight: bold;
+}
+span.notRegister{
+	text-decoration: overline solid 2px;;
+}
+span.diretive{
+	font-family: Consolas;
+	color: rgb(91,164,244);
+}
+span.comment{
+	color: rgb(54,146,14);
+}
+span.instruction{
+	color: rgb(41,95,214);
+	font-weight: bold;
+}
+span.coding{
+	font-family: Consolas;
+}
+span.label{
+	font-family: Consolas;
+	font-weight: bold;
+}
+span.number{
+	font-family: Consolas;
+	font-weight: bold;
+}
+table.code{
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid black;
+}
+table.code thead{
+	text-align: center;
+	background-color: rgb(230,230,230);
+}
+table.code thead th{
+	padding: 5px 10px 10px 10px;
+	border-color: green;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+}
+pre.code {
+	padding: 0px 0px 0px 0px;
+	font-family: Consolas;
+	white-space: pre-wrap;
+	margin: 10px 5px 10px 5px;
+	font-size: 12pt;
+}
+pre.code::before {
+	counter-reset: listing;
+}
+pre.code code {
+	counter-increment: listing;
+}
+pre.code code::before {
+	content: counter(listing) ". ";
+	display: inline-block;
+	width: 3em;         /* now works */
+	padding-left: auto; /* now works */
+	margin-left: auto;  /* now works */
+	text-align: right;  /* now works */
+}
+span.codeTitle{
+	font-size: 14pt;
+}
+td.citacaoCode{
+	text-align: left;
+	padding: 0em 0em 1em 0em;
+}
+td.citacaoCode span:first-child{
+	font-weight: bold;
+	padding-left: 1em;
+	color: red;
+}
+
+/**********************************************************
+ ************************* TABLE IMAGE ********************
+ **********************************************************/
+table.image{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid black;
+	padding: 10px 10px 10px 10px;
+}
+table.image thead{
+	text-align: center;
+	background-color: rgb(230,230,230);
+}
+table.image thead th{
+	padding: 5px 10px 10px 10px;
+	border-color: green;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+}
+table.image tbody{
+	text-align: center;
+}
+table.image tbody img{
+	margin: 15px 5px 15px 5px;
+}
+span.figureTitle{
+	font-size: 14pt;
+}
+td.citacaoFigura{
+	text-align: left;
+}
+td.citacaoFigura span:first-child{
+	font-weight: bold;
+	color: red;
+}
+
+/**********************************************************
+ ************************* TABLE DATA *********************
+ **********************************************************/
+table.data{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid black;
+	padding: 10px 10px 10px 10px;
+}
+table.data thead th{
+	padding: 5px 10px 10px 10px;
+	border-color: green;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+}
+table.dataValues{
+	margin-left: auto;
+	margin-right: auto;
+}
+table.dataValues thead th{
+	background-color: rgb(215,215,215);
+	border-color: black;
+	border-width: 1px 0px 1px 0px;
+}
+table.dataValues tbody td{
+	border-bottom: 1px solid black;
+}
+td.citacaoData{
+	padding-top: 5px;
+	text-align: left;
+}
+td.citacaoData span:first-child{
+	font-weight: bold;
+	color: red;
+}
+
+/**********************************************************
+ *************************** MENUS ************************
+ **********************************************************/
+span.options{
+	font-weight: bold;
+	background-color: rgb(255,128,128);
+	color: rgb(255,255,255);
+	padding: 2px 5px 2px 5px;
+	border: 1px solid #000;
+}
+
+
+
+
+
+/*
+.tableTitle{
+	font-weight: bold;
+}
+.tableInformations{
+	font-weight: bold;
+}
+.definesASM1{
+	font-family: Consolas;
+}
+
+
+
+
+/*
+span.defines{
+	color: blue;
+}
+span.list{
+	color: blue;
+}
+span.config{
+	color: blue;
+}
+span.org{
+	color: blue;
+}
+*/
+
+
+
+
+
+
+
+
 
 .listaTemporary{
 	border: 1px solid gray;
 }
 
-.c34{
-	font-weight: bold;
-}
+
 
 .c39{
 	color: red;
@@ -121,26 +350,11 @@ table.c56 td{
 	border: 1px solid black;
 }
 
-table.image{
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	border: 1px solid blue;
-	padding: 30px;
-}
 
-table.image td{
-	text-align: center;
-}
 
-.definesASM1{
-	font-family: consolas;
-}
 
-.linkDoc1{
-	font-family: consolas;
-}
+
+
 
 .textoVermelho{
 	color: red;
