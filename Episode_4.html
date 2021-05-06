@@ -1,1354 +1,583 @@
 <html>
 	<head>
 		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
-		
-		<!-- https://highlightjs.org/download/ -->
-		<!--
-			https://mg.pov.lt/restview/
-			pip install restview
-			
-		-->
-		<link rel="stylesheet" href="./lib/highlight/styles/default.css">
-		<script src="./lib/highlight/highlight.pack.js"></script>
-		<script>hljs.highlightAll();</script>
-		
 		<link rel="stylesheet" href="./style.css">
-		<style type="text/css">
-		</style>
+		<script src="./functions.js"></script>
 	</head>
 	<body>
-		<div class="page">
-			<h1>Epis&oacute;dio 4: Conhecendo os registradores PORTA, PORTB, TRISA e TRISB do PIC16F628A</h1>
-			<p class="voltarIndice"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 4: Conhecendo os registradores <span class="register">PORTA</span>, <span class="register">PORTB</span>, <span class="register">TRISA</span> e <span class="register">TRISB</span> do PIC16F628A</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_3.html">Voltar ao Epis&oacute;dio 3</a></p>
+			<p class="forwardPage"><a href="./Episode_5.html">Ir para Epis&oacute;dio 5</a></p>
 			<hr class="indice"/>
 			
-			<p class="c11">
-				Neste epis&oacute;dio conheceremos os registradores especiais <span class="c47 c6 c34">TRISA</span>, <span class="c47 c6 c34 c37">TRISB</span>, <span class="c47 c6 c34">PORTA</span> e <span class="c47 c6 c34">PORTB</span>, respons&aacute;veis pelo controle dos pinos do microcontrolador PIC16F628A.
-			</p>
+			<p class="principal">Neste epis&oacute;dio conheceremos os registradores especiais <span class="register">TRISA</span>, <span class="register">TRISB</span>, <span class="register">PORTA</span> e <span class="register">PORTB</span>, respons&aacute;veis pelo controle dos pinos do microcontrolador PIC16F628A.</p>
 			
-			<p class="c11">
-				Os dois primeiros registradores que veremos s&atilde;o <span class="c47 c6 c34">TRISA</span> (contido no banco 1 no endere&ccedil;o <span class="definesASM1">0x85</span>) e <span class="c47 c6 c34">TRISB</span> (contido nos bancos 1 e 3 nos endere&ccedil;os <span class="definesASM1">0x86</span> e <span class="definesASM1">0x186</span>), respons&aacute;veis pelo controle da dire&ccedil;&atilde;o dos pinos <span class="c47 c6 c34">RA0</span> a <span class="c47 c6 c34">RA7</span> e <span class="c47 c6 c34">RB0</span> a <span class="c47 c6 c34">RB7</span> respectivamente, isto &eacute;, esses dois registradores controlam se os pinos ser&atilde;o pinos de entrada (captura de estados) ou sa&iacute;da (escrita de estados). As posi&ccedil;&otilde;es dos bits e seus valores ao inicializar o PIC s&atilde;o conforme as tabelas Tabela 4.1 e Tabela 4.2.
-			</p>
+			<p class="principal">Os dois primeiros registradores que veremos s&atilde;o <span class="register">TRISA</span> (contido no banco 1 no endere&ccedil;o <span class="register">0x85</span>) e <span class="register">TRISB</span> (contido nos bancos 1 e 3 nos endere&ccedil;os <span class="register">0x86</span> e <span class="register">0x186</span>), respons&aacute;veis pelo controle da dire&ccedil;&atilde;o dos pinos <span class="register">RA0</span> a <span class="register">RA7</span> e <span class="register">RB0</span> a <span class="register">RB7</span> respectivamente, isto &eacute;, esses dois registradores controlam se os pinos ser&atilde;o pinos de entrada (captura de estados) ou sa&iacute;da (escrita de estados). As posi&ccedil;&otilde;es dos bits e seus valores ao inicializar o PIC s&atilde;o conforme as tabelas Tabela 4.1 e Tabela 4.2.</p>
 			
-			<p class="c12">
-				<span class="register">Tabela 4.1 -</span> <i>Bits</i> do registrador <span class="c47 c6 c34">TRISA</span>
-			</p>
-			
-			<table class="c7">
+			<table class="register">
+				<thead>
+					<tr>
+						<th colspan="9">
+							<span class="dataTitle">Tabela 4.1 -</span> <i>Bits</i> do registrador <span class="register">TRISA</span>
+						</th>
+					</tr>
+				</thead>
 				<tbody>
 					<tr>
-						<td class="c84">
-							<p class="c19">
-								<span class="c5">tipo-valor</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c162">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c160">
-							<p class="c1">
-								<span class="c5">R-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
+						<td>posi&ccedil;&atilde;o</td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
 					</tr>
 					<tr>
-						<td class="c157">
-							<p class="c19">
-							<span class="c5">bit</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA7</span>
-							</p>
-						</td>
-						<td class="c105">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA6</span>
-							</p>
-						</td>
-						<td class="c137">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA5</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA4</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA3</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c47 c34">RA2</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA1</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RA0</span>
-							</p>
-						</td>
+						<td><span>bit</span></td>
+						<td><span class="register">RA7</span></td>
+						<td><span class="register">RA6</span></td>
+						<td><span class="register">RA5</span></td>
+						<td><span class="register">RA4</span></td>
+						<td><span class="register">RA3</span></td>
+						<td><span class="register">RA2</span></td>
+						<td><span class="register">RA1</span></td>
+						<td><span class="register">RA0</span></td>
 					</tr>
 					<tr>
-						<td class="c84">
-							<p class="c19"><span class="c5">posi&ccedil;&atilde;o</span>
-							</p>
+						<td>tipo-valor</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoRegister" colspan="9">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 37</a></span>
 						</td>
-						<td class="c69">
-							<p class="c1"><span class="c5">bit 7</span>
-							</p>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="register">
+				<thead>
+					<tr>
+						<th colspan="9">
+							<span class="dataTitle">Tabela 4.2 -</span> <i>Bits</i> do registrador <span class="register">TRISB</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>posi&ccedil;&atilde;o</td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+					</tr>
+					<tr>
+						<td><span>bit</span></td>
+						<td><span class="register">RB7</span></td>
+						<td><span class="register">RB6</span></td>
+						<td><span class="register">RB5</span></td>
+						<td><span class="register">RB4</span></td>
+						<td><span class="register">RB3</span></td>
+						<td><span class="register">RB2</span></td>
+						<td><span class="register">RB1</span></td>
+						<td><span class="register">RB0</span></td>
+					</tr>
+					<tr>
+						<td>tipo-valor</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoRegister" colspan="9">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 45</a></span>
 						</td>
-						<td class="c152">
-							<p class="c1">
-								<span class="c5">bit 6</span>
-							</p>
-						</td>
-						<td class="c189">
-							<p class="c1">
-								<span class="c5">bit 5</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 4</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 3</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 2</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 1</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 0</span>
-							</p>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Se alguns dos <i>bits</i> <span class="register">RA0</span> a <span class="register">RA7</span> ou <span class="register">RB0</span> a <span class="register">RB7</span> de <span class="register">TRISA</span> ou <span class="register">TRISB</span> for igual a 0, o respectivo pino no PIC16F628A ser&aacute; um pino de sa&iacute;da, por&eacute;m, se algum <i>bit</i> de <span class="register">RA0</span> a <span class="register">RA7</span> e/ou <span class="register">RB0</span> a <span class="register">RB7</span> do registrador <span class="register">TRISA</span>/<span class="register">TRISB</span> for igual a 1, o respectivo pino no PIC16F628A ser&aacute; um pino de entrada.</p>
+			
+			<p class="principal">Agora se quisermos mudar o estado no pino de sa&iacute;da ou ler o estado de um pino de entrada, devemos fazer a escrita ou leitura no respectivo pino nos registradores <span class="register">PORTA</span>/<span class="register">PORTB</span>.</p>
+			
+			<p class="principal">Assim, por exemplo, se o pino <span class="register">RB3</span> deve ser tratado como pino de sa&iacute;da, precisamos escrever no <i>bit</i> <span class="register">RB3</span> do registrador <span class="register">TRISB</span> o valor igual a 0 (<i>output</i>), e para fazer esse pino ficar em n&iacute;vel alto (5V se VDD for igual a 5 V), escrevemos o valor 1 no <i>bit</i> <span class="register">RB3</span> em <span class="register">PORTB</span>. Agora, se escrevermos o valor 0 no <i>bit</i> <span class="register">RB3</span> em <span class="register">PORTB</span>, o pino estar&aacute; em n&iacute;vel baixo (aproximadamente 0 V).</p>
+			
+			<p class="principal">Vejamos exemplos contidos na Tabela 4.3 para compreendermos o uso de valores em <span class="register">TRISA</span>/<span class="register">TRISB</span> e <span class="register">PORTA</span>/<span class="register">PORTB</span>.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 4.3 -</span> Exemplos de uso do <span class="register">TRIS(A/B)</span>e <span class="register">PORT(A/B)</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><i>bit</i> em <span class="register">TRIS(A/B)</span></th>
+										<th><i>bit</i> em <span class="register">PORT(A/B)</span></th>
+										<th>Descri&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><span class="register">RA2</span> = 1</td>
+										<td><span class="register">RA2</span> = 0</td>
+										<td>o pino <span class="register">RA2</span> foi configurado como pino de entrada e atribu&iacute;do ou lido o estado como n&iacute;vel baixo (0 V).</td>
+									</tr>
+									<tr>
+										<td><span class="register">RA2</span> = 0</td>
+										<td><span class="register">RA2</span> = 1</td>
+										<td>o pino <span class="register">RA2</span> foi configurado como pino de sa&iacute;da e colocado o estado como n&iacute;vel alto (5 V se VDD = 5V).</td>
+									</tr>
+									<tr>
+										<td><span class="register">RA5</span> = 1</td>
+										<td><span class="register">RA5</span> = 1</td>
+										<td>o pino <span class="register">RA5</span> foi configurado como pino de entrada e atribu&iacute;do ou lido o estado como n&iacute;vel alto.</td>
+									</tr>
+									<tr>
+										<td><span class="register">RA5</span> = 0</td>
+										<td><span class="register">RA5</span> = x</td>
+										<td>o pino <span class="register">RA5</span> n&atilde;o pode ser definido como pino de sa&iacute;da</td>
+									</tr>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
 			</table>
 			
-			<p class="c11">
-				<span class="textoVermelho">Fonte: MICROCHIP 2020 (b) pag. 37</span>
-			</p>
+			<p class="principal">A diferen&ccedil;a entre <span class="register">PORTA</span> e <span class="register">PORTB</span> &eacute; que quando alguns pinos (<i>bits</i>) em <span class="register">PORTB</span> for definido com entrada, h&aacute; a op&ccedil;&atilde;o deles trabalharem em l&oacute;gica inversa, isto &eacute;, iniciar em n&iacute;vel alto, onde esta op&ccedil;&atilde;o &eacute; ativada pelo <i>bit</i> <span class="register notRegister">RBPU</span> do registrador <span class="register">OPTION</span> (<span class="register">OPTION_REG</span>).</p>
 			
-			<p class="c12">
-				<span class="register">Tabela 4.2 -</span> <i>Bits</i> do registrador <span class="c47 c6 c34">TRISB</span>
-			</p>
+			<p class="principal">Na Figura 1.5 vista no <span class="citacaoLink"><a href="./Episode_1.html" target="_blank">primeiro epis&oacute;dio</a></span>, tem-se exibido as fun&ccedil;&otilde;es em cada pino e na Figura 4.1 pode-se ver mais especificamente elas.</p>
 			
-			<table class="c7">
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 4.1 -</span> Fun&ccedil;&otilde;es dos pinos em <span class="register">PORTA</span> e <span class="register">PORTB</span>
+						</th>
+					</tr>
+				</thead>
 				<tbody>
 					<tr>
-						<td class="c84">
-							<p class="c19">
-								<span class="c5">tipo-valor</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c162">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c160">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-						<td class="c134">
-							<p class="c1">
-								<span class="c5">R/W-1</span>
-							</p>
-						</td>
-
-					</tr>
-					<tr>
-						<td class="c157">
-							<p class="c19">
-								<span class="c5">bit</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB7</span>
-							</p>
-						</td>
-						<td class="c105">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB6</span>
-							</p>
-						</td>
-						<td class="c137">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB5</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB4</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB3</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c47 c34">RB2</span><span class="c26"></span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB1</span>
-							</p>
-						</td>
-						<td class="c167">
-							<p class="c1">
-								<span class="c42 c47 c34 c53">RB0</span>
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c84">
-							<p class="c19">
-								<span class="c5">posi&ccedil;&atilde;o</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 7</span>
-							</p>
-						</td>
-						<td class="c152">
-							<p class="c1">
-								<span class="c5">bit 6</span>
-							</p>
-						</td>
-						<td class="c189">
-							<p class="c1">
-								<span class="c5">bit 5</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 4</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 3</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 2</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 1</span>
-							</p>
-						</td>
-						<td class="c69">
-							<p class="c1">
-								<span class="c5">bit 0</span>
-							</p>
+						<td>
+							<img src="figures/Pins_functions_in_PORTA_and_PORTB.png" style="width: 590.00px; height: 206.67px;" title="Pins functions in PORTA and PORTB" alt="Pins functions in PORTA and PORTB"/>
 						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 12</a></span>
+						</td>
+					</td>
+				</tfoot>
 			</table>
 			
-			<p class="c11">
-				<span class="textoVermelho">Fonte: MICROCHIP 2020 (b) pag. 37</span>
-			</p>
+			<p class="principal">Assim, como veremos nos epis&oacute;dios posteriores, os pinos t&ecirc;m as fun&ccedil;&otilde;es baseadas nas Tabela 4.4 e Tabela 4.5 onde:</p>
 			
-			<p class="c11">
-				Se alguns dos <i>bits</i> <span class="c47 c6 c34">RA0</span> a <span class="c47 c6 c34">RA7</span> ou <span class="c47 c6 c34">RB0</span> a <span class="c47 c6 c34">RB7</span> de <span class="c47 c6 c34">TRISA</span> ou <span class="c47 c6 c34">TRISB</span> for igual a 0, o respectivo pino no PIC16F628A ser&aacute; um pino de sa&iacute;da, por&eacute;m, se algum <i>bit</i> de <span class="c47 c6 c34">RA0</span> a <span class="c47 c6 c34">RA7</span> e/ou <span class="c47 c6 c34">RB0</span> a <span class="c47 c6 c34">RB7</span> do registrador <span class="c47 c6 c34">TRISA</span>/<span class="c47 c6 c34">TRISB</span> for igual a 1, o respectivo pino no PIC16F628A ser&aacute; um pino de entrada.
-			</p>
-			
-			<p class="c11">
-				Agora se quisermos mudar o estado no pino de sa&iacute;da ou ler o estado de um pino de entrada, devemos fazer a escrita ou leitura no respectivo pino nos registradores <span class="c6 c34 c37 c47">PORTA</span>/<span class="c47 c6 c34">PORTB</span>.
-			</p>
-			
-			<p class="c11">
-				Assim, por exemplo, se o pino <span class="c47 c6 c34">RB3</span> deve ser tratado como pino de sa&iacute;da, precisamos escrever no <i>bit</i> <span class="c47 c6 c34">RB3</span> do registrador <span class="c47 c6 c34">TRISB</span> o valor igual a 0 (<i>output</i>), e para fazer esse pino ficar em n&iacute;vel alto (5V se VDD for igual a 5 V), escrevemos o valor 1 no <i>bit</i> <span class="c47 c6 c34">RB3</span> em <span class="c47 c6 c34">PORTB</span>. Agora, se escrevermos o valor 0 no <i>bit</i> <span class="c47 c6 c34">RB3</span> em <span class="c47 c6 c34">PORTB</span>, o pino estar&aacute; em n&iacute;vel baixo (aproximadamente 0 V).
-			</p>
-			
-			<p class="c11">
-				Vejamos exemplos contidos na Tabela 4.3 para compreendermos o uso de valores em <span class="c47 c6 c34">TRISA</span>/<span class="c47 c6 c34">TRISB</span> e <span class="c47 c6 c34">PORTA</span>/<span class="c47 c6 c34">PORTB</span>.
-			</p>
-			
-			<p class="c12">
-				<span class="register">Tabela 4.3 -</span> Exemplos de uso do <span class="c47 c6 c34">TRIS(A/B)</span>e <span class="c60 c47 c6 c34 c53">PORT(A/B)</span>
-			</p>
-			
-			<table class="c56">
-				<tbody>
-					<tr>
-						<td class="c199">
-							<p class="c1">
-								<span class="options">bit</span> <span class="register">em</span> <span class="c60 c47 c6 c34 c53">TRIS(A/B)</span>
-							</p>
-						</td>
-						<td class="c199">
-							<p class="c1">
-								<span class="options">bit</span> <span class="register">em</span> <span class="c60 c47 c6 c34 c53">PORT(A/B)</span>
-							</p>
-						</td>
-						<td class="c89">
-							<p class="c1">Descri&ccedil;&atilde;o</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= 1</span>
-							</p>
-						</td>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= 0</span>
-							</p>
-						</td>
-						<td class="c89">
-							<p class="c67">o pino <span class="c47 c6 c34">RA2</span>foi configurado como pino de entrada e atribu&iacute;do ou lido o estado como n&iacute;vel baixo (0 V).
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= 0</span>
-							</p>
-						</td>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= 1</span>
-							</p>
-						</td>
-						<td class="c89">
-							<p class="c67">
-								o pino <span class="c47 c6 c34">RA2</span>foi configurado como pino de sa&iacute;da e e colocado o estado como n&iacute;vel alto (5 V se VDD = 5V).
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c178">
-							<p class="c1">
-								<span class="definesASM1">RA5</span>= 1</span>
-							</p>
-						</td>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= 1</span>
-							</p>
-						</td>
-						<td class="c89">
-							<p class="c67">
-								o pino <span class="c47 c6 c34">RA5</span>foi configurado como pino de entrada e atribu&iacute;do ou lido o estado como n&iacute;vel alto.
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA5</span>= 0</span>
-							</p>
-						</td>
-						<td class="c178">
-							<p class="c1">
-								<span class="c47 c6 c34">RA2</span>= x</span>
-							</p>
-						</td>
-						<td class="c89">
-							<p class="c67">
-								o pino <span class="c47 c6 c34">RA5</span>n&atilde;o pode ser definido como pino de sa&iacute;da
-							</p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<p class="c19">
-				<span class="citacaoFigura">Fonte: Pr&oacute;prio autor (2020)</span>
-			</p>
-			
-			<p class="c11">
-				A diferen&ccedil;a entre <span class="c47 c6 c34">PORTA</span> e <span class="c47 c6 c34">PORTB</span> &eacute; que quando alguns pinos (<i>bits</i>) em <span class="c47 c6 c34">PORTB</span> for definido com entrada, h&aacute; a op&ccedil;&atilde;o deles trabalharem em l&oacute;gica inversa, isto &eacute;, iniciar em n&iacute;vel alto, onde esta op&ccedil;&atilde;o &eacute; ativada pelo <i>bit</i> <span class="c59 c47 c6 c34">RBPU</span> do registrador <span class="c47 c6 c34">OPTION</span> (<span class="c47 c6 c34">OPTION_REG</span>).
-			</p>
-			
-			<p class="c11">
-				Na Figura 1.5 vista no primeiro epis&oacute;dio, tem-se exibido as fun&ccedil;&otilde;es em cada pino e na Figura 4.1 pode-se ver mais especificamente elas.
-			</p>
-			
-			<p class="c12">
-				<span class="register">Figura 4.1</span> - Fun&ccedil;&otilde;es dos pinos em <span class="c47 c6 c34">PORTA</span> e <span class="c60 c47 c6 c34 c53">PORTB</span>
-			</p>
-			
-			<table class="c56">
-				<tbody>
-					<tr>
-						<td class="c68">
-							<p class="c12">
-								<img src="figures/Pins_functions_in_PORTA_and_PORTB.png" style="width: 590.00px; height: 206.67px;" title="Pins functions in PORTA and PORTB" alt="Pins functions in PORTA and PORTB"/>
-							</p>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-			<p class="c19">
-				<span class="textoVermelho">Fonte: MICROCHIP 2020 (b) pag. 12</span>
-			</p>
-			
-			<p class="c11">
-				Assim, como veremos nos epis&oacute;dios posteriores, os pinos t&ecirc;m as fun&ccedil;&otilde;es baseadas nas Tabela 4.4 e Tabela 4.5 onde:
-			</p>
-			
-			<ul class="c80 lst-kix_rmly8bgfji6m-0 start">
+			<ul class="li">
 				<li>
-					<span class="register">O</span> = <i>Output</i> (Sa&iacute;da);</li>
+					<samp>O</samp> = <i>Output</i> (Sa&iacute;da);</li>
 				<li>
-					<span class="register">I</span> = <i>Input</i> (Entrada);</li>
+					<samp>I</samp> = <i>Input</i> (Entrada);</li>
 				<li>
-					<span class="register">CMOS</span> = CMOS <i>Output</i> (Sa&iacute;da CMOS) e mais sobre CMOS, acesse <span class="linkDoc1"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/CMOS&amp;sa=D&amp;source=editors&amp;ust=1619797899102000&amp;usg=AOvVaw1NqBk_2FKIgEkGFiBaQlfO">https://pt.wikipedia.org/wiki/CMOS</a></span> ou <span class="linkDoc1"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/CMOS&amp;sa=D&amp;source=editors&amp;ust=1619797899102000&amp;usg=AOvVaw005JHeSaSS926jhxEDSaAt">https://en.wikipedia.org/wiki/CMOS</a></span>;</li>
+					<samp>CMOS</samp> = CMOS <i>Output</i> (Sa&iacute;da CMOS) e mais sobre CMOS, acesse <span class="citacaoLink"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/CMOS&amp;sa=D&amp;source=editors&amp;ust=1619797899102000&amp;usg=AOvVaw1NqBk_2FKIgEkGFiBaQlfO" target="_blank">https://pt.wikipedia.org/wiki/CMOS</a></span> ou <span class="citacaoLink"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/CMOS&amp;sa=D&amp;source=editors&amp;ust=1619797899102000&amp;usg=AOvVaw005JHeSaSS926jhxEDSaAt" target="_blank">https://en.wikipedia.org/wiki/CMOS</a></span>;</li>
 				<li>
-					<span class="register">TTL</span> = TTL <i>Input</i> (Entrada TTL) e mais sobre TTL, acesse <span class="linkDoc1"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/L%25C3%25B3gica_transistor-transistor&amp;sa=D&amp;source=editors&amp;ust=1619797899103000&amp;usg=AOvVaw2dilnBUFP6-68FG3LLzOHv">https://pt.wikipedia.org/wiki/L&oacute;gica_transistor-transistor</a></span> ou <span class="linkDoc1"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/Transistor%25E2%2580%2593transistor_logic&amp;sa=D&amp;source=editors&amp;ust=1619797899103000&amp;usg=AOvVaw1HqqsnfAUtRvG13aMzk3rv">https://en.wikipedia.org/wiki/Transistor-transistor_logic</a></span>;</li>
+					<samp>TTL</samp> = TTL <i>Input</i> (Entrada TTL) e mais sobre TTL, acesse <span class="citacaoLink"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/L%25C3%25B3gica_transistor-transistor&amp;sa=D&amp;source=editors&amp;ust=1619797899103000&amp;usg=AOvVaw2dilnBUFP6-68FG3LLzOHv" target="_blank">https://pt.wikipedia.org/wiki/L&oacute;gica_transistor-transistor</a></span> ou <span class="citacaoLink"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/Transistor%25E2%2580%2593transistor_logic&amp;sa=D&amp;source=editors&amp;ust=1619797899103000&amp;usg=AOvVaw1HqqsnfAUtRvG13aMzk3rv" target="_blank">https://en.wikipedia.org/wiki/Transistor-transistor_logic</a></span>;</li>
 				<li>
-					<span class="register">AN</span> = <i>Analog</i> (Anal&oacute;gica);</li>
+					<samp>AN</samp> = <i>Analog</i> (Anal&oacute;gica);</li>
 				<li>
-					<span class="register">ST</span> = <i>Schmitt Trigger Input</i> (Entrada <i>Schmitt Trigger</i>) e mais sobre <i>Schmitt Trigger</i>, acesse <span class="linkDoc1"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/Disparador_Schmitt&amp;sa=D&amp;source=editors&amp;ust=1619797899104000&amp;usg=AOvVaw3-7-a9mZtgLhPF1D70OZZZ">https://pt.wikipedia.org/wiki/Disparador_Schmitt</a></span> ou <span class="linkDoc1"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/Schmitt_trigger&amp;sa=D&amp;source=editors&amp;ust=1619797899104000&amp;usg=AOvVaw3ISyZxIwQJCHroII1FMADo">https://en.wikipedia.org/wiki/Schmitt_trigger</a></span>;</li>
+					<samp>ST</samp> = <i>Schmitt Trigger Input</i> (Entrada <i>Schmitt Trigger</i>) e mais sobre <i>Schmitt Trigger</i>, acesse <span class="citacaoLink"><a href="https://www.google.com/url?q=https://pt.wikipedia.org/wiki/Disparador_Schmitt&amp;sa=D&amp;source=editors&amp;ust=1619797899104000&amp;usg=AOvVaw3-7-a9mZtgLhPF1D70OZZZ" target="_blank">https://pt.wikipedia.org/wiki/Disparador_Schmitt</a></span> ou <span class="citacaoLink"><a href="https://www.google.com/url?q=https://en.wikipedia.org/wiki/Schmitt_trigger&amp;sa=D&amp;source=editors&amp;ust=1619797899104000&amp;usg=AOvVaw3ISyZxIwQJCHroII1FMADo" target="_blank">https://en.wikipedia.org/wiki/Schmitt_trigger</a></span>;</li>
 				<li>
-					<span class="register">OD</span> = <i>Open</i> <span class="c142 c6 c50 c53 c37 c44">Drain Output (Sa&iacute;da em dreno aberto);</span></li>
+					<samp>OD</samp> = <i>Open Drain Output</i> (Sa&iacute;da em dreno aberto);</li>
 				<li>
-					<span class="options">&mdash; = <i>Not used</i> (N&atilde;o usado(a)).</span></li>
+					<samp>&mdash;</samp> = <i>Not used</i> (N&atilde;o usado(a)).</li>
 			</ul>
 			
-			<p class="c12">
-				<span class="register">Tabela 4.4</span> - Fun&ccedil;&otilde;es dos pinos em <span class="c60 c47 c6 c34 c53">PORTA</span>
-			</p>
-			
-			<table class="c56">
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 4.4 -</span> un&ccedil;&otilde;es dos pinos em <span class="register">PORTA</span>
+						</th>
+					</tr>
+				</thead>
 				<tbody>
 					<tr>
-						<td class="c65">
-							<p class="c1">Nome</p>
-						</td>
-						<td class="c73">
-							<p class="c1">Fun&ccedil;&atilde;o</p>
-						</td>
-						<td class="c73">
-							<p class="c1">Tipo de entrada</p>
-						</td>
-						<td class="c73">
-							<p class="c1">Tipo de sa&iacute;da</p>
-						</td>
-						<td class="c135">
-							<p class="c1">Descri&ccedil;&atilde;o</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="2">
-							<p class="c1">RA0/AN0</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA0</p>
-						</td>
-						<td class="c73">
-							<p class="c1">ST</p>
-						</td>
-						<td class="c73">
-							<p class="c1">CMOS</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">AN0</p>
-						</td>
-						<td class="c73">
-							<p class="c1">AN</p>
-						</td>
-						<td class="c73">
-							<p class="c1">&mdash;</p>
-						</td>
-						<td class="c135">
-							<p class="c67">entrada do m&oacute;dulo comparador anal&oacute;gico</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="2">
-							<p class="c1">RA1/AN1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">ST</p>
-						</td>
-						<td class="c73">
-							<p class="c1">CMOS</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">AN1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">AN</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">entrada do m&oacute;dulo comparador anal&oacute;gico</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA2/AN2/VREF</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA2</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1"><span class="register">CMOS</span></p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">AN2</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">AN</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">entrada do m&oacute;dulo comparador anal&oacute;gico</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">VREF</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">AN</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">sa&iacute;da do m&oacute;dulo de tens&atilde;o de refer&ecirc;ncia</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA3/AN3/CMP1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA3</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">AN3</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">AN</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">entrada do m&oacute;dulo comparador anal&oacute;gico</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">CMP1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">sa&iacute;da do m&oacute;dulo comparador anal&oacute;gico 1</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA4/T0CKI/CMP2</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA4</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">OD</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">T0CK</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">clock de entrada do Timer0</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">CMP2</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">OD</p>
-						</td>
-						<td class="c135">
-							<p class="c67">sa&iacute;da do m&oacute;dulo comparador anal&oacute;gico 2</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA5/<span class="c59 c6">MCLR</span>/VPP</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA5</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">porta de entrada (unidirecional)</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">
-								<span class="c59 c6 c50 c53 c44 c255">MCLR</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">
-								<i>Master CLeaR</i>. Quando configurado como MCLR, este pino est&aacute; ativo em n&iacute;vel baixo no <i>Reset</i> para o PIC16F628A.
-							</p>
-							<p class="c67">
-								A tens&atilde;o el&eacute;trica sobre o pino <span class="c59 c6">MCLR</span>/VPP n&atilde;o deve exceder o valor VDD durante a opera&ccedil;&atilde;o normal do PIC16F628A
-							</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">VPP</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">Entrada da tens&atilde;o el&eacute;trica de programa&ccedil;&atilde;o</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA6/OSC2/CLKOUT</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA6</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">OSC2</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">XTAL</p>
-						</td>
-						<td class="c135">
-							<p class="c67">sa&iacute;da do cristal oscilador. Conex&atilde;o do cristal ou ressonador no &ldquo;modo Oscilador a Cristal&rdquo;</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">CLKOUT</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">No modo RC/INTOSC, o pino OSC2 pode sair com CLKOUT, o qual tem 1/4 da frequ&ecirc;ncia de OSC1</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c65" colspan="1" rowspan="3">
-							<p class="c1">RA7/OSC1/CLKIN</p>
-						</td>
-						<td class="c73">
-							<p class="c1">RA7</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">pino I/O bidirecional</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">OSC1</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">XTAL</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c19">entrada do cristal oscilador</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c73">
-							<p class="c1">CLKIN</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c73">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c135">
-							<p class="c67">entrada da fonte do clock externo. pino de polariza&ccedil;&atilde;o do oscilador RC</p>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Nome</th>
+										<th>Fun&ccedil;&atilde;o</th>
+										<th>Tipo de entrada</th>
+										<th>Tipo de sa&iacute;da</th>
+										<th>Descri&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td rowspan="2"><span class="register">RA0/AN0</span></td>
+										<td><span class="register">RA0</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">AN0</span></td>
+										<td><samp>AN</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do m&oacute;dulo comparador anal&oacute;gico</td>
+									</tr>
+									<tr>
+										<td rowspan="2"><span class="register">RA1/AN1</span></td>
+										<td><span class="register">RA1</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">AN1</span></td>
+										<td><samp>AN</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do m&oacute;dulo comparador anal&oacute;gico</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA2/AN2/VREF</span></td>
+										<td><span class="register">RA2</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">AN2</span></td>
+										<td><samp>AN</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do m&oacute;dulo comparador anal&oacute;gico</td>
+									</tr>
+									<tr>
+										<td><span class="register">VREF</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>AN</samp></td>
+										<td>sa&iacute;da do m&oacute;dulo de tens&atilde;o de refer&ecirc;ncia</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA3/AN3/CMP1</span></td>
+										<td><span class="register">RA3</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">AN3</span></td>
+										<td><samp>AN</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do m&oacute;dulo comparador anal&oacute;gico</td>
+									</tr>
+									<tr>
+										<td><span class="register">CMP1</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>sa&iacute;da do m&oacute;dulo comparador anal&oacute;gico 1</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA4/T0CKI/CMP2</span></td>
+										<td><span class="register">RA4</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>OD</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">T0CK</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>clock de entrada do Timer0</td>
+									</tr>
+									<tr>
+										<td><span class="register">CMP2</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>OD</samp></td>
+										<td>sa&iacute;da do m&oacute;dulo comparador anal&oacute;gico 2</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA5/MCLR/VPP</span></td>
+										<td><span class="register">RA5</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>porta de entrada (unidirecional)</td>
+									</tr>
+									<tr>
+										<td><span class="register">MCLR</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td><i>Master CLeaR</i>. Quando configurado como MCLR, este pino est&aacute; ativo em n&iacute;vel baixo no <i>Reset</i> para o PIC16F628A. A tens&atilde;o el&eacute;trica sobre o pino <span class="register">MCLR/VPP</span> n&atilde;o deve exceder o valor VDD durante a opera&ccedil;&atilde;o normal do PIC16F628A</td>
+									</tr>
+									<tr>
+										<td><span class="register">VPP</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>Entrada da tens&atilde;o el&eacute;trica de programa&ccedil;&atilde;o</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA6/OSC2/CLKOUT</span></td>
+										<td><span class="register">RA6</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">OSC2</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>XTAL</samp></td>
+										<td>sa&iacute;da do cristal oscilador. Conex&atilde;o do cristal ou ressonador no &ldquo;modo Oscilador a Cristal&rdquo;</td>
+									</tr>
+									<tr>
+										<td><span class="register">CLKOUT</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>No modo RC/INTOSC, o pino OSC2 pode sair com CLKOUT, o qual tem 1/4 da frequ&ecirc;ncia de OSC1</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RA7/OSC1/CLKIN</span></td>
+										<td><span class="register">RA7</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional</td>
+									</tr>
+									<tr>
+										<td><span class="register">OSC1</span></td>
+										<td><samp>XTAL</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do cristal oscilador</td>
+									</tr>
+									<tr>
+										<td><span class="register">CLKIN</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada da fonte do clock externo. pino de polariza&ccedil;&atilde;o do oscilador RC</td>
+									</tr>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 13</a></span>
+						</td>
+					</td>
+				</tfoot>
 			</table>
 			
-			<p class="c19">
-				<span class="textoVermelho">Fonte: MICROCHIP 2020 (b) pag. 13</span>
-			</p>
-			
-			<p class="c12">
-				<span class="register">Tabela 4.5</span> - Fun&ccedil;&otilde;es dos pinos em PORTB</span>
-			</p>
-			
-			<table class="c56">
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 4.5 -</span> Fun&ccedil;&otilde;es dos pinos em PORTB</span>
+						</th>
+					</tr>
+				</thead>
 				<tbody>
 					<tr>
-						<td class="c78">
-							<p class="c1">Nome</p>
-						</td>
-						<td class="c169">
-							<p class="c1">Fun&ccedil;&atilde;o</p>
-						</td>
-						<td class="c132">
-							<p class="c1">Tipo de entrada</p>
-						</td>
-						<td class="c117">
-							<p class="c1">Tipo de sa&iacute;da</p>
-						</td>
-						<td class="c85">
-							<p class="c1">Descri&ccedil;&atilde;o</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="2">
-							<p class="c1">RB0/INT</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB0</p>
-						</td>
-						<td class="c132">
-							<p class="c1">TTL</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">INT</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c19">interrup&ccedil;&atilde;o externa</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="3">
-							<p class="c1">RB1/RX/DT</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB1</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">RX</p>
-						</td>
-						<td class="c132">
-							<p class="c1">ST</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino de recebimento de dados do m&oacute;dulo USART</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">DT</p>
-						</td>
-						<td class="c132">
-							<p class="c1">ST</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c19">I/O de dados s&iacute;ncronos</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="3">
-							<p class="c1">RB2/TX/CK</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB2</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">TX</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino de transmiss&atilde;o de dados do m&oacute;dulo USART</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">CK</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c19">I/O de clock s&iacute;ncrono</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="2">
-							<p class="c1">RB3/CCP1</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB3</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">CCP1</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O do m&oacute;dulo CCP (Capture/Compare/PWM)</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="2">
-							<p class="c1">RB4/PGM</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB4</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">PGM</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino de entrada de tens&atilde;o el&eacute;trica baixa de programa&ccedil;&atilde;o. Quando a programa&ccedil;&atilde;o em baixa tens&atilde;o el&eacute;trica est&aacute; ativa, a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados e o <i>pull-up</i> de baixa corrente estar&atilde;o desativados</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c78">
-							<p class="c1">RB5</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB5</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c78" colspan="1" rowspan="4">
-							<p class="c1">RB6/T1OSO/T1CKI/PGC</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB6</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">T1OSO</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">XTAL</p>
-						</td>
-						<td class="c85">
-							<p class="c19">sa&iacute;da do oscilador do Timer1</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">T1CKI</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c19">entrada do <i>clock</i>do Timer1</p>
-						</td>
-					</tr>
-					<tr class="c51">
-						<td class="c169">
-							<p class="c1">PGC</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67"><i>clock</i>de programa&ccedil;&atilde;o do modo ICSP&trade; (<i>In-Circuit Serial Programming</i>&trade;). Para saber mais acesse <span class="linkDoc1"><a href="https://www.google.com/url?q=http://ww1.microchip.com/downloads/en/devicedoc/30277d.pdf&amp;sa=D&amp;source=editors&amp;ust=1619797899157000&amp;usg=AOvVaw2tAGDqOjdTjpmJL5pr8CyV">http://ww1.microchip.com/downloads/en/devicedoc/30277d.pdf</a></span></p>
-						</td>
-
-					</tr>
-					<tr>
-						<td class="c78">
-							<p class="c1">RB7/T1OSI/PGD</p>
-						</td>
-						<td class="c169">
-							<p class="c1">RB7</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">TTL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c78">
-							<p class="c1 c14"></p>
-						</td>
-						<td class="c169">
-							<p class="c1">T1OSI</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">XTAL</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">&mdash;</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c19">entrada do oscilador do Timer1</p>
-						</td>
-					</tr>
-					<tr>
-						<td class="c78">
-							<p class="c1 c14"></p>
-						</td>
-						<td class="c169">
-							<p class="c1">PGD</p>
-						</td>
-						<td class="c132">
-							<p class="c1">
-								<span class="register">ST</span>
-							</p>
-						</td>
-						<td class="c117">
-							<p class="c1">
-								<span class="register">CMOS</span>
-							</p>
-						</td>
-						<td class="c85">
-							<p class="c67">dados I/O de programa&ccedil;&atilde;o do modo ICSP</p>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Nome</th>
+										<th>Fun&ccedil;&atilde;o</th>
+										<th>Tipo de entrada</th>
+										<th>Tipo de sa&iacute;da</th>
+										<th>Descri&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td rowspan="2"><span class="register">RB0/INT</span></td>
+										<td><span class="register">RB0</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">INT</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>interrup&ccedil;&atilde;o externa</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RB1/RX/DT</span></td>
+										<td><span class="register">RB1</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">RX</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>pino de recebimento de dados do m&oacute;dulo USART</td>
+									</tr>
+									<tr>
+										<td><span class="register">DT</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>I/O de dados s&iacute;ncronos</td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RB2/TX/CK</span></td>
+										<td><span class="register">RB2</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">TX</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino de transmiss&atilde;o de dados do m&oacute;dulo USART</td>
+									</tr>
+									<tr>
+										<td><span class="register">CK</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>I/O de clock s&iacute;ncrono</td>
+									</tr>
+									<tr>
+										<td rowspan="2"><span class="register">RB3/CCP1</span></td>
+										<td><span class="register">RB3</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">CCP1</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O do m&oacute;dulo CCP (Capture/Compare/PWM)</td>
+									</tr>
+									<tr>
+										<td rowspan="2"><span class="register">RB4/PGM</span></td>
+										<td><span class="register">RB4</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">PGM</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>pino de entrada de tens&atilde;o el&eacute;trica baixa de programa&ccedil;&atilde;o. Quando a programa&ccedil;&atilde;o em baixa tens&atilde;o el&eacute;trica est&aacute; ativa, a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados e o <i>pull-up</i> de baixa corrente estar&atilde;o desativados</td>
+									</tr>
+									<tr>
+										<td><span class="register">RB5</span></td>
+										<td><span class="register">RB5</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td rowspan="4"><span class="register">RB6/T1OSO/T1CKI/PGC</span></td>
+										<td><span class="register">RB6</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">T1OSO</span></td>
+										<td><samp>&mdash;</samp></td>
+										<td><samp>XTAL</samp></td>
+										<td>sa&iacute;da do oscilador do Timer1</td>
+									</tr>
+									<tr>
+										<td><span class="register">T1CKI</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do <i>clock</i>do Timer1</td>
+									</tr>
+									<tr>
+										<td><span class="register">PGC</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td><i>clock</i> de programa&ccedil;&atilde;o do modo ICSP&trade; (<i>In-Circuit Serial Programming</i>&trade;). Para saber mais acesse <span class="citacaoLink"><a href="https://www.google.com/url?q=http://ww1.microchip.com/downloads/en/devicedoc/30277d.pdf&amp;sa=D&amp;source=editors&amp;ust=1619797899157000&amp;usg=AOvVaw2tAGDqOjdTjpmJL5pr8CyV" target="_blank">http://ww1.microchip.com/downloads/en/devicedoc/30277d.pdf</a></span></td>
+									</tr>
+									<tr>
+										<td rowspan="3"><span class="register">RB7/T1OSI/PGD</span></td>
+										<td><span class="register">RB7</span></td>
+										<td><samp>TTL</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>pino I/O bidirecional. Pode ser programado via software para um <i>pull-up</i> interno de baixa corrente el&eacute;trica, tipicamente em torno de 200 &mu;A</td>
+									</tr>
+									<tr>
+										<td><span class="register">T1OSI</span></td>
+										<td><samp>XTAL</samp></td>
+										<td><samp>&mdash;</samp></td>
+										<td>entrada do oscilador do Timer1</td>
+									</tr>
+									<tr>
+										<td><span class="register">PGD</span></td>
+										<td><samp>ST</samp></td>
+										<td><samp>CMOS</samp></td>
+										<td>dados I/O de programa&ccedil;&atilde;o do modo ICSP</td>
+									</tr>
+								</tbody>
+							</table>
 						</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 13</a></span>
+						</td>
+					</td>
+				</tfoot>
 			</table>
 			
-			<p class="c19">
-				<span class="textoVermelho">Fonte: MICROCHIP 2020 (b) pag. 13</span>
-			</p>
-			
-			<hr style="page-break-before:always;display:none;">
-			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_3.html">Voltar ao Epis&oacute;dio 3</a></p>
+			<p class="forwardPage"><a href="./Episode_5.html">Ir para Epis&oacute;dio 5</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
 		</div>
 	</body>
 </html>

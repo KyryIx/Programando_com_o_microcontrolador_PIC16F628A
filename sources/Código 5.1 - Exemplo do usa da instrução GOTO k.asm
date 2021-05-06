@@ -6,4 +6,4 @@ TESTEBOTAOPRESSIONADO:              ; <-----------+
                                     ;    |  |     |
      GOTO    TESTEBOTAOPRESSIONADO  ; <--+  |  >--+
                                     ;       |
-     NOP                            ; <-----+   
+     NOP                            ; <-----+

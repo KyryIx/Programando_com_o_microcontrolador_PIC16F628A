@@ -97,6 +97,12 @@ span.citacao{
 	font-family: Consolas;
 	font-weight: bold;
 }
+.citacaoTexto{
+	background-color: rgb(203,208,254);
+	font-weight: bold;
+	padding: 10px;
+	line-height: 2.0;
+}
 
 /**********************************************************
  ***************************** LIST ***********************
@@ -130,6 +136,12 @@ span.comment{
 span.instruction{
 	color: rgb(41,95,214);
 	font-weight: bold;
+}
+span.constant{
+	font-family: Consolas;
+	color: black;
+	font-weight: bold;
+	font-style: italic;
 }
 span.coding{
 	font-family: Consolas;
@@ -268,6 +280,45 @@ td.citacaoData span:first-child{
 }
 
 /**********************************************************
+ *********************** TABLE REGISTER *******************
+ **********************************************************/
+table.register{
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid black;
+	padding: 10px 10px 10px 10px;
+}
+table.register thead th{
+	padding: 5px 10px 10px 10px;
+	border-color: green;
+	border-width: 1px 0px 1px 0px;
+	border-style: solid;
+	background-color: rgb(215,215,215);
+}
+table.register tbody td{
+	text-align: center;
+	padding-top: 10px;
+	font-family: Tahoma;
+	border: 1px solid rgb(180,180,180);
+	padding: 5px 10px 5px 10px;
+}
+
+table.register tbody td span.register{
+	font-size: 14pt;
+}
+
+td.citacaoRegister{
+	padding-top: 10px;
+	text-align: left;
+}
+td.citacaoRegister span:first-child{
+	font-weight: bold;
+	color: red;
+}
+
+/**********************************************************
  *************************** MENUS ************************
  **********************************************************/
 span.options{
@@ -276,6 +327,14 @@ span.options{
 	color: rgb(255,255,255);
 	padding: 2px 5px 2px 5px;
 	border: 1px solid #000;
+}
+span.success{
+	color: green;
+	font-weight: bold;
+}
+span.failure{
+	color: red;
+	font-weight: bold;
 }
 
 

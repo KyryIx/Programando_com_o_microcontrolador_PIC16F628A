@@ -7,7 +7,7 @@
 	<body>
 		<div class="page" id="top">
 			<p class="title">
-				<span class="titlePrincipal">Epis&oacute;dio 3: Conhecendo os registradores STATUS, OPTION (OPTION_REG), INTCON, W e o registradores de uso geral para o usu&aacute;rio do PIC16F628A</span></p>
+				<span class="titlePrincipal">Epis&oacute;dio 3: Conhecendo os registradores <span class="register">STATUS</span>, <span class="register">OPTION</span> (<span class="register">OPTION_REG</span>), <span class="register">INTCON</span>, <span class="register">W</span> e o registradores de uso geral para o usu&aacute;rio do PIC16F628A</span></p>
 			
 			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
 			<p class="backPage"><a href="./Episode_2.html">Voltar ao Epis&oacute;dio 2</a></p>
@@ -20,62 +20,52 @@
 			
 			<p class="principal">O registrador <span class="register">STATUS</span> &eacute; composto pelos bits <span class="register">IRP</span>, <span class="register">RP1</span>, <span class="register">RP0</span>, <span class="register">TO</span>, <span class="register">PD</span>, <span class="register">Z</span>, <span class="register">DC</span> e <span class="register">C</span> conforme a Tabela 3.1.</p>
 			
-			<table class="data">
+			<table class="register">
 				<thead>
 					<tr>
-						<th>
+						<th colspan="9">
 							<span class="dataTitle">Tabela 3.1 -</span> Bits do registrador <span class="register">STATUS</span>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<table class="dataValues">
-								</thead>
-									<tr>
-										<th>posi&ccedil;&atilde;o</th>
-										<th>bit 7</th>
-										<th>bit 6</th>
-										<th>bit 5</th>
-										<th>bit 4</th>
-										<th>bit 3</th>
-										<th>bit 2</th>
-										<th>bit 1</th>
-										<th>bit 0</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><span>bit</span></td>
-										<td><span class="register">IRP</span></td>
-										<td><span class="register">RP1</span></td>
-										<td><span class="register">RP0</span></td>
-										<td><span class="register notRegister">TO</span></td>
-										<td><span class="register notRegister">PD</span></td>
-										<td><span class="register">Z</span></td>
-										<td><span class="register">DC</span></td>
-										<td><span class="register">C</span></td>
-									</tr>
-									<tr>
-										<td>tipo-valor</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R-1</td>
-										<td>R-1</td>
-										<td>R/W-x</td>
-										<td>R/W-x</td>
-										<td>R/W-x</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
+						<td>posi&ccedil;&atilde;o</td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+					</tr>
+					<tr>
+						<td><span>bit</span></td>
+						<td><span class="register">IRP</span></td>
+						<td><span class="register">RP1</span></td>
+						<td><span class="register">RP0</span></td>
+						<td><span class="register notRegister">TO</span></td>
+						<td><span class="register notRegister">PD</span></td>
+						<td><span class="register">Z</span></td>
+						<td><span class="register">DC</span></td>
+						<td><span class="register">C</span></td>
+					</tr>
+					<tr>
+						<td>tipo-valor</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R-1</td>
+						<td>R-1</td>
+						<td>R/W-x</td>
+						<td>R/W-x</td>
+						<td>R/W-x</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td class="citacaoData">
+						<td class="citacaoRegister" colspan="9">
 							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 24</a></span>
 						</td>
 					</td>
@@ -177,62 +167,52 @@
 			
 			<p class="principal">Outro registrador especial &eacute; o registrador <span class="register">OPTION_REG</span> (contido nos bancos 1 e 3 e endere&ccedil;os <span class="register">0x81</span> e <span class="register">0x181</span>) e seus bits s&atilde;o: <span class="register">RBPU</span>, <span class="register">INTEDG</span>, <span class="register">T0CS</span>, <span class="register">T0SE</span>, <span class="register">PSA</span>, <span class="register">PS2</span>, <span class="register">PS1</span> e <span class="register">PS0</span> conforme a Tabela 3.3.</p>
 			
-			<table class="data">
+			<table class="register">
 				<thead>
 					<tr>
-						<th>
+						<th colspan="9">
 							<span class="dataTitle">Tabela 3.3 -</span> Bits do registrador <span class="register">OPTION_REG</span>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<table class="dataValues">
-								</thead>
-									<tr>
-										<th>posi&ccedil;&atilde;o</th>
-										<th>bit 7</th>
-										<th>bit 6</th>
-										<th>bit 5</th>
-										<th>bit 4</th>
-										<th>bit 3</th>
-										<th>bit 2</th>
-										<th>bit 1</th>
-										<th>bit 0</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><span>bit</span></td>
-										<td><span class="register notRegister">RBPU</span></td>
-										<td><span class="register">INTEDG</span></td>
-										<td><span class="register">T0CS</span></td>
-										<td><span class="register">T0SE</span></td>
-										<td><span class="register">PSA</span></td>
-										<td><span class="register">PS2</span></td>
-										<td><span class="register">PS1</span></td>
-										<td><span class="register">PS0</span></td>
-									</tr>
-									<tr>
-										<td>tipo-valor</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-										<td>R/W-1</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
+						<td>posi&ccedil;&atilde;o</td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+					</tr>
+					<tr>
+						<td><span>bit</span></td>
+						<td><span class="register notRegister">RBPU</span></td>
+						<td><span class="register">INTEDG</span></td>
+						<td><span class="register">T0CS</span></td>
+						<td><span class="register">T0SE</span></td>
+						<td><span class="register">PSA</span></td>
+						<td><span class="register">PS2</span></td>
+						<td><span class="register">PS1</span></td>
+						<td><span class="register">PS0</span></td>
+					</tr>
+					<tr>
+						<td>tipo-valor</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
+						<td>R/W-1</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td class="citacaoData">
+						<td class="citacaoRegister" colspan="9">
 							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 25</a></span>
 						</td>
 					</td>
@@ -371,62 +351,52 @@
 			
 			<p class="principal">Outro registrador especial importante &eacute; o <span class="register">INTCON</span> (contido nos bancos 0, 1, 2 e 3 nos endere&ccedil;os <span class="definesASM1">0x0B</span>, <span class="register">0x8B</span>, <span class="register">0x10B</span>, <span class="register">0x18B</span>) e seus <i>bits</i> s&atilde;o <span class="register">GIE</span>, <span class="register">PEIE</span>, <span class="register">T0IE</span>, <span class="register">INTE</span>, <span class="register">RBIE</span>, <span class="register">T0IF</span>, <span class="register">INTF</span> e <span class="register">RBIF</span> conforme a Tabela 3.5.</p>
 			
-			<table class="data">
+			<table class="register">
 				<thead>
 					<tr>
-						<th>
+						<th colspan="9">
 							<span class="dataTitle">Tabela 3.5 -</span> <i>Bits</i> do registrador <span class="register">INTCON</span>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>
-							<table class="dataValues">
-								</thead>
-									<tr>
-										<th>posi&ccedil;&atilde;o</th>
-										<th>bit 7</th>
-										<th>bit 6</th>
-										<th>bit 5</th>
-										<th>bit 4</th>
-										<th>bit 3</th>
-										<th>bit 2</th>
-										<th>bit 1</th>
-										<th>bit 0</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td><span>bit</span></td>
-										<td><span class="register">GIE</span></td>
-										<td><span class="register">PEIE</span></td>
-										<td><span class="register">T0IE</span></td>
-										<td><span class="register">INTE</span></td>
-										<td><span class="register">RBIE</span></td>
-										<td><span class="register">T0IF</span></td>
-										<td><span class="register">INTF</span></td>
-										<td><span class="register">RBIF</span></td>
-									</tr>
-									<tr>
-										<td>tipo-valor</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-0</td>
-										<td>R/W-x</td>
-									</tr>
-								</tbody>
-							</table>
-						</td>
+						<td>posi&ccedil;&atilde;o</td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+					</tr>
+					<tr>
+						<td><span>bit</span></td>
+						<td><span class="register">GIE</span></td>
+						<td><span class="register">PEIE</span></td>
+						<td><span class="register">T0IE</span></td>
+						<td><span class="register">INTE</span></td>
+						<td><span class="register">RBIE</span></td>
+						<td><span class="register">T0IF</span></td>
+						<td><span class="register">INTF</span></td>
+						<td><span class="register">RBIF</span></td>
+					</tr>
+					<tr>
+						<td>tipo-valor</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-0</td>
+						<td>R/W-x</td>
 					</tr>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td class="citacaoData">
+						<td class="citacaoRegister" colspan="9">
 							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 26</a></span>
 						</td>
 					</td>
@@ -455,7 +425,7 @@
 				<tfoot>
 					<tr>
 						<td class="citacaoFigura">
-							<span>Fonte:</span> <span class="citacao">MICROCHIP 2020 (b) pag. 109</span>
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 109</a></span>
 						</td>
 					</td>
 				</tfoot>

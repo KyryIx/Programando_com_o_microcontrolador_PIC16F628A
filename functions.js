@@ -97,6 +97,4 @@ function applyOrg( text ){
 }
 */
 
-
-
 window.onload = applyStyleAssemblyPIC;
