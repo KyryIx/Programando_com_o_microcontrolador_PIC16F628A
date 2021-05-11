@@ -1,1 +1,481 @@
-<h1 class="c75 c35" id="h.et6e126gizrj"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.6dsmjkq8gxmk"><span class="c28 c87">Epis&oacute;dio 6: Exemplo 1 - Controle de estados dos pinos do PIC16F628A e uso do simulador SimulIDE</span></h1><p class="c11">Neste epis&oacute;dio ser&aacute; abordado o uso de algumas instru&ccedil;&otilde;es vistas nos epis&oacute;dios anteriores, como algumas que veremos neste e nos pr&oacute;ximos epis&oacute;dios, mas que ser&aacute; necess&aacute;rio para apresenta&ccedil;&atilde;o de uma simula&ccedil;&atilde;o usando display de 7 segmentos, muito utilizado ainda hoje em dias, como tamb&eacute;m o uso de bot&otilde;es para o controle deste display de segmento</p><p class="c11">Inicialmente projetamos o circuito conforme Figura 6.1 fazendo uso do SimulIDE (dispon&iacute;vel no endere&ccedil;o </span><span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.simulide.com/p&amp;sa=D&amp;source=editors&amp;ust=1619797899263000&amp;usg=AOvVaw05zN5FxF5H2pqx-Kdv48aK">https://www.simulide.com/</a></span>), no qual necessitamos fazer a adi&ccedil;&atilde;o dos valores em decimal e exibi-los em hexadecimais, isto &eacute;, se voc&ecirc; pressionar o bot&atilde;o &ldquo;add 1&rdquo;, o programa deve adicionar 1 unidade ao valor e atualizar o display de 7 segmentos.</p><p class="c12"><span class="register">Figura 6.1 -</span>Circuito exemplo no SimulIDE</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.53"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 590.00px; height: 384.00px;"><img src="images/image45.png" style="width: 590.00px; height: 384.00px;" title=""></span></p></td></tr></tbody></table><p class="c19"><span class="textoVermelho">Fonte: Pr&oacute;prio autor (2020)</span></p><p class="c11">O fluxograma do processo se encontra na Figura 6.2 e a implementa&ccedil;&atilde;o no C&oacute;digo 6.1.</p><p class="c12"><span class="register">Figura 6.2 -</span>Fluxograma do circuito exemplo</span><sup><a href="#cmnt2" id="cmnt_ref2">[b]</a></sup></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.54"></a><table class="c7"><tbody><tr><td class="c230"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 506.11px; height: 361.06px;"><img src="images/image10.png" style="width: 506.11px; height: 361.06px;" title=""></span></p></td></tr></tbody></table><p class="c24">   </span><span class="citacaoFigura">Fonte: Pr&oacute;prio autor (2020)</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12">C&oacute;digo 6.1 - C&oacute;digo exemplo de controle de estados</span></p><a id="t.6a091d2d012d88917f28e0b146fc5fee85f583d7"></a><a id="t.55"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19"><span class="c8"> </span><span class="c13 c8">; DESENVOLVIDO POR EVERTON P. CRUZ</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#INCLUDE</span><span class="c8"></span><span class="c42 c8 c181">&lt;P16F628A.INC&gt;</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">LIST</span><span class="c8"></span><span class="c8 c18">P</span><span class="c8">=</span><span class="c42 c8 c18">16F628A</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">__CONFIG</span><span class="c8"></span><span class="c8 c18">_BOREN_ON</span><span class="c8">&amp; </span><span class="c8 c18">_CP_OFF</span><span class="c8">&amp; </span><span class="c8 c18">_PWRTE_ON</span><span class="c8">&amp; </span><span class="c8 c18">_WDT_OFF</span><span class="c8">&amp; </span><span class="c8 c18">_LVP_OFF</span><span class="c8">&amp; </span><span class="c8 c18">_MCLRE_OFF</span><span class="c8">&amp; </span><span class="c42 c8 c18">_INTRC_OSC_NOCLKOUT</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; https://pt.wikipedia.org/wiki/SEGMENTO_De_sete_segmentos</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; https://en.wikipedia.org/wiki/Seven-segment_display</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; DEFINICAO DE CONSTANTES E VARIAVEIS</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">BOTAO_1</span><span class="c8"> PORTA, RA2 </span><span class="c13 c8">; botao com valor 1</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">BOTAO_2</span><span class="c8"> PORTA, RA3 </span><span class="c13 c8">; botao com valor 2</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">BOTAO_4</span><span class="c8"> PORTA, RA4 </span><span class="c13 c8">; botao com valor 4</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">BOTAO_8</span><span class="c8"> PORTA, RA5 </span><span class="c13 c8">; botao com valor 8</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_A</span><span class="c8">PORTB, RB7 </span><span class="c13 c8">; segmento A</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_B</span><span class="c8">PORTB, RB6 </span><span class="c13 c8">; segmento B</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_C</span><span class="c8">PORTB, RB5 </span><span class="c13 c8">; segmento C</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_D</span><span class="c8">PORTB, RB4 </span><span class="c13 c8">; segmento D</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_E</span><span class="c8">PORTB, RB3 </span><span class="c13 c8">; segmento E</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_F</span><span class="c8">PORTB, RB2 </span><span class="c13 c8">; segmento F</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_G</span><span class="c8">PORTB, RB1 </span><span class="c13 c8">; segmento G</span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">SEGMENTO_P</span><span class="c8">PORTB, RB0 </span><span class="c13 c8">; ponto</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">#DEFINE</span><span class="c8"></span><span class="c8 c18">CONTADOR</span><span class="c8"> 0x20    </span><span class="c13 c8">; registrador para armazenar adi&ccedil;&otilde;es</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">ORG</span><span class="c8">  0x00    </span><span class="c13 c8">; TRATAMENTO DO RESET</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8">  </span><span class="c42 c8 c18">SETUP_PROCESSO</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c8"> </span><span class="c8 c20">ORG</span><span class="c8">  0x04    </span><span class="c13 c8">; TRATAMENTO DAS INTERRUPCOES</span></p><p class="c19"><span class="c8"> </span><span class="c42 c38 c34">RETFIE</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c2">SETUP_PROCESSO:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; SELECIONA O BANCO 1 DE MEMORIA</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> STATUS, RP1</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> STATUS, RP0</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8">PCON, OSCF </span><span class="c13 c8">; CONF. FREQ&Uuml;&Ecirc;NCIA DO OSCILADOR INTERNO EM 4 MHz</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; CONFIGURACOES DO REGISTRADOR OPTION</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVLW</span><span class="c2">B&#39;10000000&#39;</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - NOT_RBPU  -&gt; DESATIVA RESISTORES PULL-UP</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - INTDEG   -&gt; INT. ATIV. BORDA DE DESCIDA RB0</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - TOCS    -&gt; O CLOCK DO TIMER 0 EH INTERNO</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - TOSE    -&gt; BORDA DE SUBIDA NO TIMER 0, RA4</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - PSA     -&gt; PRESCALER ASSOCIADO AO TIMER 0</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - PS2,PS1,PS0 -&gt; TIMER 0 COM RAZAO 1:2</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVWF</span><span class="c2">OPTION_REG</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; MODIFICA O COMPORTAMENTO DA PORTA</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVLW</span><span class="c2">B&#39;11111111&#39;</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA7 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA6 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA5 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA4 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA3 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA2 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA1 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RA0 COMO ENTRADA</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVWF</span><span class="c8">TRISA </span><span class="c13 c8">; CONFIGURA&Ccedil;&Otilde;ES DO TRISA</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; MODIFICA O COMPORTAMENTO DA PORTB</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">;MOVLW  B&#39;00000000&#39;</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB7 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB6 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB5 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB4 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB3 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB2 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB1 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - PINO RB0 COMO SAIDA</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">;MOVWF  TRISB ; CONFIGURA&Ccedil;&Otilde;ES DO TRISB</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">CLRF</span><span class="c2"> TRISB</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; SELECIONA O BANCO 0 DE MEMORIA</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> STATUS, RP1</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> STATUS, RP0  </span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; DEFINE O MODO DE OPERACAO DO COMP. ANALOG. DESLIGADOS</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVLW</span><span class="c2">B&#39;00000111&#39;</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVWF</span><span class="c2">CMCON  </span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; CONFIGURACOES DE INTERRUPCOES</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">;MOVLW  B&#39;00000000&#39; </span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - GIE -&gt; DESATIVA INT./CHAVE GERAL</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - EEIE -&gt; DESATIVA INT. DA EEPROM</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - T0IE -&gt; DESATIVA INT. NO TMR0</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - INTE -&gt; DESATIVA INT. NO RB0/INT</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - RBIE -&gt; DESATIVA INT. MUDANCA RB&lt;7:4&gt;</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - T0IF -&gt; FLAG DE TRANSBORDO DO TMR0</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - INTF -&gt; FLAG DE RESPOSTA INT. RB0/INT</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - RBIF -&gt; FLAG DE RESPOSTA INT EM RB&lt;7:4&gt;</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">;MOVWF INTCON</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">CLRF</span><span class="c2"> INTCON</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c2">PRINCIPAL:</span></p><p class="c19"><span class="c8"> </span><span class="c42 c38 c34">CLRW</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">SOMA_1:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">BOTAO_1</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">SOMA_2</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">ADDLW</span><span class="c2">.1</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c2">SOMA_2:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">BOTAO_2</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">SOMA_4</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">ADDLW</span><span class="c2">.2</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c2">SOMA_4:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">BOTAO_4</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">SOMA_8</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">ADDLW</span><span class="c2">.4</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">SOMA_8:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">BOTAO_8</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">EXIBE_VALOR</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">ADDLW</span><span class="c2">.8</span></p><p class="c19"><span class="c2">  </span></p><p class="c19"><span class="c2">EXIBE_VALOR:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVWF</span><span class="c2">CONTADOR</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_0:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x00</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_1</span></p><p class="c19"><span class="c2">MOSTRA_0:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 0 - segmentos a, b, c, d, e, f</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_1:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x01</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_2</span></p><p class="c19"><span class="c2">MOSTRA_1:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 1 - b, c</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_2:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x02</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_3</span></p><p class="c19"><span class="c2">MOSTRA_2:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 2 - a, b, d, e, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_3:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x03</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_4</span></p><p class="c19"><span class="c2">MOSTRA_3:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 3 - a, b, c, d, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_4:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x04</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_5</span></p><p class="c19"><span class="c2">MOSTRA_4:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 4 - b, c, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c8"> </span><span class="c42 c8 c18">SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_5:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x05</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_6</span></p><p class="c19"><span class="c2">MOSTRA_5:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 5 - a, c, d, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_6:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x06</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_7</span></p><p class="c19"><span class="c2">MOSTRA_6:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 6 - a, c, d, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_7:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x07</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_8</span></p><p class="c19"><span class="c2">MOSTRA_7:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 7 - a, b, c</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_8:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x08</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_9</span></p><p class="c19"><span class="c2">MOSTRA_8:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 8 - a, b, c, d, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_9:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x09</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_A</span></p><p class="c19"><span class="c2">MOSTRA_9:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; 9 - a, b, c, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_A:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_B</span></p><p class="c19"><span class="c2">MOSTRA_A:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; A (mai&uacute;sculo) - a, b, c, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_B:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_C</span></p><p class="c19"><span class="c2">MOSTRA_B:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">;B (min&uacute;sculo) - c, d, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_C:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_D</span></p><p class="c19"><span class="c2">MOSTRA_C:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; C (mai&uacute;sculo) - a, d, e, f</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_D:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_E</span></p><p class="c19"><span class="c2">MOSTRA_D:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; D (min&uacute;sculo) - b, c, d, e, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_E:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">TESTA_F</span></p><p class="c19"><span class="c2">MOSTRA_E:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; E (mai&uacute;sculo) - a, d, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c2">TESTA_F:</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">MOVF</span><span class="c2"> CONTADOR, 0</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">XORLW</span><span class="c2">0x0F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BTFSS</span><span class="c2">STATUS, Z</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"> </span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19"><span class="c2">MOSTRA_F:</span></p><p class="c19"><span class="c8"> </span><span class="c13 c8">; F (mai&uacute;sculo) - a, e, f, g</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_A</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_B</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_C</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BCF</span><span class="c2"> SEGMENTO_D</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_E</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_F</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">BSF</span><span class="c2"> SEGMENTO_G</span></p><p class="c19"><span class="c8"> </span><span class="c38 c34">GOTO</span><span class="c8"></span><span class="c42 c8 c18">PRINCIPAL</span></p><p class="c19"><span class="c2"> </span></p><p class="c19"><span class="c2"> END</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 6: Exemplo 1 - Controle de estados dos pinos do PIC16F628A e uso do simulador SimulIDE</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_5.html">Voltar ao Epis&oacute;dio 5</a></p>
+			<p class="forwardPage"><a href="./Episode_7.html">Ir para Epis&oacute;dio 7</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste epis&oacute;dio ser&aacute; abordado o uso de algumas instru&ccedil;&otilde;es vistas nos epis&oacute;dios anteriores, como algumas que veremos neste e nos pr&oacute;ximos epis&oacute;dios, mas que ser&aacute; necess&aacute;rio para apresenta&ccedil;&atilde;o de uma simula&ccedil;&atilde;o usando display de 7 segmentos, muito utilizado ainda hoje em dias, como tamb&eacute;m o uso de bot&otilde;es para o controle deste display de segmento.</p>
+			
+			<p class="principal">Inicialmente projetamos o circuito conforme Figura 6.1 fazendo uso do SimulIDE (dispon&iacute;vel no endere&ccedil;o <span class="citacaoLink"><a href="https://www.google.com/url?q=https://www.simulide.com/p&amp;sa=D&amp;source=editors&amp;ust=1619797899263000&amp;usg=AOvVaw05zN5FxF5H2pqx-Kdv48aK">https://www.simulide.com/</a></span>), no qual necessitamos fazer a adi&ccedil;&atilde;o dos valores em decimal e exibi-los em hexadecimais, isto &eacute;, se voc&ecirc; pressionar o bot&atilde;o &ldquo;add 1&rdquo;, o programa deve adicionar 1 unidade ao valor e atualizar o display de 7 segmentos.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 6.1 -</span> Circuito exemplo no SimulIDE
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/example_circuit_simulIDE.png" style="width: 590.00px; height: 384.00px;" title="example circuit in simulIDE" alt="example circuit in simulIDE"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O fluxograma do processo se encontra na Figura 6.2 e a implementa&ccedil;&atilde;o no C&oacute;digo 6.1.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 6.2 -</span> Fluxograma do circuito exemplo<a href="#cmnt2" id="cmnt_ref2">[b]</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/example_circuit_simulIDE_flowchart.png" style="width: 663px; height: 336px;" title="example flowchart to circuit" alt="example flowchart to circuit">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 6.1 -</span> C&oacute;digo exemplo de controle de estados
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>  ; DESENVOLVIDO POR EVERTON P. CRUZ</code>
+<code>  ; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS</code>
+<code>  ; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A</code>
+<code>  #INCLUDE <P16F628A.INC></code>
+<code>  LIST P=16F628A</code>
+<code>  __CONFIG _BOREN_ON & _CP_OFF & _PWRTE_ON & _WDT_OFF & _LVP_OFF & _MCLRE_OFF & _INTRC_OSC_NOCLKOUT</code>
+<code>   </code>
+<code>  ; https://pt.wikipedia.org/wiki/SEGMENTO_De_sete_segmentos</code>
+<code>  ; https://en.wikipedia.org/wiki/Seven-segment_display</code>
+<code>  </code>
+<code>  ; DEFINICAO DE CONSTANTES E VARIAVEIS</code>
+<code>  #DEFINE BOTAO_1   PORTA, RA2 ; botao com valor 1</code>
+<code>  #DEFINE BOTAO_2   PORTA, RA3 ; botao com valor 2</code>
+<code>  #DEFINE BOTAO_4   PORTA, RA4 ; botao com valor 4</code>
+<code>  #DEFINE BOTAO_8   PORTA, RA5 ; botao com valor 8</code>
+<code>  </code>
+<code>  #DEFINE SEGMENTO_A PORTB, RB7 ; segmento A</code>
+<code>  #DEFINE SEGMENTO_B PORTB, RB6 ; segmento B</code>
+<code>  #DEFINE SEGMENTO_C PORTB, RB5 ; segmento C</code>
+<code>  #DEFINE SEGMENTO_D PORTB, RB4 ; segmento D</code>
+<code>  #DEFINE SEGMENTO_E PORTB, RB3 ; segmento E</code>
+<code>  #DEFINE SEGMENTO_F PORTB, RB2 ; segmento F</code>
+<code>  #DEFINE SEGMENTO_G PORTB, RB1 ; segmento G</code>
+<code>  #DEFINE SEGMENTO_P PORTB, RB0 ; ponto</code>
+<code>  </code>
+<code>  #DEFINE CONTADOR  0x20       ; registrador para armazenar adições</code>
+<code>  </code>
+<code>  ORG     0x00       ; TRATAMENTO DO RESET</code>
+<code>  GOTO    SETUP_PROCESSO</code>
+<code></code>
+<code>  ORG     0x04       ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>  RETFIE</code>
+<code>    </code>
+<code>SETUP_PROCESSO:</code>
+<code>  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code>  BCF   STATUS, RP1</code>
+<code>  BSF   STATUS, RP0</code>
+<code></code>
+<code>  BSF	PCON, OSCF ; CONF. FREQÜÊNCIA DO OSCILADOR INTERNO EM 4 MHz</code>
+<code>  </code>
+<code>  ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>  MOVLW	B'10000000'</code>
+<code>  ; 1 - NOT_RBPU    -> DESATIVA RESISTORES PULL-UP</code>
+<code>  ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>  ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>  ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>  ; 0 - PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:2</code>
+<code>  MOVWF OPTION_REG</code>
+<code>    </code>
+<code>  ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code>  MOVLW B'11111111'</code>
+<code>  ; 1 - PINO RA7 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA6 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA5 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA4 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA3 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA2 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA1 COMO ENTRADA</code>
+<code>  ; 1 - PINO RA0 COMO ENTRADA</code>
+<code>  MOVWF TRISA ; CONFIGURAÇÕES DO TRISA</code>
+<code>    </code>
+<code>  ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code>  ;MOVLW   B'00000000'</code>
+<code>  ; 1 - PINO RB7 COMO SAIDA</code>
+<code>  ; 1 - PINO RB6 COMO SAIDA</code>
+<code>  ; 1 - PINO RB5 COMO SAIDA</code>
+<code>  ; 1 - PINO RB4 COMO SAIDA</code>
+<code>  ; 1 - PINO RB3 COMO SAIDA</code>
+<code>  ; 1 - PINO RB2 COMO SAIDA</code>
+<code>  ; 1 - PINO RB1 COMO SAIDA</code>
+<code>  ; 1 - PINO RB0 COMO SAIDA</code>
+<code>  ;MOVWF   TRISB ; CONFIGURAÇÕES DO TRISB</code>
+<code>  CLRF  TRISB</code>
+<code>    </code>
+<code>  ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code>  BCF   STATUS, RP1</code>
+<code>  BCF   STATUS, RP0	    </code>
+<code>    </code>
+<code>  ; DEFINE O MODO DE OPERACAO DO COMP. ANALOG. DESLIGADOS</code>
+<code>  MOVLW B'00000111'</code>
+<code>  MOVWF CMCON	    </code>
+<code>    </code>
+<code>  ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>  ;MOVLW   B'00000000'  </code>
+<code>  ; 0 - GIE  -> DESATIVA INT./CHAVE GERAL</code>
+<code>  ; 0 - EEIE -> DESATIVA INT. DA EEPROM</code>
+<code>  ; 0 - T0IE -> DESATIVA INT. NO TMR0</code>
+<code>  ; 0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>  ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>  ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>  ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>  ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code>  ;MOVWF INTCON</code>
+<code>  CLRF  INTCON</code>
+<code>  </code>
+<code>PRINCIPAL:</code>
+<code>  CLRW</code>
+<code></code>
+<code>SOMA_1:</code>
+<code>  BTFSS BOTAO_1</code>
+<code>  GOTO  SOMA_2</code>
+<code>  ADDLW .1</code>
+<code>  </code>
+<code>SOMA_2:</code>
+<code>  BTFSS BOTAO_2</code>
+<code>  GOTO  SOMA_4</code>
+<code>  ADDLW .2</code>
+<code>    </code>
+<code>SOMA_4:</code>
+<code>  BTFSS BOTAO_4</code>
+<code>  GOTO  SOMA_8</code>
+<code>  ADDLW .4</code>
+<code></code>
+<code>SOMA_8:</code>
+<code>  BTFSS BOTAO_8</code>
+<code>  GOTO  EXIBE_VALOR</code>
+<code>  ADDLW .8</code>
+<code>    </code>
+<code>EXIBE_VALOR:</code>
+<code>  MOVWF CONTADOR</code>
+<code></code>
+<code>TESTA_0:</code>
+<code>  XORLW 0x00</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_1</code>
+<code>MOSTRA_0:</code>
+<code>  ; 0 - segmentos a, b, c, d, e, f</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BCF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_1:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x01</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_2</code>
+<code>MOSTRA_1:</code>
+<code>  ; 1 - b, c</code>
+<code>  BCF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BCF  SEGMENTO_F</code>
+<code>  BCF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_2:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x02</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_3</code>
+<code>MOSTRA_2:</code>
+<code>  ; 2 - a, b, d, e, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BCF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BCF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_3:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x03</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_4</code>
+<code>MOSTRA_3:</code>
+<code>  ; 3  - a, b, c, d, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BCF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_4:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x04</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_5</code>
+<code>MOSTRA_4:</code>
+<code>  ; 4 - b, c, f, g</code>
+<code>  BCF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_5:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x05</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_6</code>
+<code>MOSTRA_5:</code>
+<code>  ; 5 - a, c, d, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_6:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x06</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_7</code>
+<code>MOSTRA_6:</code>
+<code>  ; 6 - a, c, d, e, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_7:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x07</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_8</code>
+<code>MOSTRA_7:</code>
+<code>  ; 7 - a, b, c</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BCF  SEGMENTO_F</code>
+<code>  BCF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_8:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x08</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_9</code>
+<code>MOSTRA_8:</code>
+<code>  ; 8 - a, b, c, d, e, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_9:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x09</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_A</code>
+<code>MOSTRA_9:</code>
+<code>  ; 9 - a, b, c, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BCF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_A:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0A</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_B</code>
+<code>MOSTRA_A:</code>
+<code>  ; A (maiúsculo) - a, b, c, e, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_B:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0B</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_C</code>
+<code>MOSTRA_B:</code>
+<code>  ;B (minúsculo) - c, d, e, f, g</code>
+<code>  BCF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_C:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0C</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_D</code>
+<code>MOSTRA_C:</code>
+<code>  ; C (maiúsculo) - a, d, e, f</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BCF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BCF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_D:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0D</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_E</code>
+<code>MOSTRA_D:</code>
+<code>  ; D (minúsculo) - b, c, d, e, g</code>
+<code>  BCF  SEGMENTO_A</code>
+<code>  BSF  SEGMENTO_B</code>
+<code>  BSF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BCF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_E:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0E</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  TESTA_F</code>
+<code>MOSTRA_E:</code>
+<code>  ; E (maiúsculo) - a, d, e, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BCF  SEGMENTO_C</code>
+<code>  BSF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code></code>
+<code>TESTA_F:</code>
+<code>  MOVF  CONTADOR, 0</code>
+<code>  XORLW 0x0F</code>
+<code>  BTFSS STATUS, Z</code>
+<code>  GOTO  PRINCIPAL</code>
+<code>MOSTRA_F:</code>
+<code>  ; F (maiúsculo) - a, e, f, g</code>
+<code>  BSF  SEGMENTO_A</code>
+<code>  BCF  SEGMENTO_B</code>
+<code>  BCF  SEGMENTO_C</code>
+<code>  BCF  SEGMENTO_D</code>
+<code>  BSF  SEGMENTO_E</code>
+<code>  BSF  SEGMENTO_F</code>
+<code>  BSF  SEGMENTO_G</code>
+<code>  GOTO PRINCIPAL</code>
+<code>  </code>
+<code>  END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_5.html">Voltar ao Epis&oacute;dio 5</a></p>
+			<p class="forwardPage"><a href="./Episode_7.html">Ir para Epis&oacute;dio 7</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>

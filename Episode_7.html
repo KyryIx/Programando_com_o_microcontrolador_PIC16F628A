@@ -1,27 +1,379 @@
-<h1 class="c75 c35" id="h.c2dmt1c8fri6"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.6s9s48u2ylem"><span class="c28 c87">Epis&oacute;dio 7: Grava&ccedil;&atilde;o do PIC16F628A com os hardwares K150 e o PICkit 3</span></h1><p class="c11">Neste epis&oacute;dio iremos fazer a grava&ccedil;&atilde;o do projeto visto no epis&oacute;dio anterior e faremos uso de dois equipamentos para a grava&ccedil;&atilde;o: o gravador K150 e o gravador PICkit 3</p><p class="c11">O gravador K150 conforme Figura 7.1, pode ser encontrado no mercado livre e tamb&eacute;m em algumas lojas de eletr&ocirc;nica online, e o site do projeto &eacute; </span><span class="linkDoc1"><a href="https://www.google.com/url?q=http://www.kitsrus.com/pic.html&amp;sa=D&amp;source=editors&amp;ust=1619797899333000&amp;usg=AOvVaw3NsS6ffB2HRBnHODI4srSo">http://www.kitsrus.com/pic.html</a></span>e </span>um passo a passo de uso pode ser baixado em </span><span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.sigmaelectronica.net/manuals/k150.pdf&amp;sa=D&amp;source=editors&amp;ust=1619797899333000&amp;usg=AOvVaw2d224G0r9Gdp1-hL6Vzo2S">https://www.sigmaelectronica.net/manuals/k150.pdf</a>.</p><p class="c12"><span class="register">Figura 7.1 -</span>Gravador K150</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.56"></a><table class="c7"><tbody><tr><td class="c174"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 565.11px; height: 566.08px;"><img src="images/image81.png" style="width: 565.11px; height: 566.08px;" title=""></span></p></td></tr></tbody></table><p class="c24"><span class="textoVermelho"> Fonte: </span><span class="c59 c6 c39"><a href="https://www.google.com/url?q=https://www.baudaeletronica.com.br/gravador-de-pic-usb-k150.html&amp;sa=D&amp;source=editors&amp;ust=1619797899334000&amp;usg=AOvVaw0q3Y0EjBP4OaxIsmdY1x1S">https://www.baudaeletronica.com.br/gravador-de-pic-usb-k150.html</a></span></p><p class="c11">Para o processo de grava&ccedil;&atilde;o, utiliza-se o programa <i>Microbrn</span>conforme Figura 7.2 que tamb&eacute;m se encontra no link do projeto e de f&aacute;cil utiliza&ccedil;&atilde;o.</p><p class="c12"><span class="register">Figura 7.2 - </span>Programa Microbrn</span></p><p class="c12"><span class="c39 c227">COLOCAR A FIGURA DO APP AQUI</span><sup><a href="#cmnt3" id="cmnt_ref3">[c]</a></sup></p><p class="c11">O driver de instala&ccedil;&atilde;o para o dispositivo &eacute; encontrado em </span><span class="linkDoc1"><a href="https://www.google.com/url?q=http://www.profilic.tw/US/ShowProduct.aspx?p_id%3D225%26pcid%3D41&amp;sa=D&amp;source=editors&amp;ust=1619797899335000&amp;usg=AOvVaw17ibuGdM-Ncus1s65jZrwe">http://www.profilic.tw/US/ShowProduct.aspx?p_id=225&amp;pcid=41</a></span>ou </span><span class="linkDoc1"><a href="https://www.google.com/url?q=http://www.profilic.tw/US/ShowProduct.aspx?p_id%3D223%26pcid%3D126&amp;sa=D&amp;source=editors&amp;ust=1619797899336000&amp;usg=AOvVaw0gyh16rVM-HKh4-Ltptpe_">http://www.profilic.tw/US/ShowProduct.aspx?p_id=223&amp;pcid=126</a></span>e ap&oacute;s a instala&ccedil;&atilde;o pode-se conectar o dispositivo K150 e executar o aplicativo Microbrn dispon&iacute;vel em </span><span class="linkDoc1"><a href="https://www.google.com/url?q=http://paginapessoal.utfpr.edu.br/amauriassef/disciplinas/sistemas-microcontrolados/gravador-microburn-k150&amp;sa=D&amp;source=editors&amp;ust=1619797899336000&amp;usg=AOvVaw2zHLmVfQJDnzrIF7Eq8ovt">http://paginapessoal.utfpr.edu.br/amauriassef/disciplinas/sistemas-microcontrolados/gravador-microburn-k150</a></p><p class="c11">Ao abrir o aplicativo h&aacute; a necessidade de selecionar a porta COM onde est&aacute; associada o K150. Para isso abra o gerenciador de dispositivo conforme Figura 7.3 e acesse a op&ccedil;&atilde;o Portas (<i>Ports</span>) e veja qual COM est&aacute; associada ao K150.</p><p class="c12"><span class="register">Figura 7.3 - </span>Gerenciador de dispositivo</span></p><p class="c12"><span class="c39 c179">COLOCAR AQUI A IMAGEM DO GERENCIADOR DE DISPOSITIVO COM O K150 LIGADO/CONECTADO</span><sup><a href="#cmnt4" id="cmnt_ref4">[d]</a></sup></p><p class="c11">No menu <i>File</span>, acesse a op&ccedil;&atilde;o &ldquo;<i>Port</span>&rdquo; e digite o n&uacute;mero da porta. No mesmo menu <i>FIle</span>, acessa a op&ccedil;&atilde;o &ldquo;<i>Programmer</span>&rdquo; e selecione a op&ccedil;&atilde;o K150</p><p class="c11">O pr&oacute;ximo passo &eacute; a escolha do microcontrolador, na op&ccedil;&atilde;o &ldquo;<i>Chip Selector</span>&rdquo; do lado direito, na parte inferior da janela. Ao escolher o microcontrolador PIC16F628A (16F628A) no dropbox, no conector ZIF exibido no programa, exibir&aacute; a posi&ccedil;&atilde;o a ser inserido no soquete</p><p class="c11">Agora clique no bot&atilde;o &ldquo;<i>Load</span>&rdquo; para carregar o arquivo para a tela principal. Neste momento j&aacute; se pode clicar no bot&atilde;o &ldquo;<i>Program</span>&rdquo; para gravar o programa na mem&oacute;ria de programa do microcontrolador</p><p class="c11">Outra op&ccedil;&atilde;o de grava&ccedil;&atilde;o &eacute; pelo modo ICSP (<i>In-Circuit Serial Programming</span>) acessando o menu &ldquo;<i>Options</span>&rdquo; e a op&ccedil;&atilde;o &ldquo;<i>ICSP Mode</span>&rdquo;. Essa op&ccedil;&atilde;o d&aacute; a capacidade de grava&ccedil;&atilde;o no circuito, sendo necess&aacute;rias algumas modifica&ccedil;&otilde;es para prote&ccedil;&atilde;o de algum componente sens&iacute;vel</p><p class="c11">No modo ICSP os pinos para uso na programa&ccedil;&atilde;o s&atilde;o: <i>VPP1</span>, <i>LOW</span>, <i>DAT</span>, <i>CLK</span>, <i>VCC</span>e <i>GND</span>. Para a programa&ccedil;&atilde;o do PIC16F628A utiliza-se a rela&ccedil;&atilde;o contida na Tabela 7.1.</p><p class="c12"><span class="register">Tabela 7.1 -</span>Rela&ccedil;&atilde;o dos pinos do K150 e PIC16F628A</span></p><a id="t.2df5236e1367bf3588e20400d89ebc084e6b1daa"></a><a id="t.57"></a><table class="c56"><tbody><tr><td class="c123"><p class="c1"><span class="c6 c33">Pinos K150</span></p></td><td class="c123"><p class="c1">Pinos PIC16F628A</td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c142 c6 c50 c53 c37 c44">VPP1</span></p></td><td class="c123"><p class="c1"><span class="register">RA5</span>/</span><span class="c59 c6 c34">MCLR</span>/V<span class="c6 c62">PP</span>(pino 4)</td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c142 c6 c50 c53 c37 c44">LOW</span></p></td><td class="c123"><p class="c1 c14"></p></td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c142 c6 c50 c53 c37 c44">DAT</span></p></td><td class="c123"><p class="c1"><span class="register">RB7</span>/</span><span class="register">PGD</span>(pino 13)</td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c6 c50 c53 c37 c44 c142">CLK</span></p></td><td class="c123"><p class="c1"><span class="register">RB6</span>/</span><span class="register">PGC</span>(pino 12)</td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c142 c6 c50 c53 c37 c44">VCC</span></p></td><td class="c123"><p class="c1">V<span class="c6 c62">DD</span>(pino 14)</td>
-</tr>
-<tr><td class="c123"><p class="c1"><span class="c142 c6 c50 c53 c37 c44">GND</span></p></td><td class="c123"><p class="c1">V<span class="c6 c62">SS</span>(pino 5)</span></p></td></tr></tbody></table><p class="c11">Outro passo a passo de grava&ccedil;&atilde;o usando o gravador pode ser visto em </span><span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.filipeflop.com/blog/como-utilizar-gravador-de-pic-usb-k150/&amp;sa=D&amp;source=editors&amp;ust=1619797899343000&amp;usg=AOvVaw0Rnxq2Z83WdWIqt5wpkuSP">https://www.filipeflop.com/blog/como-utilizar-gravador-de-pic-usb-k150/</a></p><p class="c11">J&aacute; que iniciamos o conceito de grava&ccedil;&atilde;o usando o ICSP, passamos para a grava&ccedil;&atilde;o usando o PICkit 3 &quot;gen&eacute;rico&#39;&#39;, conforme Figura 7.4, sendo que o PICKit3 tem 6 pinos conforme Tabela 7.4.</p><p class="c12"><span class="register">Figura 7.4 - </span>Gravador PICkit 3</span></p><a id="t.e4f3041869950f6173e4d8d0fcb2b6b2c7ee6a8a"></a><a id="t.58"></a><table class="c7"><tbody><tr><td class="c224"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 450.00px; height: 450.00px;"><img src="images/image17.jpg" style="width: 450.00px; height: 450.00px;" title=""></td>
-</tr>
-<tr><td class="c226"><p class="c24"><span class="textoVermelho">Fonte: </span><span class="c59 c6 c39"><a href="https://www.google.com/url?q=https://www.arduinobrasilshop.com.br/pickit3-kit-programador-gravador-de-pic&amp;sa=D&amp;source=editors&amp;ust=1619797899344000&amp;usg=AOvVaw2_xiOd_V_1E9VsqIgACRCy">https://www.arduinobrasilshop.com.br/pickit3-kit-programador-gravador-de-pic</a></span></p></td></tr></tbody></table><p class="c12"><span class="register">Tabela 7.2 -</span>Identifica&ccedil;&atilde;o dos pinos do PICkit 3</span></p><a id="t.48f7e6afbef21f16b980062586b29229c51240bc"></a><a id="t.59"></a><table class="c56"><tbody><tr><td class="c123"><p class="c1">Pino</span></p></td><td class="c123"><p class="c1">Sinal</td>
-</tr>
-<tr><td class="c123"><p class="c1">1</span></p></td><td class="c123"><p class="c1"><span class="c59 c6 c34">MCLR</span>/V</span><span class="c131 c6 c62 c50 c53 c44">PP</td>
-</tr>
-<tr><td class="c123"><p class="c1">2</span></p></td><td class="c123"><p class="c1">V</span><span class="c131 c6 c62 c50 c53 c44">DD</td>
-</tr>
-<tr><td class="c123"><p class="c1">3</span></p></td><td class="c123"><p class="c1">V</span><span class="c6 c62 c50 c53 c44 c131">SS</td>
-</tr>
-<tr><td class="c123"><p class="c1">4</span></p></td><td class="c123"><p class="c1"><span class="register">PGD</span>(ICSPDAT)</td>
-</tr>
-<tr><td class="c123"><p class="c1">5</span></p></td><td class="c123"><p class="c1"><span class="register">PGC</span>(ICSPCLK)</td>
-</tr>
-<tr><td class="c123"><p class="c1">6</span></p></td><td class="c123"><p class="c1">N&atilde;o conectado</span></p></td></tr></tbody></table><p class="c11">A conex&atilde;o do PICkit 3 com o PIC16F628A &eacute; semelhante a da conex&atilde;o do K150 com o PIC16F628A no modo ICSP</p><p class="c11">A diferen&ccedil;a no processo de grava&ccedil;&atilde;o est&aacute; no software que &eacute; usado, onde o K150 faz uso do <i>MicroBrn</span>enquanto que o PICkit 3 faz uso do <i>PICkit 3 Programmer</p><p class="c11">Um tutorial usando o gravador PICkit 3 pode ser encontrado em </span><span class="linkDoc1"><a href="https://www.google.com/url?q=https://www.filipeflop.com/blog/como-utilizar-gravador-pic-pickit-3/&amp;sa=D&amp;source=editors&amp;ust=1619797899349000&amp;usg=AOvVaw0ggSKRXntFbCmKqBBHZc9h">https://www.filipeflop.com/blog/como-utilizar-gravador-pic-pickit-3/</a></p><p class="c11">Para este epis&oacute;dio falaremos sobre o processo de grava&ccedil;&atilde;o usando o PICkit 3 e o programa PICkit 3 <i>Programmer</span>, mas sabendo que o processo &eacute; semelhante para o gravador K150 com o programa Microbrn no modo ICSP</p><p class="c11">No epis&oacute;dio anterior vimos o exemplo de uso das portas do microcontrolador trabalhando como entrada ou sa&iacute;da no fluxograma e no c&oacute;digo e neste epis&oacute;dio vamos fazer a grava&ccedil;&atilde;o do bin&aacute;rio gerado neste projeto no microcontrolador</p><p class="c11">O arquivo bin&aacute;rio com extens&atilde;o .hex (arquivo gerado no projeto para ser usado no gravador) est&aacute; dentro do diret&oacute;rio do projeto em <span class="definesASM1">C:\Users\</span><span class="c47 c6 c34">&lt;diret&oacute;rio do usu&aacute;rio&gt;</span><span class="definesASM1">\MPLABXProjects\</span><span class="c47 c6 c34">&lt;nome do projeto&gt;</span><span class="definesASM1">.X\dist\default\production</p><p class="c11">Supondo que o usu&aacute;rio seja &ldquo;</span><span class="register">Everton</span>&rdquo; e o projeto seja &ldquo;</span><span class="register">PiscaLed</span>&rdquo; o endere&ccedil;o completo do diret&oacute;rio com o seguinte arquivo .hex ser&aacute; <span class="definesASM1">C:\Users\</span><span class="c47 c6 c34">Everton</span><span class="definesASM1">\MPLABXProjects\</span><span class="c47 c6 c34">PiscaLed</span><span class="definesASM1">.X\dist\default\production\</span><span class="c47 c6 c34">PiscaLed</span><span class="definesASM1">.X.production.hex</span>. A Figura 7.5 exibe os arquivos dentro do diret&oacute;rio do projeto &ldquo;</span><span class="register">PiscaLed</span>&rdquo;.</p><p class="c12"><span class="register">Figura 7.5 - </span>Arquivo .hex do projeto</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.60"></a><table class="c7"><tbody><tr><td class="c68"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 590.00px; height: 237.33px;"><img src="images/image56.png" style="width: 590.00px; height: 237.33px;" title=""></span></p></td></tr></tbody></table><p class="c24"><span class="citacaoFigura">Fonte: Pr&oacute;prio autor</span></p><p class="c11">Agora que j&aacute; sabemos o diret&oacute;rio onde est&aacute; o arquivo necess&aacute;rio para a grava&ccedil;&atilde;o, precisamos executar o PICkit 3 Programmer para fazer a grava&ccedil;&atilde;o. </span>A Figura 7.6 exibe a tela do programa PICkit 3 Programmer e para selecionar o arquivo .hex, precisamos acessar o menu File &rarr; ...</span><sup><a href="#cmnt5" id="cmnt_ref5">[e]</a></sup></p><p class="c12"><span class="register">Figura 7.6 - </span>Tela inicial do programa PICkit 3 Programmer</span></p><p class="c12"><span class="c39 c179">colocar aqui a tela inicial do PICkit 3 programmer</span><sup><a href="#cmnt6" id="cmnt_ref6">[f]</a></sup></p><p class="c11">Ap&oacute;s a sele&ccedil;&atilde;o do arquivo .hex, e tamb&eacute;m da conex&atilde;o do microcontrolador com o PICkit 3, pressiona-se o bot&atilde;o &ldquo;Write&rdquo; para gravar o arquivo na memoria de programa do PIC16F628A, e ao final da grava&ccedil;&atilde;o h&aacute; a informa&ccedil;&atilde;o de &ldquo;Programming Sucessfull&rdquo; em verde como mostrado na Figura 7.7 o processo de grava&ccedil;&atilde;o finalizado.</p><p class="c12">Figura 7.7 - Tela do PICkit 3 programmer ap&oacute;s grava&ccedil;&atilde;o</span></p><p class="c12"><span class="c39 c225">Colocar aqui tela do PICkit 3 programmer ap&oacute;s grava&ccedil;&atilde;o</span><sup><a href="#cmnt7" id="cmnt_ref7">[g]</a></sup></p><p class="c11">Com isso vamos ao teste de funcionamento p&oacute;s-grava&ccedil;&atilde;o para verificar se nossa l&oacute;gica e nosso c&oacute;digo condiz com a ideia inicial ou teremos que fazer algumas modifica&ccedil;&otilde;es.</span></p><p class="c14 c24"></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 7: Grava&ccedil;&atilde;o do PIC16F628A com os hardwares K150 e o PICkit 3</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_6.html">Voltar ao Epis&oacute;dio 6</a></p>
+			<p class="forwardPage"><a href="./Episode_8.html">Ir para Epis&oacute;dio 8</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste epis&oacute;dio iremos fazer a grava&ccedil;&atilde;o do projeto visto no epis&oacute;dio anterior e faremos uso de dois equipamentos para a grava&ccedil;&atilde;o: o gravador K150 e o gravador PICkit 3.</p>
+			
+			<p class="principal">O gravador K150 conforme Figura 7.1, pode ser encontrado no mercado livre e tamb&eacute;m em algumas lojas de eletr&ocirc;nica online, e o site do projeto &eacute; <span class="citacaoLink"><a href="http://www.kitsrus.com/pic.html" target="_blank">http://www.kitsrus.com/pic.html</a></span> e um passo a passo de uso pode ser baixado em <span class="citacaoLink"><a href="https://www.sigmaelectronica.net/manuals/k150.pdf" target="_blank">https://www.sigmaelectronica.net/manuals/k150.pdf</a></span>.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.1 -</span> Gravador K150
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/device_K150.png" style="width: 565.11px; height: 566.08px;" title="device K150" alt="device K150"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="https://www.baudaeletronica.com.br/gravador-de-pic-usb-k150.html" target="_blank">https://www.baudaeletronica.com.br/gravador-de-pic-usb-k150.html</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Para o processo de grava&ccedil;&atilde;o, utiliza-se o programa <i>Microbrn</i> conforme Figura 7.2 que tamb&eacute;m se encontra no link do projeto e de f&aacute;cil utiliza&ccedil;&atilde;o.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.2 -</span> Programa Microbrn<a href="#cmnt3" id="cmnt_ref3">[c]</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./" style="width: 565.11px; height: 566.08px;" title="COLOCAR A FIGURA DO APP AQUI" alt="COLOCAR A FIGURA DO APP AQUI"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O driver de instala&ccedil;&atilde;o para o dispositivo &eacute; encontrado em <span class="citacaoLink"><a href="http://www.profilic.tw/US/ShowProduct.aspx?p_id=D225&pcid=41" target="_blank">http://www.profilic.tw/US/ShowProduct.aspx?p_id=225&amp;pcid=41</a></span> ou <span class="citacaoLink"><a href="http://www.profilic.tw/US/ShowProduct.aspx?p_id=223&pcid=126" target="_blank">http://www.profilic.tw/US/ShowProduct.aspx?p_id=223&amp;pcid=126</a></span> e ap&oacute;s a instala&ccedil;&atilde;o pode-se conectar o dispositivo K150 e executar o aplicativo Microbrn dispon&iacute;vel em <span class="citacaoLink"><a href="http://paginapessoal.utfpr.edu.br/amauriassef/disciplinas/sistemas-microcontrolados/gravador-microburn-k150" target="_blank">http://paginapessoal.utfpr.edu.br/amauriassef/disciplinas/sistemas-microcontrolados/gravador-microburn-k150</a></span>.</p>
+			
+			<p class="principal">Ao abrir o aplicativo h&aacute; a necessidade de selecionar a porta COM onde est&aacute; associada o K150. Para isso abra o gerenciador de dispositivo conforme Figura 7.3 e acesse a op&ccedil;&atilde;o Portas (<i>Ports</i>) e veja qual COM est&aacute; associada ao K150.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.3 -</span> Gerenciador de dispositivo<a href="#cmnt4" id="cmnt_ref4">[d]</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./" style="width: 565.11px; height: 566.08px;" title="COLOCAR AQUI A IMAGEM DO GERENCIADOR DE DISPOSITIVO COM O K150 LIGADO/CONECTADO" alt="COLOCAR AQUI A IMAGEM DO GERENCIADOR DE DISPOSITIVO COM O K150 LIGADO/CONECTADO"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">No menu <span class="options">File</span>, acesse a op&ccedil;&atilde;o <span class="options">Port</span>  e digite o n&uacute;mero da porta. No mesmo menu <span class="options">FIle</span>, acessa a op&ccedil;&atilde;o <span class="options">Programmer</span> e selecione a op&ccedil;&atilde;o K150.</p>
+			
+			<p class="principal">O pr&oacute;ximo passo &eacute; a escolha do microcontrolador, na op&ccedil;&atilde;o <span class="options">Chip Selector</span> do lado direito, na parte inferior da janela. Ao escolher o microcontrolador PIC16F628A (16F628A) no dropbox, no conector ZIF exibido no programa, exibir&aacute; a posi&ccedil;&atilde;o a ser inserido no soquete.</p>
+			
+			<p class="principal">Agora clique no bot&atilde;o <span class="options">Load</span> para carregar o arquivo para a tela principal. Neste momento j&aacute; se pode clicar no bot&atilde;o <span class="options">Program</span> para gravar o programa na mem&oacute;ria de programa do microcontrolador</p><p class="principal">Outra op&ccedil;&atilde;o de grava&ccedil;&atilde;o &eacute; pelo modo ICSP (<i>In-Circuit Serial Programming</i>) acessando o menu <span class="options">Options</span> e a op&ccedil;&atilde;o <span class="options">ICSP Mode</span>. Essa op&ccedil;&atilde;o d&aacute; a capacidade de grava&ccedil;&atilde;o no circuito, sendo necess&aacute;rias algumas modifica&ccedil;&otilde;es para prote&ccedil;&atilde;o de algum componente sens&iacute;vel.</p>
+			
+			<p class="principal">No modo ICSP os pinos para uso na programa&ccedil;&atilde;o s&atilde;o: <span class="pin">VPP1</span>, <<span class="pin">LOW</span>, <span class="pin">DAT</span>, <span class="pin">CLK</span>, <span class="pin">VCC</span> e <span class="pin">GND</span>. Para a programa&ccedil;&atilde;o do PIC16F628A utiliza-se a rela&ccedil;&atilde;o contida na Tabela 7.1.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 7.1 -</span> Rela&ccedil;&atilde;o dos pinos do K150 e PIC16F628A
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Pinos K150</th>
+										<th>Pinos PIC16F628A</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<span class="pin">VPP1</span>
+										</td>
+										<td>
+											<span class="register">RA5</span>/<span class="register">MCLR</span>/<span class="pin">V<sub>PP</sub>(pino 4)
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="pin">LOW</span>
+										</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>
+											<span class="pin">DAT</span>
+										</td>
+										<td>
+											<span class="register">RB7</span>/<span class="register">PGD</span>(pino 13)
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="pin">CLK</span>
+										</td>
+										<td>
+											<span class="register">RB6</span>/<span class="register">PGC</span>(pino 12)
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="pin">VCC</span>
+										</td>
+										<td>
+											<span class="pin">V<sub>DD</sub></span> (pino 14)
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span class="pin">GND</span>
+										</td>
+										<td>
+											<span class="pin">V<sub>SS</sub></span> (pino 5)
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2020b" target="_blank">MICROCHIP 2020 (b) pag. 114</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Outro passo a passo de grava&ccedil;&atilde;o usando o gravador pode ser visto em <span class="citacaoLink"><a href="https://www.filipeflop.com/blog/como-utilizar-gravador-de-pic-usb-k150/" target="_blank">https://www.filipeflop.com/blog/como-utilizar-gravador-de-pic-usb-k150/</a></span>.</p>
+			
+			<p class="principal">J&aacute; que iniciamos o conceito de grava&ccedil;&atilde;o usando o ICSP, passamos para a grava&ccedil;&atilde;o usando o PICkit 3 &quot;gen&eacute;rico&#39;&#39;, conforme Figura 7.4, sendo que o PICKit3 tem 6 pinos conforme Tabela 7.4.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.4 -</span> Gravador PICkit 3
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/device_PICKIT3.jpg" style="width: 450.00px; height: 450.00px;" title="device PICKIT3" alt="device PICKIT3"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="https://www.arduinobrasilshop.com.br/pickit3-kit-programador-gravador-de-pi" target="_blank">https://www.arduinobrasilshop.com.br/pickit3-kit-programador-gravador-de-pic</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 7.2 -</span> Identifica&ccedil;&atilde;o dos pinos do PICkit 3
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>Pino</th>
+										<th>Sinal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>
+											<span class="pin">MCLR</span>/<span class="pin">V<sub>PP</sub></span>
+										</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>
+											<span class="pin">V<sub>DD</sub></span>
+										</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>
+											<span class="pin">V<sub>SS</sub></span>
+										</td>
+									</tr>
+									<tr>
+										<td>4</td>
+										<td>
+											<span class="pin">PGD</span> (ICSPDAT)
+										</td>
+									</tr>
+									<tr>
+										<td>5</td>
+										<td>
+											<span class="pin">PGC</span> (ICSPCLK)
+										</td>
+									</tr>
+									<tr>
+										<td>6</td>
+										<td>N&atilde;o conectado</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span class="citacao"><a href="Reference.html#microchip_2021" target="_blank">MICROCHIP 2021 pag. 15</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A conex&atilde;o do PICkit 3 com o PIC16F628A &eacute; semelhante a da conex&atilde;o do K150 com o PIC16F628A no modo ICSP.</p>
+			
+			<p class="principal">A diferen&ccedil;a no processo de grava&ccedil;&atilde;o est&aacute; no software que &eacute; usado, onde o K150 faz uso do <i>MicroBrn</i> enquanto que o PICkit 3 faz uso do <i>PICkit 3 Programmer</i>.</p>
+			
+			<p class="principal">Um tutorial usando o gravador PICkit 3 pode ser encontrado em <span class="citacaoLink"><a href="https://www.filipeflop.com/blog/como-utilizar-gravador-pic-pickit-3/" target="_blank">https://www.filipeflop.com/blog/como-utilizar-gravador-pic-pickit-3/</a></span>.</p>
+			
+			<p class="principal">Para este epis&oacute;dio falaremos sobre o processo de grava&ccedil;&atilde;o usando o PICkit 3 e o programa PICkit 3 <i>Programmer</i>, mas sabendo que o processo &eacute; semelhante para o gravador K150 com o programa Microbrn no modo ICSP.</p>
+			
+			<p class="principal">No epis&oacute;dio anterior vimos o exemplo de uso das portas do microcontrolador trabalhando como entrada ou sa&iacute;da no fluxograma e no c&oacute;digo e neste epis&oacute;dio vamos fazer a grava&ccedil;&atilde;o do bin&aacute;rio gerado neste projeto no microcontrolador.</p>
+			
+			<p class="principal">O arquivo bin&aacute;rio com extens&atilde;o .hex (arquivo gerado no projeto para ser usado no gravador) est&aacute; dentro do diret&oacute;rio do projeto em <span class="filename">C:\Users\&lt;diret&oacute;rio do usu&aacute;rio&gt;\MPLABXProjects\&lt;nome do projeto&gt;.X\dist\default\production</span>.</p>
+			
+			<p class="principal">Supondo que o usu&aacute;rio seja "<span class="filename">Everton</span>" e o projeto seja "<span class="filename">PiscaLed</span>" o endere&ccedil;o completo do diret&oacute;rio com o seguinte arquivo .hex ser&aacute; <span class="filename">C:\Users\Everton\MPLABXProjects\PiscaLed.X\dist\default\production\PiscaLed.X.production.hex</span>. A Figura 7.5 exibe os arquivos dentro do diret&oacute;rio do projeto "<span class="filename">PiscaLed</span>".</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.5 -</span> Arquivo .hex do projeto
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/directory_file_hex.png" style="width: 590.00px; height: 237.33px;" title="directory file hex" alt="directory file hex"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Fonte: Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Agora que j&aacute; sabemos o diret&oacute;rio onde est&aacute; o arquivo necess&aacute;rio para a grava&ccedil;&atilde;o, precisamos executar o PICkit 3 Programmer para fazer a grava&ccedil;&atilde;o. A Figura 7.6 exibe a tela do programa PICkit 3 Programmer e para selecionar o arquivo .hex, precisamos acessar o menu <span class="options">File</span> &rarr; ... <sup><a href="#cmnt5" id="cmnt_ref5">[e]</a>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</sup>.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.6 -</span> Tela inicial do programa PICkit 3 Programmer<sup><a href="#cmnt6" id="cmnt_ref6">[f]</a></sup>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./" style="width: 590.00px; height: 237.33px;" title="colocar aqui a tela inicial do PICkit 3 programmer" alt="colocar aqui a tela inicial do PICkit 3 programmer"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Fonte: Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Ap&oacute;s a sele&ccedil;&atilde;o do arquivo .hex, e tamb&eacute;m da conex&atilde;o do microcontrolador com o PICkit 3, pressiona-se o bot&atilde;o &ldquo;Write&rdquo; para gravar o arquivo na memoria de programa do PIC16F628A, e ao final da grava&ccedil;&atilde;o h&aacute; a informa&ccedil;&atilde;o de &ldquo;Programming Sucessfull&rdquo; em verde como mostrado na Figura 7.7 o processo de grava&ccedil;&atilde;o finalizado.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 7.7 -</span> Tela do PICkit 3 programmer ap&oacute;s grava&ccedil;&atilde;o<sup><a href="#cmnt7" id="cmnt_ref7">[g]</a></sup>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./" style="width: 590.00px; height: 237.33px;" title="Colocar aqui tela do PICkit 3 programmer ap&oacute;s grava&ccedil;&atilde;o" alt="Colocar aqui tela do PICkit 3 programmer ap&oacute;s grava&ccedil;&atilde;o"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Fonte: Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Com isso vamos ao teste de funcionamento p&oacute;s-grava&ccedil;&atilde;o para verificar se nossa l&oacute;gica e nosso c&oacute;digo condiz com a ideia inicial ou teremos que fazer algumas modifica&ccedil;&otilde;es.</p>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_6.html">Voltar ao Epis&oacute;dio 6</a></p>
+			<p class="forwardPage"><a href="./Episode_8.html">Ir para Epis&oacute;dio 8</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
