@@ -318,6 +318,16 @@ td.citacaoRegister span:first-child{
 	color: red;
 }
 
+td.colorBitC{ background-color: #ff0000; }
+td.colorBit7{ background-color: #ff9900; }
+td.colorBit6{ background-color: #ff00ff; }
+td.colorBit5{ background-color: #00ff00; }
+td.colorBit4{ background-color: #ffff00; }
+td.colorBit3{ background-color: #4a86e8; }
+td.colorBit2{ background-color: #a64d79; }
+td.colorBit1{ background-color: #6fa8dc; }
+td.colorBit0{ background-color: #38761d; }
+
 /**********************************************************
  *************************** MENUS ************************
  **********************************************************/

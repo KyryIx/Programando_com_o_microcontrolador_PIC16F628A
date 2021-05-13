@@ -1,13 +1,425 @@
-<h1 class="c75 c35" id="h.gtjslkauy293"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.hq5lx0p01lhe"><span>Epis&oacute;dio 9: Conhecendo as instru&ccedil;&otilde;es </span><span class="c8">CLRF</span><span>, </span><span class="c8">CLRW</span><span>, </span><span class="c8">NOP</span><span>, </span><span class="c8">RLF</span><span>, </span><span class="c8">RRF</span><span>e </span><span class="c8">SWAPF</span><span class="c28 c87">para o PIC16F628A</span></h1><p class="c11">Neste epis&oacute;dio veremos instru&ccedil;&otilde;es com prop&oacute;sitos interessantes sobre bits (sendo que uma delas n&atilde;o afeta bits diretamente), sendo elas </span><span class="c3">CLRF</span>, </span><span class="c3">CLRW</span>, </span><span class="c3">NOP</span>, </span><span class="c3">RLF</span>, </span><span class="c3">RRF</span>e </span><span class="c3">SWAPF</p><p class="c11">A instru&ccedil;&atilde;o </span><span class="c3">CLRF</span><span class="c47 c6 c34">f</span>&eacute; respons&aacute;vel por limpar (<i>clear</span>) o valor do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>, isto &eacute;, zerar o valor do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="c47 c6 c34">Z</span>do registrador <span class="c47 c6 c34">STATUS</span>. O C&oacute;digo 9.1 mostra o uso da instru&ccedil;&atilde;o.</p><p class="c12"><span class="register">C&oacute;digo 9.1 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">CLRF</span></p><a id="t.c819fc36c2e3c351da5e6db4219b8216778d9738"></a><a id="t.104"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: CLRF</span></p><p class="c19"><span class="c42 c8 c76">; LIMPA O REGISTRADOR f</span></p><p class="c19"><span class="c9">MOVLW</span><span class="c8"> </span><span class="c42 c8 c54">.7</span></p><p class="c19"><span class="c9">MOVWF</span><span class="c8"> </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c9">CLRF</span><span class="c8">  </span><span class="c42 c8 c54">0x0C</span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11">A instru&ccedil;&atilde;o </span><span class="c3">CLRW</span>&eacute; respons&aacute;vel por limpar (<i>clear</span>) o valor do registrador </span><span class="options">W</span>, isto &eacute;, zerar o valor do registrador </span><span class="options">W</span>. A instru&ccedil;&atilde;o afeta o bit <span class="c47 c6 c34">Z</span>do registrador <span class="c47 c6 c34">STATUS</span>. O C&oacute;digo 9.2 mostra o uso da instru&ccedil;&atilde;o.</p><p class="c12"><span class="register">C&oacute;digo 9.2 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">CLRW</span></p><a id="t.ccda6aa0c530a83ed6c3bf2adbc32b18cde6819d"></a><a id="t.105"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: CLRW</span></p><p class="c19"><span class="c42 c8 c76">; LIMPA O REGISTRADOR W</span></p><p class="c19"><span class="c9">MOVLW</span><span class="c8"> </span><span class="c42 c8 c54">.7</span></p><p class="c19"><span class="c9">MOVWF</span><span class="c8"> </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c9">CLRF</span><span class="c8">  </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c42 c9">CLRW</span></p><p class="c19 c14"><span class="c2"></span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11">A instru&ccedil;&atilde;o </span><span class="c3">RLF</span><span class="c47 c6 c34">f,d</span>&eacute; respons&aacute;vel por rotacionar os bits do registrador de endere&ccedil;o/nome </span><span class="register">f</span>para a esquerda (<i>left</span>). Assim o estado do 1&ordm; bit passa para o 2&ordm; bit, assim sucessivamente at&eacute; o 6&ordm; bit. O estado antigo do 7&ordm; bit passa para o bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>e o antigo estado do bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>passa para o 1&ordm; bit do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>, fechando o ciclo da rota&ccedil;&atilde;o. O resultado desta instru&ccedil;&atilde;o/opera&ccedil;&atilde;o ser&aacute; armazenado no registrador </span><span class="options">W</span>se <span class="c47 c6 c34">d</span>for igual a 0, mas se <span class="c47 c6 c34">d</span>for igual a 1 o resultado &eacute; armazenado no registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>. O C&oacute;digo 9.3 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.1 exibe o processo.</p><p class="c12"><span class="register">C&oacute;digo 9.3 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">RLF</span></p><a id="t.44a2e32e38a5722a454d14ca999fa3ca5e721e3b"></a><a id="t.106"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: RLF</span></p><p class="c19"><span class="c42 c8 c76">; APLICA O OPERADOR DE ROTACAO A ESQUERDA SOBRE O</span></p><p class="c19"><span class="c42 c8 c76">; CONTEUDO DO REG. f E COLOCA EM d</span></p><p class="c19"><span class="c9">BCF</span><span class="c8">  </span><span class="c47 c34">STATUS</span><span class="c8">, </span><span class="c47 c34">C</span></p><p class="c19"><span class="c9">MOVLW</span><span class="c8"> </span><span class="c42 c8 c54">.197</span></p><p class="c19"><span class="c9">MOVWF</span><span class="c8"> </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c9">RLF</span><span class="c8">  </span><span class="c8 c54">0x0C</span><span class="c8">, </span><span class="c42 c8 c54">0</span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela 9.1 - </span>Opera&ccedil;&atilde;o de rota&ccedil;&atilde;o &agrave; esquerda do n&uacute;mero 197<span class="c6 c62">10</span></p><a id="t.46cf225f460dfc709d2b5f0544984a58122b2e38"></a><a id="t.107"></a><table class="c56"><tbody><tr><td class="c22"><p class="c1"><span class="c26">C</span></p></td><td class="c61"><p class="c1"><span class="c26">bit 7</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 6</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 5</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 4</span></p></td><td class="c79"><p class="c1"><span class="c26">bit 3</span></p></td><td class="c46"><p class="c1"><span class="c26">bit 2</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 1</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 0</span></p></td><td class="c106"><p class="c1 c14"><span class="c26"></span></p></td><td class="c41"><p class="c1 c14"><span class="c26"></span></p></td><td class="c88"><p class="c1 c14"><span class="c26"></td>
-</tr>
-<tr><td class="c22 c209"><p class="c1"><span class="c2">0</span></p></td><td class="c61 c188"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c100"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c141"><p class="c1"><span class="c2">0</span></p></td><td class="c79 c164"><p class="c1"><span class="c2">0</span></p></td><td class="c46 c148"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c116"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c129"><p class="c1"><span class="c2">1</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>197</span><span class="c63 c62 c50 c53 c44">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0xC5</span></p></td></tr><tr class="c51"><td class="c114" colspan="12" rowspan="1"><p class="c1"><span class="c26">ROTA&Ccedil;&Atilde;O &Agrave; ESQUERDA</td>
-</tr>
-<tr><td class="c22 c188"><p class="c1"><span class="c2">1</span></p></td><td class="c61 c100"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c141"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c164"><p class="c1"><span class="c2">0</span></p></td><td class="c79 c148"><p class="c1"><span class="c2">1</span></p></td><td class="c46 c116"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c129"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c209"><p class="c1"><span class="c2">0</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>138</span><span class="c62">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0x8A</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11">A instru&ccedil;&atilde;o </span><span class="c3">RRF</span><span class="c47 c6 c34">f,d</span>&eacute; respons&aacute;vel por rotacionar os bits do registrador de endere&ccedil;o/nome </span><span class="register">f</span>para a direita (<i>right</span>). Assim o estado do 7&ordm; bit passa para o 6&ordm; bit, assim sucessivamente at&eacute; o 2&ordm; bit. O estado antigo do 1&ordm; bit passa para o bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>e o antigo estado do bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>passa para o 7&ordm; bit do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>, fechando o ciclo da rota&ccedil;&atilde;o. O resultado desta instru&ccedil;&atilde;o/opera&ccedil;&atilde;o ser&aacute; armazenado no registrador </span><span class="options">W</span>se <span class="c47 c6 c34">d</span>for igual a 0, mas se <span class="c47 c6 c34">d</span>for igual a 1 o resultado &eacute; armazenado no registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="c47 c6 c34">C</span>do registrador <span class="c47 c6 c34">STATUS</span>. O C&oacute;digo 9.4 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.2 exibe o processo.</p><p class="c12"><span class="register">C&oacute;digo 9.4 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">RRF</span></p><a id="t.edbe73c4c5e660cc918d954b09bef6551442eef3"></a><a id="t.108"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: RRF</span></p><p class="c19"><span class="c42 c8 c76">; APLICA O OPERADOR DE ROTACAO A DIREITA SOBRE O</span></p><p class="c19"><span class="c42 c8 c76">; CONTEUDO DO REG. f E COLOCA EM d</span></p><p class="c19"><span class="c9">BCF</span><span class="c8">  </span><span class="c47 c34">STATUS</span><span class="c8">, </span><span class="c42 c47 c34 c53">C</span></p><p class="c19"><span class="c9">MOVLW</span><span class="c8"> </span><span class="c42 c8 c54">.197</span></p><p class="c19"><span class="c9">MOVWF</span><span class="c8"> </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c9">RRF</span><span class="c8">  </span><span class="c8 c54">0x0C</span><span class="c8">, </span><span class="c42 c8 c54">0</span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela 9.2 - </span>Opera&ccedil;&atilde;o de rota&ccedil;&atilde;o &agrave; direita do n&uacute;mero 197<span class="c6 c62">10</span></p><a id="t.518f51fb9238594746580b0c788805f9ba28767b"></a><a id="t.109"></a><table class="c56"><tbody><tr><td class="c22"><p class="c1"><span class="c26">C</span></p></td><td class="c61"><p class="c1"><span class="c26">bit 7</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 6</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 5</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 4</span></p></td><td class="c79"><p class="c1"><span class="c26">bit 3</span></p></td><td class="c46"><p class="c1"><span class="c26">bit 2</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 1</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 0</span></p></td><td class="c106"><p class="c1 c14"><span class="c26"></span></p></td><td class="c41"><p class="c1 c14"><span class="c26"></span></p></td><td class="c88"><p class="c1 c14"><span class="c26"></td>
-</tr>
-<tr><td class="c22 c209"><p class="c1"><span class="c2">0</span></p></td><td class="c61 c188"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c100"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c141"><p class="c1"><span class="c2">0</span></p></td><td class="c79 c164"><p class="c1"><span class="c2">0</span></p></td><td class="c46 c148"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c116"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c129"><p class="c1"><span class="c2">1</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>197</span><span class="c63 c62 c50 c53 c44">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0xC5</span></p></td></tr><tr class="c51"><td class="c114" colspan="12" rowspan="1"><p class="c1"><span class="c26">ROTA&Ccedil;&Atilde;O &Agrave; DIREITA</td>
-</tr>
-<tr><td class="c22 c129"><p class="c1"><span class="c2">1</span></p></td><td class="c61 c209"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c188"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c100"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c79 c141"><p class="c1"><span class="c2">0</span></p></td><td class="c46 c246"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c148"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c116"><p class="c1"><span class="c2">0</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>98</span><span class="c62">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0x62</span></p></td></tr></tbody></table><p class="c11">A instru&ccedil;&atilde;o </span><span class="c3">SWAPF</span><span class="c47 c6 c34">f,d</span>&eacute; respons&aacute;vel por trocar os <i>nibbles</span>do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>, isto &eacute;, os primeiros 4 bits menos significativos do valor armazenado no registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>&eacute; o <i>nibble</span>menos significativo do valor do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>, enquanto que os 4 bits mais significativo do valor do registrador de endere&ccedil;o/nome <span class="c47 c6 c34">f</span>&eacute; o <i>nibble</span>mais deste deste valor. Assim, essa instru&ccedil;&atilde;o troca as posi&ccedil;&otilde;es dos <i>nibbles</span>. Nenhum bit do registrador <span class="c47 c6 c34">STATUS</span>&eacute; afetado por esta instru&ccedil;&atilde;o. O C&oacute;digo 9.5 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.3 exibe o processo.</p><p class="c12"><span class="register">C&oacute;digo 9.5 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">SWAPF</span></p><a id="t.b388885816e07d1917c4781ed89588f1834d8172"></a><a id="t.110"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: SWAPF</span></p><p class="c19"><span class="c42 c8 c76">; TROCA OS NIBBLES (GRUPO DE 4 BITS) MAIS SIGNIFICATIVO</span></p><p class="c19"><span class="c42 c8 c76">; PARA O MENOS SIGNIFICATIVO SOBRE O CONTEUDO DO REG. f</span></p><p class="c19"><span class="c42 c8 c76">; E COLOCA EM d</span></p><p class="c19"><span class="c9">MOVLW</span><span class="c8"> </span><span class="c42 c8 c54">.197</span></p><p class="c19"><span class="c9">MOVWF</span><span class="c8"> </span><span class="c42 c8 c54">0x0C</span></p><p class="c19"><span class="c9">SWAPF</span><span class="c8"> </span><span class="c8 c54">0x0C</span><span class="c8">, </span><span class="c42 c8 c54">0</span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela 9.3 - </span>Opera&ccedil;&atilde;o de troca de nibbles do n&uacute;mero 197<span class="c6 c62">10</span></p><a id="t.dab3f68360cb522ee512e60b6368cc54877cd715"></a><a id="t.111"></a><table class="c56"><tbody><tr><td class="c61"><p class="c1"><span class="c26">bit 7</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 6</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 5</span></p></td><td class="c66"><p class="c1"><span class="c26">bit 4</span></p></td><td class="c79"><p class="c1"><span class="c26">bit 3</span></p></td><td class="c46"><p class="c1"><span class="c26">bit 2</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 1</span></p></td><td class="c41"><p class="c1"><span class="c26">bit 0</span></p></td><td class="c106"><p class="c1 c14"><span class="c26"></span></p></td><td class="c41"><p class="c1 c14"><span class="c26"></span></p></td><td class="c88"><p class="c1 c14"><span class="c26"></td>
-</tr>
-<tr><td class="c61 c197"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c79 c138"><p class="c1"><span class="c2">0</span></p></td><td class="c46 c138"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c138"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c138"><p class="c1"><span class="c2">1</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>197</span><span class="c63 c62 c50 c53 c44">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0xC5</span></p></td></tr><tr class="c51"><td class="c251" colspan="11" rowspan="1"><p class="c1"><span class="c26">TROCA NIBBLES</td>
-</tr>
-<tr><td class="c61 c138"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c138"><p class="c1"><span class="c2">1</span></p></td><td class="c66 c138"><p class="c1"><span class="c2">0</span></p></td><td class="c66 c138"><p class="c1"><span class="c2">1</span></p></td><td class="c79 c197"><p class="c1"><span class="c2">1</span></p></td><td class="c46 c197"><p class="c1"><span class="c2">1</span></p></td><td class="c41 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c41 c197"><p class="c1"><span class="c2">0</span></p></td><td class="c106"><p class="c1"><span class="c5">=</span></p></td><td class="c41"><p class="c1"><span>92</span><span class="c62">10</span></p></td><td class="c88"><p class="c1"><span class="c2">0x5C</span></p></td></tr></tbody></table><p class="c11">E por &uacute;ltimo temos a instru&ccedil;&atilde;o </span><span class="options">NOP</span>que &eacute; respons&aacute;vel por apenas consumir um ciclo de opera&ccedil;&atilde;o, sendo definida como &ldquo;<i>No OPeration</span>&rdquo; (nenhuma opera&ccedil;&atilde;o). &Eacute; muito usada em estruturas de <i>delay</span>. O C&oacute;digo 9.6 mostra o uso da instru&ccedil;&atilde;o.</p><p class="c12"><span class="register">C&oacute;digo 9.6 -</span>Exemplo do uso da instru&ccedil;&atilde;o </span><span class="c3">NOP</span></p><a id="t.61bc5a32e67f03081ffdb9aa49048fc5114496c5"></a><a id="t.112"></a><table class="c56"><tbody><tr><td class="c68"><p class="c19 c14"><span class="c2"></span></p><p class="c19"><span class="c42 c8 c76">; INSTRUCAO: NOP</span></p><p class="c19"><span class="c42 c8 c76">; EXECUTA UM CICLO DE MAQUINA. NAO PROCESSA NENHUM</span></p><p class="c19"><span class="c42 c8 c76">; CALCULO ARITMETICO OU LOGICO</span></p><p class="c19"><span class="c42 c9">NOP</span></p><p class="c19 c14"><span class="c2"></span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 9: Conhecendo as instru&ccedil;&otilde;es <span class="instruction">CLRF</span>, <span class="instruction">CLRW</span>, <span class="instruction">NOP</span>, <span class="instruction">.RLF</span>, <span class="instruction">RRF</span> e <span class="instruction">SWAPF</span> para o PIC16F628A</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_8.html">Voltar ao Epis&oacute;dio 8</a></p>
+			<p class="forwardPage"><a href="./Episode_10.html">Ir para Epis&oacute;dio 10</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste epis&oacute;dio veremos instru&ccedil;&otilde;es com prop&oacute;sitos interessantes sobre bits (sendo que uma delas n&atilde;o afeta bits diretamente), sendo elas <span class="instruction">CLRF</span>, <span class="instruction">CLRW</span>, <span class="instruction">NOP</span>, <span class="instruction">RLF</span>, <span class="instruction">RRF</span> e <span class="instruction">SWAPF</span>.</p>
+			
+			<p class="principal">A instru&ccedil;&atilde;o <span class="instruction">CLRF</span> <span class="constant">f</span> &eacute; respons&aacute;vel por limpar (<i>clear</i>) o valor do registrador de endere&ccedil;o/nome <span class="constant">f</span>, isto &eacute;, zerar o valor do registrador de endere&ccedil;o/nome <span class="constant">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="register">Z</span> do registrador <span class="register">STATUS</span>. O C&oacute;digo 9.1 mostra o uso da instru&ccedil;&atilde;o.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.1 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">CLRF</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: CLRF</code>
+<code>; LIMPA O REGISTRADOR f</code>
+<code>MOVLW   .7</code>
+<code>MOVWF   0x0C</code>
+<code>CLRF    0x0C</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A instru&ccedil;&atilde;o <span class="instruction">CLRW</span> &eacute; respons&aacute;vel por limpar (<i>clear</i>) o valor do registrador <span class="register">W</span>, isto &eacute;, zerar o valor do registrador <span class="register">W</span>. A instru&ccedil;&atilde;o afeta o bit <span class="register">Z</span> do registrador <span class="register">STATUS</span>. O C&oacute;digo 9.2 mostra o uso da instru&ccedil;&atilde;o.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.2 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">CLRW</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: CLRW</code>
+<code>; LIMPA O REGISTRADOR W</code>
+<code>MOVLW   .7</code>
+<code>MOVWF   0x0C</code>
+<code>CLRF    0x0C</code>
+<code>CLRW</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A instru&ccedil;&atilde;o <span class="instruction">RLF</span> <span class="constant">f, d</span> &eacute; respons&aacute;vel por rotacionar os bits do registrador de endere&ccedil;o/nome <span class="register">f</span> para a esquerda (<i>left</i>). Assim o estado do 1&ordm; bit passa para o 2&ordm; bit, assim sucessivamente at&eacute; o 6&ordm; bit. O estado antigo do 7&ordm; bit passa para o bit <span class="register">C</span> do registrador <span class="register">STATUS</span> e o antigo estado do bit <span class="register">C</span> do registrador <span class="register">STATUS</span> passa para o 1&ordm; bit do registrador de endere&ccedil;o/nome <span class="constant">f</span>, fechando o ciclo da rota&ccedil;&atilde;o. O resultado desta instru&ccedil;&atilde;o/opera&ccedil;&atilde;o ser&aacute; armazenado no registrador <span class="register">W</span> se <span class="constant">d</span> for igual a 0, mas se <span class="constant">d</span> for igual a 1 o resultado &eacute; armazenado no registrador de endere&ccedil;o/nome <span class="constant">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="register">C</span>do registrador <span class="register">STATUS</span>. O C&oacute;digo 9.3 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.1 exibe o processo.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.3 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">RLF</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: RLF</code>
+<code>; APLICA O OPERADOR DE ROTACAO A ESQUERDA SOBRE O</code>
+<code>; CONTEUDO DO REG. f E COLOCA EM d</code>
+<code>BCF     STATUS, C</code>
+<code>MOVLW   .197</code>
+<code>MOVWF   0x0C</code>
+<code>RLF     0x0C, 0</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="register">
+				<thead>
+					<tr>
+						<th colspan="11">
+							<span class="dataTitle">Tabela 9.1 -</span> Opera&ccedil;&atilde;o de rota&ccedil;&atilde;o &agrave; esquerda do n&uacute;mero 197<sub>10</sub>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span class="register">C</span></td>
+						<td colspan="8"><b>Bin&aacute;rio</b></td>
+						<td><b>Decimal</b></td>
+						<td><b>Hexadecimal</b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td class="colorBit7"><span class="number">1</span></td>
+						<td class="colorBit6"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit3"><span class="number">0</span></td>
+						<td class="colorBit2"><span class="number">1</span></td>
+						<td class="colorBit1"><span class="number">0</span></td>
+						<td class="colorBit0"><span class="number">1</span></td>
+						<td><span class="number">197<sub>10</sub></span></td>
+						<td><span class="number">0xC5</span></td>
+					</tr>
+					<tr>
+						<td colspan="11"><b>ROTA&Ccedil;&Atilde;O &Agrave; ESQUERDA<b></td>
+					</tr>
+					<tr>
+						<td class="colorBit7"><span class="number">1</span></td>
+						<td class="colorBit6"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit3"><span class="number">0</span></td>
+						<td class="colorBit2"><span class="number">1</span></td>
+						<td class="colorBit1"><span class="number">0</span></td>
+						<td class="colorBit0"><span class="number">1</span></td>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td><span class="number">138<sub>10</sub></span></td>
+						<td><span class="number">0x8A</span></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoRegister" colspan="11">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A instru&ccedil;&atilde;o <span class="instruction">RRF</span> <span class="constant">f, d</span> &eacute; respons&aacute;vel por rotacionar os bits do registrador de endere&ccedil;o/nome <span class="constant">f</span> para a direita (<i>right</i>). Assim o estado do 7&ordm; bit passa para o 6&ordm; bit, assim sucessivamente at&eacute; o 2&ordm; bit. O estado antigo do 1&ordm; bit passa para o bit <span class="register">C</span> do registrador <span class="register">STATUS</span> e o antigo estado do bit <span class="register">C</span> do registrador <span class="register">STATUS</span> passa para o 7&ordm; bit do registrador de endere&ccedil;o/nome <span class="constant">f</span>, fechando o ciclo da rota&ccedil;&atilde;o. O resultado desta instru&ccedil;&atilde;o/opera&ccedil;&atilde;o ser&aacute; armazenado no registrador <span class="register">W</span> se <span class="constant">d</span> for igual a 0, mas se <span class="constant">d</span> for igual a 1 o resultado &eacute; armazenado no registrador de endere&ccedil;o/nome <span class="constant">f</span>. A instru&ccedil;&atilde;o afeta o bit <span class="register">C</span> do registrador <span class="register">STATUS</span>. O C&oacute;digo 9.4 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.2 exibe o processo.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.4 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">RRF</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: RRF</code>
+<code>; APLICA O OPERADOR DE ROTACAO A DIREITA SOBRE O</code>
+<code>; CONTEUDO DO REG. f E COLOCA EM d</code>
+<code>BCF     STATUS, C</code>
+<code>MOVLW   .197</code>
+<code>MOVWF   0x0C</code>
+<code>RRF     0x0C, 0</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="register">
+				<thead>
+					<tr>
+						<th colspan="11">
+							<span class="dataTitle">Tabela 9.2 -</span> Opera&ccedil;&atilde;o de rota&ccedil;&atilde;o &agrave; direita do n&uacute;mero 197<sub>10</sub>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span class="register">C</span></td>
+						<td colspan="8"><b>Bin&aacute;rio</b></td>
+						<td><b>Decimal</b></td>
+						<td><b>Hexadecimal</b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td class="colorBit7"><span class="number">1</span></td>
+						<td class="colorBit6"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit3"><span class="number">0</span></td>
+						<td class="colorBit2"><span class="number">1</span></td>
+						<td class="colorBit1"><span class="number">0</span></td>
+						<td class="colorBit0"><span class="number">1</span></td>
+						<td><span class="number">197<sub>10</sub></span></td>
+						<td><span class="number">0xC5</span></td>
+					</tr>
+					<tr>
+						<td colspan="11"><b>ROTA&Ccedil;&Atilde;O &Agrave; DIREITA<b></td>
+					</tr>
+					<tr>
+						<td class="colorBit0"><span class="number">1</span></td>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td class="colorBit7"><span class="number">1</span></td>
+						<td class="colorBit6"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit3"><span class="number">0</span></td>
+						<td class="colorBit2"><span class="number">1</span></td>
+						<td class="colorBit1"><span class="number">0</span></td>
+						<td><span class="number">98<sub>10</sub></span></td>
+						<td><span class="number">0x62</span></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoRegister" colspan="11">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A instru&ccedil;&atilde;o <span class="instruction">SWAPF</span> <span class="constant">f, d</span> &eacute; respons&aacute;vel por trocar os <i>nibbles</i> do registrador de endere&ccedil;o/nome <span class="constant">f</span>, isto &eacute;, os primeiros 4 bits menos significativos do valor armazenado no registrador de endere&ccedil;o/nome <span class="constant">f</span> &eacute; o <i>nibble</i> menos significativo do valor do registrador de endere&ccedil;o/nome <span class="constant">f</span>, enquanto que os 4 bits mais significativo do valor do registrador de endere&ccedil;o/nome <span class="constant">f</span> &eacute; o <i>nibble</i> mais deste deste valor. Assim, essa instru&ccedil;&atilde;o troca as posi&ccedil;&otilde;es dos <i>nibbles</i>. Nenhum bit do registrador <span class="register">STATUS</span> &eacute; afetado por esta instru&ccedil;&atilde;o. O C&oacute;digo 9.5 mostra o uso da instru&ccedil;&atilde;o e a Tabela 9.3 exibe o processo.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.5 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">SWAPF</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: SWAPF</code>
+<code>; TROCA OS NIBBLES (GRUPO DE 4 BITS) MAIS SIGNIFICATIVO</code>
+<code>; PARA O MENOS SIGNIFICATIVO SOBRE O CONTEUDO DO REG. f</code>
+<code>; E COLOCA EM d</code>
+<code>MOVLW   .197</code>
+<code>MOVWF   0x0C</code>
+<code>SWAPF   0x0C, 0</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="register">
+				<thead>
+					<tr>
+						<th colspan="11">
+							<span class="dataTitle">Tabela 9.3 -</span> Opera&ccedil;&atilde;o de troca de nibbles do n&uacute;mero 197<sub>10</sub>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><span class="register">C</span></td>
+						<td colspan="8"><b>Bin&aacute;rio</b></td>
+						<td><b>Decimal</b></td>
+						<td><b>Hexadecimal</b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>bit 7</td>
+						<td>bit 6</td>
+						<td>bit 5</td>
+						<td>bit 4</td>
+						<td>bit 3</td>
+						<td>bit 2</td>
+						<td>bit 1</td>
+						<td>bit 0</td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">1</span></td>
+						<td class="colorBit4"><span class="number">1</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">1</span></td>
+						<td><span class="number">197<sub>10</sub></span></td>
+						<td><span class="number">0xC5</span></td>
+					</tr>
+					<tr>
+						<td colspan="11"><b>TROCA NIBBLES<b></td>
+					</tr>
+					<tr>
+						<td class="colorBitC"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">1</span></td>
+						<td class="colorBit5"><span class="number">0</span></td>
+						<td class="colorBit5"><span class="number">1</span></td>
+						<td class="colorBit4"><span class="number">1</span></td>
+						<td class="colorBit4"><span class="number">1</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td class="colorBit4"><span class="number">0</span></td>
+						<td><span class="number">92<sub>10</sub></span></td>
+						<td><span class="number">0x5C</span></td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoRegister" colspan="11">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">E por &uacute;ltimo temos a instru&ccedil;&atilde;o <span class="instruction">NOP</span> que &eacute; respons&aacute;vel por apenas consumir um ciclo de opera&ccedil;&atilde;o, sendo definida como "<i><b>N</b>o <b>OP</b>eration</i>" (nenhuma opera&ccedil;&atilde;o). &Eacute; muito usada em estruturas de <i>delay</i>. O C&oacute;digo 9.6 mostra o uso da instru&ccedil;&atilde;o.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 9.6 -</span> Exemplo do uso da instru&ccedil;&atilde;o <span class="instruction">NOP</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>; INSTRUCAO: NOP</code>
+<code>; EXECUTA UM CICLO DE MAQUINA. NAO PROCESSA NENHUM</code>
+<code>; CALCULO ARITMETICO OU LOGICO</code>
+<code>NOP</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_8.html">Voltar ao Epis&oacute;dio 8</a></p>
+			<p class="forwardPage"><a href="./Episode_10.html">Ir para Epis&oacute;dio 10</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>

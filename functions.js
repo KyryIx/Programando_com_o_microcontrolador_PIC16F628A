@@ -4,8 +4,8 @@ function applyStyleAssemblyPIC(){
 	var diretives      = ["#INCLUDE", "LIST", "__CONFIG", "#DEFINE", "ORG", "END"];
 	var quantDiretives = diretives.length;
 	
-	var instructions = ["ADDWF", "ANDWF", "CLRF", "CLRW", "COMF", "DECF", "DECFSZ", "INCF", 
-						"INCFSZ", "IORWF", "MOVF", "MOVWF", "NOP", "RLF", "RRF", "SUBWF", "SWAPF", 
+	var instructions = ["ADDWF", "ANDWF", "CLRF", "CLRW", "COMF", "DECFSZ", "DECF", "INCFSZ", 
+						"INCF", "IORWF", "MOVF", "MOVWF", "NOP", "RLF", "RRF", "SUBWF", "SWAPF", 
 						"XORWF", "BCF", "BSF", "BTFSC", "BTFSS", "ADDLW", "ANDLW", "CALL", 
 						"CLRWDT", "GOTO", "IORLW", "MOVLW", "RETFIE", "RETLW", "RETURN", "SLEEP", 
 						"SUBLW", "XORLW"];
@@ -53,6 +53,7 @@ function applyStyleAssemblyPIC(){
 				position = elementCode.innerText.trim().indexOf( instructions[k] );
 				if( position == 0 ){
 					elementCode.innerHTML = applyInstruction( elementCode.innerHTML, instructions[k] );
+					break;
 				}
 			}
 		}
