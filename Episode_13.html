@@ -1,33 +1,613 @@
-<h1 class="c75 c35" id="h.6pp8218syaw3"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.58jk4me2xwmk"><span class="c28 c87">Epis&oacute;dio 13: Conhecendo a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados em RB4 a RB7 no PIC16F628A</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Neste epis&oacute;dio veremos como usar a interrup&ccedil;&atilde;o por mudan&ccedil;as de estados nos pinos </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span>para um exemplo pr&aacute;tico. Esta interrup&ccedil;&atilde;o &eacute; diferente da interrup&ccedil;&atilde;o externa vista no epis&oacute;dio 12 pois a interrup&ccedil;&atilde;o externa ocorre </span><span>somente sobre a borda </span><span>(subida ou descida) do sinal, enquanto que esta interrup&ccedil;&atilde;o (mudan&ccedil;a de estados) que veremos agora se d&aacute; </span><span>por mudan&ccedil;a de estados l&oacute;gicos</span><span class="c5">, tanto do estado de nivel alto para baixo quanto do n&iacute;vel baixo para alto, e pode-se ver a diferen&ccedil;a pela Figura 13.1.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="c5">Figura 13.1 - Bordas e estados l&oacute;gicos de um sinal quadrado</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.142"></a><table class="c7"><tbody><tr><td><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 416.00px; height: 129.33px;"><img src="images/image38.png" style="width: 416.00px; height: 129.33px;" title=""></span></p></td></tr></tbody></table><p class="c24"><span>          </span><span class="c42 c39 c50 c44">Fonte: Pr&oacute;prio autor (2020)</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c67 c35"><span>Ao trabalhar com a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados, devem ter em mente que essa interrup&ccedil;&atilde;o est&aacute; associada aos pinos </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span>, n&atilde;o tendo como associar a um e a outro n&atilde;o. Assim, se ativar a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados no registrador </span><span class="c47 c34">INTCON</span><span>, assim qualquer mudan&ccedil;a de estados em qualquer um dos pinos </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span>chamar&aacute; o tratamento da interrup&ccedil;&atilde;o se o bit </span><span class="c47 c34">GIE</span><span class="c5">estiver setado.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Logo, se alguma das portas </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span class="c5">tiverem seu estado modificado, a interrup&ccedil;&atilde;o &eacute; chamada e ela pode ser tratada de forma semelhante ao visto no epis&oacute;dio 12.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Aqui novamente faz-se uso dos registradores </span><span class="c47 c34">TRISB</span><span>e </span><span class="c47 c34">INTCON</span><span class="c5">para a interrup&ccedil;&atilde;o externa, mudando apenas os bits a serem usados.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Assim, come&ccedil;amos com o registrador </span><span class="c47 c34">TRISB</span><span>configurando os comportamentos (pino configurado como entrada ou sa&iacute;da) e o pr&oacute;ximo registrador &eacute; o </span><span class="c47 c34">OPTION_REG</span><span>com os bits </span><span class="c59 c47 c34">RBPU</span><span>no qual definir&aacute; se ir&aacute; ou n&atilde;o ativar os resistores de pull-up dos pinos do </span><span class="c47 c34">PORTB</span><span>e por ultimo o registrador </span><span class="c47 c34">INTCON</span><span>com os bits </span><span class="c47 c34">RBIE</span><span>e </span><span class="c47 c34">GIE</span><span>, e o estado da interrup&ccedil;&atilde;o est&aacute; no bit </span><span class="c47 c34">RBIF</span><span class="c5">.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c67 c35"><span>Aqui veremos um exemplo do uso desta interrup&ccedil;&atilde;o para captura de informa&ccedil;&otilde;es de um teclado, sem a necessidade de uso de um circuito espec&iacute;fico para isso (</span><span class="c39">por exemplo o circuito integrado 8279 da Intel</span><span class="c5">) como forma de refor&ccedil;ar o estudo das interrup&ccedil;&otilde;es.</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35"><span>Na Figura 13.2 encontra-se o teclado utilizado em nossa aplica&ccedil;&atilde;o e n&atilde;o Figura 13.3 &agrave; disposi&ccedil;&atilde;o dos pinos em rela&ccedil;&atilde;o &agrave;s teclas. Essa disposi&ccedil;&atilde;o &eacute; importante na hora de gerar as conex&otilde;es no microcontrolador PIC16F628A.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">Figura 13.2 &ndash;</span><span class="c5">Teclado com 4 linha e 4 colunas</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.143"></a><table class="c7"><tbody><tr class="c228"><td class="c236"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 297.41px; height: 329.68px;"><img src="images/image23.png" style="width: 297.41px; height: 329.68px;" title=""></span></p></td></tr></tbody></table><p class="c4"><span>              </span><span class="c39">Fonte: PROCURAR NET</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">Figura 13.3 &ndash; </span><span class="c5">Disposi&ccedil;&atilde;o dos pinos do teclado</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.144"></a><table class="c7"><tbody><tr><td class="c130"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 401.81px; height: 208.85px;"><img src="images/image73.png" style="width: 401.81px; height: 208.85px;" title=""></span></p></td></tr></tbody></table><p class="c4"><span>           </span><span class="c39">Fonte: PROCURAR NET</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c67 c35"><span class="c5">A Figura 13.4 exibe o esquema das conex&otilde;es dos componentes necess&aacute;rios ao funcionamento do nosso exemplo, sendo que o padr&atilde;o de leitura segue a Tabela 13.1.</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">Figura 13.4 &ndash; </span><span class="c5">Disposi&ccedil;&atilde;o das conex&otilde;es dos componentes</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.145"></a><table class="c7"><tbody><tr><td class="c242"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 444.00px; height: 366.67px;"><img src="images/image32.png" style="width: 444.00px; height: 366.67px;" title=""></span></p></td></tr></tbody></table><p class="c4"><span>         </span><span class="c42 c39 c50 c44">Fonte: Pr&oacute;prio autor (2021)</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">Tabela 13.1 &ndash; </span><span class="c5">Rela&ccedil;&atilde;o do registrador PORTB e as teclas</span></p><a id="t.6c2ddd97295140a3e67d83cdd7d4imagecaa62d99"></a><a id="t.146"></a><table class="c210"><tbody><tr><td class="c216"><p class="c1 c35"><span class="c26">Tecla</span></p></td><td class="c216"><p class="c1 c35"><span class="c26">Linha/Coluna</span></p></td><td class="c214"><p class="c1 c35"><span class="c26">PORTB (bin)</span></p></td><td class="c216"><p class="c1 c35"><span class="c26">PORTB (hex)</span></p></td><td class="c248"><p class="c1 c35"><span class="c26">PORTB (dec)</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">1</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">1/1</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0001.0001</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">11</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">17</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">2</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">1/2</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0010.0001</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">21</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">33</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">3</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">1/3</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0100.0001</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">41</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">65</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">A</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">1/4</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">1000.0001</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">81</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">129</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">4</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">2/1</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0001.0010</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">12</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">18</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">5</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">2/2</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0010.0010</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">22</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">34</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">6</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">2/3</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0100.0010</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">42</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">66</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">B</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">2/4</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">1000.0010</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">82</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">130</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">7</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">3/1</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0001.0100</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">14</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">20</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">8</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">3/2</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0010.0100</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">24</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">36</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">9</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">3/3</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0100.0100</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">44</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">68</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">C</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">3/4</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">1000.0100</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">84</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">132</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">*</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">4/1</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0001.1000</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">18</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">24</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">0</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">4/2</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0010.1000</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">28</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">40</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">#</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">4/3</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">0100.1000</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">48</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">72</td>
-</tr>
-<tr><td class="c81"><p class="c1 c35"><span class="c16 c8">D</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">4/4</span></p></td><td class="c94"><p class="c1 c35"><span class="c16 c8">1000.1000</span></p></td><td class="c81"><p class="c1 c35"><span class="c16 c8">88</span></p></td><td class="c113"><p class="c1 c35"><span class="c16 c8">136</span></p></td></tr></tbody></table><p class="c4"><span class="c42 c39 c50 c44">Fonte: Pr&oacute;prio autor (2021)</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">Figura 13.5 &ndash; </span><span class="c5">Fluxograma da solu&ccedil;&atilde;o para controle de acesso por teclado</span></p><a id="t.3c9232b2d5d9ea2a259f8403ad80b64e9db35916"></a><a id="t.147"></a><table class="c7"><tbody><tr><td class="c68"><p class="c1"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 536.52px; height: 810.55px;"><img src="images/image70.png" style="width: 536.52px; height: 810.55px;" title=""></span></p></td></tr></tbody></table><p class="c4"><span class="c42 c39 c50 c44">Fonte: Pr&oacute;prio autor (2021)</span></p><p class="c67 c35 c14"></p><p class="c67 c35"><span>Na Tabela 13.1 o </span><span class="c37">nibble</span><span>mais significativo est&aacute; associado aos pinos </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span>que s&atilde;o os pinos de entrada (</span><span class="c37">input</span><span>) que ser&atilde;o lidos para saber se est&aacute; entrando o n&iacute;vel alto ao pressionar alguma tecla associada a coluna dada por eles. J&aacute; os pinos </span><span class="c47 c34">RB0</span><span>a </span><span class="c47 c34">RB3</span><span>ser&atilde;o pinos de sa&iacute;das para &ldquo;injetar&rdquo; sinal alto nas devidas linhas e poder associar com as colunas relacionadas com os pinos </span><span class="c47 c34">RB4</span><span>a </span><span class="c47 c34">RB7</span><span class="c5">.</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35"><span>A Figura 13.5 exibe o fluxograma da solu&ccedil;&atilde;o para esse exemplo no qual especifica a rotina principal e a rotina de interrup&ccedil;&atilde;o. Nesta fgura pode-se ver que neste exemplo fazemos a limpeza do flag de estado da interrup&ccedil;&atilde;o de mudan&ccedil;a (</span><span class="c47 c34">RBIF</span><span>) ap&oacute;s todas as verifica&ccedil;&otilde;es, por causa de alguns </span><span class="c37">delays</span><span class="c5">que podem ocorrer no percurso do processo. Tamb&eacute;m h&aacute; v&aacute;rios testes baseados nos valores da Tabela 13.1 para interpretar as teclas clicadas.</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c67 c35"><span class="c5">No C&oacute;digo 13.1 h&aacute; a implementa&ccedil;&atilde;o da solu&ccedil;&atilde;o em assembly associado ao fluxograma da Figura 13.5 e do circuito da Figura 13.4.</span></p><p class="c67 c35 c14"><span class="c5"></span></p><p class="c1 c35"><span class="register">C&oacute;digo 13.1 &ndash;</span><span class="c5">Implementa&ccedil;&atilde;o do exemplo de aplica&ccedil;&atilde;o da int. de mudan&ccedil;a de estados</span></p><a id="t.9540a7be3de57a59b1bfe4d15a2f61d1666c67dd"></a><a id="t.148"></a><table class="c210"><tbody><tr><td class="c201"><p class="c4"><span class="c30 c8"> 1  #INCLUDE &lt;P16F628A.INC&gt;</span></p><p class="c4"><span class="c30 c8"> 2  LIST P=16F628A</span></p><p class="c4"><span class="c30 c8"> 3  __CONFIG _BODEN_ON &amp; _MCLRE_ON &amp; _LVP_OFF &amp; _WDT_OFF &amp; INTOSC &amp; _CP_OFF &amp; _PWRTE_ON</span></p><p class="c4"><span class="c30 c8"> 4</span></p><p class="c4"><span class="c30 c8"> 5  #DEFINE W_TEMP    0x20</span></p><p class="c4"><span class="c30 c8"> 6  #DEFINE STATUS_TEMP  0x21</span></p><p class="c4"><span class="c30 c8"> 7  #DEFINE COUNTER    0x22</span></p><p class="c4"><span class="c30 c8"> 8  #DEFINE PASS_LIM_LOW 0x23</span></p><p class="c4"><span class="c30 c8"> 9  #DEFINE PASS_LIM_HIGH 0x26</span></p><p class="c4"><span class="c30 c8">10  #DEFINE ROW_1     PORTB, RB0</span></p><p class="c4"><span class="c30 c8">11  #DEFINE ROW_2     PORTB, RB1</span></p><p class="c4"><span class="c30 c8">12  #DEFINE ROW_3     PORTB, RB2</span></p><p class="c4"><span class="c30 c8">13  #DEFINE ROW_4     PORTB, RB3</span></p><p class="c4"><span class="c30 c8">14  ;#DEFINE COLUMN_1   PORTB, RB4</span></p><p class="c4"><span class="c30 c8">15  ;#DEFINE COLUMN_2   PORTB, RB5</span></p><p class="c4"><span class="c30 c8">16  ;#DEFINE COLUMN_3   PORTB, RB6</span></p><p class="c4"><span class="c30 c8">17  ;#DEFINE COLUMN_4   PORTB, RB7</span></p><p class="c4"><span class="c30 c8">18  #DEFINE DOOR     PORTA, RA0</span></p><p class="c4"><span class="c30 c8">19  #DEFINE LED_STOP   PORTA, RA1</span></p><p class="c4"><span class="c30 c8">20  #DEFINE LED_GO    PORTA, RA2</span></p><p class="c4"><span class="c30 c8">21  #DEFINE PASS_VALUE_1 0X11 ; VALUE 1</span></p><p class="c4"><span class="c30 c8">22  #DEFINE PASS_VALUE_2 0X22 ; VALUE 5</span></p><p class="c4"><span class="c30 c8">23  #DEFINE PASS_VALUE_3 0X44 ; VALUE 9</span></p><p class="c4"><span class="c30 c8">24  #DEFINE PASS_VALUE_4 0X88 ; VALUE D</span></p><p class="c4"><span class="c30 c8">25</span></p><p class="c4"><span class="c30 c8">26  ORG   0x00</span></p><p class="c4"><span class="c30 c8">27  GOTO  INICIAPARAMETROS</span></p><p class="c4"><span class="c30 c8">28</span></p><p class="c4"><span class="c30 c8">29  ORG   0x04</span></p><p class="c4"><span class="c30 c8">30  MOVWF  W_TEMP</span></p><p class="c4"><span class="c30 c8">31  SWAPF  STATUS, 0</span></p><p class="c4"><span class="c30 c8">32  MOVWF  STATUS_TEMP</span></p><p class="c4"><span class="c30 c8">33</span></p><p class="c4"><span class="c30 c8">34  BTFSS  INTCON, RBIF</span></p><p class="c4"><span class="c30 c8">35  GOTO  SAIDA_INTERRUPCAO</span></p><p class="c4"><span class="c30 c8">36</span></p><p class="c4"><span class="c30 c8">37  INCF  COUNTER</span></p><p class="c4"><span class="c30 c8">38</span></p><p class="c4"><span class="c30 c8"> KEY_1:</span></p><p class="c4"><span class="c30 c8">40  MOVLW  0x11 ; KEY 1</span></p><p class="c4"><span class="c30 c8">41  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">42  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">43  GOTO  KEY_2</span></p><p class="c4"><span class="c30 c8">44  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">45</span></p><p class="c4"><span class="c30 c8"> KEY_2:</span></p><p class="c4"><span class="c30 c8">47  MOVLW  0x21 ; KEY 2</span></p><p class="c4"><span class="c30 c8">48  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">49  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">50  GOTO  KEY_3</span></p><p class="c4"><span class="c30 c8">51  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">52</span></p><p class="c4"><span class="c30 c8"> KEY_3:</span></p><p class="c4"><span class="c30 c8">54  MOVLW  0x41 ; KEY 3</span></p><p class="c4"><span class="c30 c8">55  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">56  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">57  GOTO  KEY_A</span></p><p class="c4"><span class="c30 c8">58  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">59</span></p><p class="c4"><span class="c30 c8"> KEY_A:</span></p><p class="c4"><span class="c30 c8">61  MOVLW  0x81 ; KEY A</span></p><p class="c4"><span class="c30 c8">62  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">63  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">64  GOTO  KEY_4</span></p><p class="c4"><span class="c30 c8">65  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">66  </span></p><p class="c4"><span class="c30 c8"> KEY_4:</span></p><p class="c4"><span class="c30 c8">68  MOVLW  0x12 ; KEY 4</span></p><p class="c4"><span class="c30 c8">69  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">70  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">71  GOTO  KEY_5</span></p><p class="c4"><span class="c30 c8">72  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">73</span></p><p class="c4"><span class="c30 c8"> KEY_5:</span></p><p class="c4"><span class="c30 c8">75  MOVLW  0x22 ; KEY 5</span></p><p class="c4"><span class="c30 c8">76  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">77  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">78  GOTO  KEY_6</span></p><p class="c4"><span class="c30 c8">79  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">80</span></p><p class="c4"><span class="c30 c8"> KEY_6:</span></p><p class="c4"><span class="c30 c8">82  MOVLW  0x42 ; KEY 6</span></p><p class="c4"><span class="c30 c8">83  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">84  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">85  GOTO  KEY_B</span></p><p class="c4"><span class="c30 c8">86  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">87</span></p><p class="c4"><span class="c30 c8"> KEY_B:</span></p><p class="c4"><span class="c30 c8">89  MOVLW  0x82 ; KEY B</span></p><p class="c4"><span class="c30 c8">90  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">91  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">92  GOTO  KEY_7</span></p><p class="c4"><span class="c30 c8">93  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">94</span></p></td><td class="c159"><p class="c4"><span class="c30 c8"> KEY_7:</span></p><p class="c4"><span class="c30 c8">96  MOVLW  0x14 ; KEY 7</span></p><p class="c4"><span class="c30 c8">97  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">98  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">99  GOTO  KEY_8</span></p><p class="c4"><span class="c30 c8">100  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">101</span></p><p class="c4"><span class="c30 c8"> KEY_8:</span></p><p class="c4"><span class="c30 c8">103  MOVLW  0x24 ; KEY 8</span></p><p class="c4"><span class="c30 c8">104  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">105  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">106  GOTO  KEY_9</span></p><p class="c4"><span class="c30 c8">107  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">108</span></p><p class="c4"><span class="c30 c8"> KEY_9:</span></p><p class="c4"><span class="c30 c8">110  MOVLW  0x44 ; KEY 9</span></p><p class="c4"><span class="c30 c8">111  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">112  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">113  GOTO  KEY_C</span></p><p class="c4"><span class="c30 c8">114  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">115</span></p><p class="c4"><span class="c30 c8"> KEY_C:</span></p><p class="c4"><span class="c30 c8">117  MOVLW  0x84 ; KEY C</span></p><p class="c4"><span class="c30 c8">118  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">119  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">120  GOTO  KEY_ASTERISC</span></p><p class="c4"><span class="c30 c8">121  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">122</span></p><p class="c4"><span class="c30 c8"> KEY_ASTERISC:</span></p><p class="c4"><span class="c30 c8">124  MOVLW  0x18 ; KEY *</span></p><p class="c4"><span class="c30 c8">125  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">126  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">127  GOTO  KEY_0</span></p><p class="c4"><span class="c30 c8">128  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">129</span></p><p class="c4"><span class="c30 c8"> KEY_0:</span></p><p class="c4"><span class="c30 c8">131  MOVLW  0x28 ; KEY 0</span></p><p class="c4"><span class="c30 c8">132  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">133  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">134  GOTO  KEY_HASH</span></p><p class="c4"><span class="c30 c8">135  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">136</span></p><p class="c4"><span class="c30 c8"> KEY_HASH:</span></p><p class="c4"><span class="c30 c8">138  MOVLW  0x48 ; KEY #</span></p><p class="c4"><span class="c30 c8">139  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">140  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">141  GOTO  KEY_D</span></p><p class="c4"><span class="c30 c8">142  GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">143</span></p><p class="c4"><span class="c30 c8"> KEY_D:</span></p><p class="c4"><span class="c30 c8">145  MOVLW  0x88 ; KEY D</span></p><p class="c4"><span class="c30 c8">146  XORWF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">147  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">148  GOTO  CLEAR_FLAG_STATE_CHANGE</span></p><p class="c4"><span class="c30 c8">149  ;GOTO  STEP_COUNTER</span></p><p class="c4"><span class="c30 c8">150  </span></p><p class="c4"><span class="c30 c8"> STEP_COUNTER:</span></p><p class="c4"><span class="c30 c8">152  MOVF  PORTB, 0</span></p><p class="c4"><span class="c30 c8">153  MOVWF  COUNTER</span></p><p class="c4"><span class="c30 c8">154  MOVLW  PASS_M_4</span></p><p class="c4"><span class="c30 c8">155  XORLW  COUNTER</span></p><p class="c4"><span class="c30 c8">156  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">157  GOTO  CLEAR_FLAG_STATE_CHANGE</span></p><p class="c4"><span class="c30 c8">158  </span></p><p class="c4"><span class="c30 c8">159  ; VERIFY PASSWORD</span></p><p class="c4"><span class="c30 c8">160  MOVLW  PASS_V_1</span></p><p class="c4"><span class="c30 c8">161  XORWF  PASS_M_1, 0</span></p><p class="c4"><span class="c30 c8">162  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">163  GOTO  NO_ACCESS</span></p><p class="c4"><span class="c30 c8">164  </span></p><p class="c4"><span class="c30 c8">165  MOVLW  PASS_V_2</span></p><p class="c4"><span class="c30 c8">166  XORWF  PASS_M_2, 0</span></p><p class="c4"><span class="c30 c8">167  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">168  GOTO  NO_ACCESS</span></p><p class="c4"><span class="c30 c8">169  </span></p><p class="c4"><span class="c30 c8">170  MOVLW  PASS_V_3</span></p><p class="c4"><span class="c30 c8">170  XORWF  PASS_M_3, 0</span></p><p class="c4"><span class="c30 c8">170  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">170  GOTO  NO_ACCESS</span></p><p class="c4"><span class="c30 c8">170  </span></p><p class="c4"><span class="c30 c8">170  MOVLW  PASS_V_4</span></p><p class="c4"><span class="c30 c8">170  XORWF  PASS_M_4, 0</span></p><p class="c4"><span class="c30 c8">170  BTFSS  STATUS, Z</span></p><p class="c4"><span class="c30 c8">170  GOTO  NO_ACCESS</span></p><p class="c4"><span class="c30 c8">170  ;GOTO  YES_ACCESS</span></p><p class="c4"><span class="c30 c8">180  </span></p><p class="c4"><span class="c30 c8"> YES_ACCESS:</span></p><p class="c4"><span class="c30 c8">182  BSF   LED_GO</span></p><p class="c4"><span class="c30 c8">183  BSF   DOOR</span></p><p class="c4"><span class="c30 c8">184  CALL  WAIT_1_SECONDS</span></p><p class="c4"><span class="c30 c8">185  BCF   LED_GO</span></p><p class="c4"><span class="c30 c8">186  BCF   DOOR</span></p><p class="c4"><span class="c30 c8">187  GOTO  RESET_COUNTER </span></p><p class="c4"><span class="c30 c8">188</span></p></td><td class="c159"><p class="c4"><span class="c30 c8"> NO_ACCESS:</span></p><p class="c4"><span class="c30 c8">190  BSF   LED_STOP</span></p><p class="c4"><span class="c30 c8">191  BCF   DOOR</span></p><p class="c4"><span class="c30 c8">192  CALL  WAIT_1_SECONDS</span></p><p class="c4"><span class="c30 c8">193  BCF   LED_STOP</span></p><p class="c4"><span class="c30 c8">194  ;GOTO  RESET_COUNTER</span></p><p class="c4"><span class="c30 c8">195</span></p><p class="c4"><span class="c30 c8"> RESET_COUNTER:</span></p><p class="c4"><span class="c30 c8">197  MOVLW  PASS_M_1</span></p><p class="c4"><span class="c30 c8">198  MOVWF  COUNTER</span></p><p class="c4"><span class="c30 c8">199  </span></p><p class="c4"><span class="c30 c8"> CLEAR_FLAG_STATE_CHANGE:</span></p><p class="c4"><span class="c30 c8">201  BCF   INTCON, RBIF</span></p><p class="c4"><span class="c30 c8">202</span></p><p class="c4"><span class="c8 c30"> SAIDA_INTERRUPCAO:</span></p><p class="c4"><span class="c30 c8">204  SWAPF  STATUS_TEMP, 0</span></p><p class="c4"><span class="c30 c8">205  MOVWF  STATUS</span></p><p class="c4"><span class="c30 c8">206  MOVF  W_TEMP, 0</span></p><p class="c4"><span class="c30 c8">207  RETFIE</span></p><p class="c4"><span class="c30 c8">208</span></p><p class="c4"><span class="c30 c8"> WAIT_1_SECONDS:</span></p><p class="c4"><span class="c30 c8">210  NOP</span></p><p class="c4"><span class="c30 c8">211  RETURN</span></p><p class="c4"><span class="c30 c8">212  </span></p><p class="c4"><span class="c30 c8"> INICIAPARAMETROS:</span></p><p class="c4"><span class="c30 c8">214  BCF   STATUS, RP1</span></p><p class="c4"><span class="c30 c8">215  BSF   STATUS, RP0</span></p><p class="c4"><span class="c30 c8">216  </span></p><p class="c4"><span class="c30 c8">217  MOVLW  B&#39;10000000&#39;</span></p><p class="c4"><span class="c30 c8">218  MOVWF  OPTION_REG</span></p><p class="c4"><span class="c30 c8">219  </span></p><p class="c4"><span class="c30 c8">220  CLRF  PIE1</span></p><p class="c4"><span class="c30 c8">221  </span></p><p class="c4"><span class="c30 c8">222  MOVLW  B&#39;11111000&#39;</span></p><p class="c4"><span class="c30 c8">223  MOVWF  TRISA</span></p><p class="c4"><span class="c30 c8">224  </span></p><p class="c4"><span class="c30 c8">225  MOVLW  B&#39;11110000&#39;</span></p><p class="c4"><span class="c30 c8">226  MOVWF  TRISB</span></p><p class="c4"><span class="c30 c8">227  </span></p><p class="c4"><span class="c30 c8">228  BCF   STATUS, RP1</span></p><p class="c4"><span class="c30 c8">229  BCF   STATUS, RP0</span></p><p class="c4"><span class="c30 c8">230  </span></p><p class="c4"><span class="c30 c8">231  MOVLW  B&#39;00000111&#39;</span></p><p class="c4"><span class="c30 c8">232  MOVWF  CMCON</span></p><p class="c4"><span class="c30 c8">233  </span></p><p class="c4"><span class="c30 c8">234  MOVLW  PASS_M_1</span></p><p class="c4"><span class="c30 c8">235  MOVWF  COUNTER</span></p><p class="c4"><span class="c30 c8">236  </span></p><p class="c4"><span class="c30 c8">237  MOVLW  B&#39;10001000&#39;</span></p><p class="c4"><span class="c30 c8">238  MOVWF  INTCON</span></p><p class="c4"><span class="c30 c8">239  </span></p><p class="c4"><span class="c30 c8"> PROGRAMAPRINCIPAL:</span></p><p class="c4"><span class="c30 c8">241  BSF   ROW_1</span></p><p class="c4"><span class="c30 c8">242  ;CALL  ESPERA_1_MS</span></p><p class="c4"><span class="c30 c8">243  BCF   ROW_1</span></p><p class="c4"><span class="c30 c8">244  </span></p><p class="c4"><span class="c30 c8">245  BSF   ROW_2</span></p><p class="c4"><span class="c30 c8">246  ;CALL  ESPERA_1_MS</span></p><p class="c4"><span class="c30 c8">247  BCF   ROW_2</span></p><p class="c4"><span class="c30 c8">248  </span></p><p class="c4"><span class="c30 c8">249  BSF   ROW_3</span></p><p class="c4"><span class="c30 c8">250  ;CALL  ESPERA_1_MS</span></p><p class="c4"><span class="c30 c8">251  BCF   ROW_3</span></p><p class="c4"><span class="c30 c8">252  </span></p><p class="c4"><span class="c30 c8">253  BSF   ROW_4</span></p><p class="c4"><span class="c30 c8">254  ;CALL  ESPERA_1_MS</span></p><p class="c4"><span class="c30 c8">255  BCF   ROW_4</span></p><p class="c4"><span class="c30 c8">256  </span></p><p class="c4"><span class="c30 c8">257  GOTO  PROGRAMAPRINCIPAL</span></p><p class="c4"><span class="c30 c8">258</span></p><p class="c4"><span class="c30 c8"> ;ESPERA_1_MS:</span></p><p class="c4"><span class="c30 c8">260;  NOP   ; IMPLEMENTAR O DELAY</span></p><p class="c4"><span class="c30 c8">261;  RETURN</span></p><p class="c4"><span class="c30 c8">262  </span></p><p class="c4"><span class="c30 c8">263  END</span></p></td></tr></tbody></table><p class="c67 c35"><span class="citacaoFigura">Fonte: Pr&oacute;prio autor (2021)</span></p><p class="c67 c35 c14"></p><p class="c67 c35">O ponto forte no C&oacute;digo 13.1 est&aacute; na ativa&ccedil;&atilde;o da interrup&ccedil;&atilde;o pelos bits <span class="c47 c6 c34">GIE</span>e <span class="c47 c6 c34">RBIE</span>no registrador <span class="c47 c6 c34">INTCON</span>, na verifica&ccedil;&atilde;o que a interrup&ccedil;&atilde;o gerada foi da mudan&ccedil;a de estados, dada pelo bit <span class="c47 c6 c34">RBIF</span>do registrador <span class="c47 c6 c34">INTCON</span>. As outras linhas no C&oacute;digo 13.1 relacionam com a configura&ccedil;&atilde;o do microcontrolador e tamb&eacute;m com a l&oacute;gica usada para mapear o teclado e verifica&ccedil;&atilde;o de valida&ccedil;&atilde;o da senha.</span></p><p class="c67 c35 c14"></p><p class="c67 c35 c14"></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 13: Conhecendo a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados em <span class="register">RB4</span> a <span class="register">RB7</span> no PIC16F628A</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_12.html">Voltar ao Epis&oacute;dio 12</a></p>
+			<p class="forwardPage"><a href="./Episode_14.html">Ir para Epis&oacute;dio 14</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste epis&oacute;dio veremos como usar a interrup&ccedil;&atilde;o por mudan&ccedil;as de estados nos pinos <span class="register">RB4</span> a <span class="register">RB7</span> para um exemplo pr&aacute;tico. Esta interrup&ccedil;&atilde;o &eacute; diferente da interrup&ccedil;&atilde;o externa vista no epis&oacute;dio 12 pois a interrup&ccedil;&atilde;o externa ocorre somente sobre a borda (subida ou descida) do sinal, enquanto que esta interrup&ccedil;&atilde;o (mudan&ccedil;a de estados) que veremos agora se d&aacute; por mudan&ccedil;a de estados l&oacute;gicos, tanto do estado de nivel alto para baixo quanto do n&iacute;vel baixo para alto, e pode-se ver a diferen&ccedil;a pela Figura 13.1.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 13.1 -</span> Bordas e estados l&oacute;gicos de um sinal quadrado
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/edges_and_states.png" style="width: 416.00px; height: 129.33px;" title="edges and states square wave" alt="edges and states square wave"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Ao trabalhar com a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados, devem ter em mente que essa interrup&ccedil;&atilde;o est&aacute; associada aos pinos <span class="register">RB4</span> a <span class="register">RB7</span>, n&atilde;o tendo como associar a um e a outro n&atilde;o. Assim, se ativar a interrup&ccedil;&atilde;o por mudan&ccedil;a de estados no registrador <span class="register">INTCON</span>, assim qualquer mudan&ccedil;a de estados em qualquer um dos pinos <span class="register">RB4</span> a <span class="register">RB7</span> chamar&aacute; o tratamento da interrup&ccedil;&atilde;o se o bit <span class="register">GIE</span> estiver setado.</p>
+			
+			<p class="principal">Logo, se alguma das portas <span class="register">RB4</span> a <span class="register">RB7</span> tiverem seu estado modificado, a interrup&ccedil;&atilde;o &eacute; chamada e ela pode ser tratada de forma semelhante ao visto no epis&oacute;dio 12.</p>
+			
+			<p class="principal">Aqui novamente faz-se uso dos registradores <span class="register">TRISB</span> e <span class="register">INTCON</span> para a interrup&ccedil;&atilde;o externa, mudando apenas os bits a serem usados.</p>
+			
+			<p class="principal">Assim, come&ccedil;amos com o registrador <span class="register">TRISB</span> configurando os comportamentos (pino configurado como entrada ou sa&iacute;da) e o pr&oacute;ximo registrador &eacute; o <span class="register">OPTION_REG</span> com os bits <span class="c59 c47 c34">RBPU</span> no qual definir&aacute; se ir&aacute; ou n&atilde;o ativar os resistores de pull-up dos pinos do <span class="register">PORTB</span> e por ultimo o registrador <span class="register">INTCON</span> com os bits <span class="register">RBIE</span> e <span class="register">GIE</span>, e o estado da interrup&ccedil;&atilde;o est&aacute; no bit <span class="register">RBIF</span>.</p>
+			
+			<p class="principal"><span>Aqui veremos um exemplo do uso desta interrup&ccedil;&atilde;o para captura de informa&ccedil;&otilde;es de um teclado, sem a necessidade de uso de um circuito espec&iacute;fico para isso (por exemplo o circuito integrado 8279 da Intel - <span class="citacaoLink"><a href="https://en.wikipedia.org/wiki/Intel_8279" target="_blank">https://en.wikipedia.org/wiki/Intel_8279</a></span>) como forma de refor&ccedil;ar o estudo das interrup&ccedil;&otilde;es.</p>
+			
+			<p class="principal">Na Figura 13.2 encontra-se o teclado utilizado em nossa aplica&ccedil;&atilde;o e n&atilde;o Figura 13.3 &agrave; disposi&ccedil;&atilde;o dos pinos em rela&ccedil;&atilde;o &agrave;s teclas. Essa disposi&ccedil;&atilde;o &eacute; importante na hora de gerar as conex&otilde;es no microcontrolador PIC16F628A.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 13.2 -</span> Teclado com 4 linha e 4 colunas
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/keyboard_4x4.jpg" style="width: 480px; height: 360px;" title="keyboard with 4 rows and 4 columns" alt="keyboard with 4 rows and 4 columns"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="https://www.tme.com/br/pt/details/kb1604-pnb/teclados-de-plastico/accord/ak-1604-n-bbw/" target="_blank">https://www.tme.com/br/pt/details/kb1604-pnb/teclados-de-plastico/accord/ak-1604-n-bbw/</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 13.3 -</span> Disposi&ccedil;&atilde;o dos pinos do teclado
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/keyboard_4x4_pinout.png" style="width: 401.81px; height: 208.85px;" title="keyboard with 4 rows and 4 columns and your pins"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span class="citacao"><a href="https://www.tme.com/Document/8178bd3a27d554ae1be8fc41a776e7b8/ACCORD DIAGRAM-DTE.pdf" target="_blank">https://www.tme.com/Document/8178bd3a27d554ae1be8fc41a776e7b8/ACCORD DIAGRAM-DTE.pdf</a></span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A Figura 13.4 exibe o esquema das conex&otilde;es dos componentes necess&aacute;rios ao funcionamento do nosso exemplo, sendo que o padr&atilde;o de leitura segue a Tabela 13.1.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 13.4 -</span> Disposi&ccedil;&atilde;o das conex&otilde;es dos componentes
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/example_change_state_interruption.png" style="width: 444.00px; height: 366.67px;" title="example change state interruption" alt="example change state interruption"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2021)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 13.1 -</span> Rela&ccedil;&atilde;o do registrador PORTB e as teclas
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th>TECLA</th>
+										<th>LINHA/COLUNA</th>
+										<th><span class="register">PORTB</span> (bin)</th>
+										<th><span class="register">PORTB</span> (hex)</th>
+										<th><span class="register">PORTB</span> (dec)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1/1</td>
+										<td>1</td>
+										<td>0001.000</td>
+										<td>11</td>
+										<td>17</td>
+									</tr>
+									<tr>
+										<td>1/2</td>
+										<td>2</td>
+										<td>0010.0001</td>
+										<td>21</td>
+										<td>33</td>
+									</tr>
+									<tr>
+										<td>1/3</td>
+										<td>3</td>
+										<td>0100.0001</td>
+										<td>41</td>
+										<td>65</td>
+									</tr>
+									<tr>
+										<td>1/4</td>
+										<td>A</td>
+										<td>1000.0001</td>
+										<td>81</td>
+										<td>129</td>
+									</tr>
+									<tr>
+										<td>2/1</td>
+										<td>4</td>
+										<td>0001.0010</td>
+										<td>12</td>
+										<td>18</td>
+									</tr>
+									<tr>
+										<td>2/2</td>
+										<td>5</td>
+										<td>0010.0010</td>
+										<td>22</td>
+										<td>34</td>
+									</tr>
+									<tr>
+										<td>2/3</td>
+										<td>6</td>
+										<td>0100.0010</td>
+										<td>42</td>
+										<td>66</td>
+									</tr>
+									<tr>
+										<td>2/4</td>
+										<td>B</td>
+										<td>1000.0010</td>
+										<td>82</td>
+										<td>130</td>
+									</tr>
+									<tr>
+										<td>3/1</td>
+										<td>7</td>
+										<td>0001.0100</td>
+										<td>14</td>
+										<td>20</td>
+									</tr>
+									<tr>
+										<td>3/2</td>
+										<td>8</td>
+										<td>0010.0100</td>
+										<td>24</td>
+										<td>36</td>
+									</tr>
+									<tr>
+										<td>3/3</td>
+										<td>9</td>
+										<td>0100.0100</td>
+										<td>44</td>
+										<td>68</td>
+									</tr>
+									<tr>
+										<td>3/4</td>
+										<td>C</td>
+										<td>1000.0100</td>
+										<td>84</td>
+										<td>132</td>
+									</tr>
+									<tr>
+										<td>4/1</td>
+										<td>*</td>
+										<td>0001.1000</td>
+										<td>18</td>
+										<td>24</td>
+									</tr>
+									<tr>
+										<td>4/2</td>
+										<td>0</td>
+										<td>0010.1000</td>
+										<td>28</td>
+										<td>40</td>
+									</tr>
+									<tr>
+										<td>4/3</td>
+										<td>#</td>
+										<td>0100.1000</td>
+										<td>48</td>
+										<td>72</td>
+									</tr>
+									<tr>
+										<td>4/4</td>
+										<td>D</td>
+										<td>1000.1000</td>
+										<td>88</td>
+										<td>136</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 13.5 -</span> Fluxograma da solu&ccedil;&atilde;o para controle de acesso por teclado
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/keyboard_4x4_example_flowchart.png" style="width: 536.52px; height: 810.55px;" title="keyboard 4x4 example flowchart.png" alt="keyboard 4x4 example flowchart.png"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2021)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Na Tabela 13.1 o <i>nibble</i> mais significativo est&aacute; associado aos pinos <span class="register">RB4</span> a <span class="register">RB7</span> que s&atilde;o os pinos de entrada (<i>input</i>) que ser&atilde;o lidos para saber se est&aacute; entrando o n&iacute;vel alto ao pressionar alguma tecla associada a coluna dada por eles. J&aacute; os pinos <span class="register">RB0</span> a <span class="register">RB3</span> ser&atilde;o pinos de sa&iacute;das para &ldquo;injetar&rdquo; sinal alto nas devidas linhas e poder associar com as colunas relacionadas com os pinos <span class="register">RB4</span> a <span class="register">RB7</span>.</p>
+			
+			<p class="principal">A Figura 13.5 exibe o fluxograma da solu&ccedil;&atilde;o para esse exemplo no qual especifica a rotina principal e a rotina de interrup&ccedil;&atilde;o. Nesta fgura pode-se ver que neste exemplo fazemos a limpeza do flag de estado da interrup&ccedil;&atilde;o de mudan&ccedil;a (<span class="register">RBIF</span>) ap&oacute;s todas as verifica&ccedil;&otilde;es, por causa de alguns <i>delays</i> que podem ocorrer no percurso do processo. Tamb&eacute;m h&aacute; v&aacute;rios testes baseados nos valores da Tabela 13.1 para interpretar as teclas clicadas.</p>
+			
+			<p class="principal">No C&oacute;digo 13.1 h&aacute; a implementa&ccedil;&atilde;o da solu&ccedil;&atilde;o em assembly associado ao fluxograma da Figura 13.5 e do circuito da Figura 13.4.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 13.1 -</span> Implementa&ccedil;&atilde;o do exemplo de aplica&ccedil;&atilde;o da int. de mudan&ccedil;a de estados
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>  ; DESENVOLVIDO POR EVERTON P. CRUZ</code>
+<code>  ; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS</code>
+<code>  ; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A</code>
+<code>  #INCLUDE &lt;P16F628A.INC></code>
+<code>  LIST P=16F628A</code>
+<code>  __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & INTOSC & _CP_OFF & _PWRTE_ON</code>
+<code>  </code>
+<code>  #DEFINE W_TEMP        0x20</code>
+<code>  #DEFINE STATUS_TEMP   0x21</code>
+<code>  #DEFINE COUNTER       0x22</code>
+<code>  #DEFINE PASS_LIM_LOW  0x23</code>
+<code>  #DEFINE PASS_LIM_HIGH 0x26</code>
+<code>  #DEFINE VAR_TIME      0x27</code>
+<code>  #DEFINE ROW_1         PORTB, RB0</code>
+<code>  #DEFINE ROW_2         PORTB, RB1</code>
+<code>  #DEFINE ROW_3         PORTB, RB2</code>
+<code>  #DEFINE ROW_4         PORTB, RB3</code>
+<code>  ;#DEFINE COLUMN_1     PORTB, RB4</code>
+<code>  ;#DEFINE COLUMN_2     PORTB, RB5</code>
+<code>  ;#DEFINE COLUMN_3     PORTB, RB6</code>
+<code>  ;#DEFINE COLUMN_4     PORTB, RB7</code>
+<code>  #DEFINE DOOR          PORTA, RA0</code>
+<code>  #DEFINE LED_STOP      PORTA, RA1</code>
+<code>  #DEFINE LED_GO        PORTA, RA2</code>
+<code>  #DEFINE PASS_VALUE_1  0x11 ; VALUE 1</code>
+<code>  #DEFINE PASS_VALUE_2  0x22 ; VALUE 5</code>
+<code>  #DEFINE PASS_VALUE_3  0x44 ; VALUE 9</code>
+<code>  #DEFINE PASS_VALUE_4  0x88 ; VALUE D</code>
+<code></code>
+<code>  ORG     0x00</code>
+<code>  GOTO    INICIAPARAMETROS</code>
+<code></code>
+<code>  ORG     0x04</code>
+<code>  MOVWF   W_TEMP</code>
+<code>  SWAPF   STATUS, 0</code>
+<code>  MOVWF   STATUS_TEMP</code>
+<code></code>
+<code>  BTFSS   INTCON, RBIF</code>
+<code>  GOTO    SAIDA_INTERRUPCAO</code>
+<code></code>
+<code>  INCF    COUNTER</code>
+<code></code>
+<code>KEY_1:</code>
+<code>  MOVLW   0x11 ; KEY 1</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_2</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code>  </code>
+<code>KEY_2:</code>
+<code>  MOVLW   0x21 ; KEY 2</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_3</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code>  </code>
+<code>KEY_3:</code>
+<code>  MOVLW   0x41 ; KEY 3</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_A</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_A:</code>
+<code>  MOVLW   0x81 ; KEY A</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_4</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_4:</code>
+<code>  MOVLW   0x12 ; KEY 4</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_5</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_5:</code>
+<code>  MOVLW   0x22 ; KEY 5</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_6</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_6:</code>
+<code>  MOVLW   0x42 ; KEY 6</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_B</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_B:</code>
+<code>  MOVLW   0x82 ; KEY B</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_7</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_7:</code>
+<code>  MOVLW   0x14 ; KEY 7</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_8</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_8:</code>
+<code>  MOVLW   0x24 ; KEY 8</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_9</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_9:</code>
+<code>  MOVLW   0x44 ; KEY 9</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_C</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_C:</code>
+<code>  MOVLW   0x84 ; KEY C</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_ASTERISC</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_ASTERISC:</code>
+<code>  MOVLW   0x18 ; KEY *</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_0</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_0:</code>
+<code>  MOVLW   0x28 ; KEY 0</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_HASH</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_HASH:</code>
+<code>  MOVLW   0x48 ; KEY #</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    KEY_D</code>
+<code>  GOTO    STEP_COUNTER</code>
+<code></code>
+<code>KEY_D:</code>
+<code>  MOVLW   0x88 ; KEY D</code>
+<code>  XORWF   PORTB, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    CLEAR_FLAG_STATE_CHANGE</code>
+<code>  ;GOTO    STEP_COUNTER</code>
+<code></code>
+<code>STEP_COUNTER:</code>
+<code>  MOVF    PORTB, 0</code>
+<code>  MOVWF   COUNTER</code>
+<code>  MOVLW   PASS_M_4</code>
+<code>  XORLW   COUNTER</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    CLEAR_FLAG_STATE_CHANGE</code>
+<code></code>
+<code>  ; VERIFY PASSWORD</code>
+<code>  MOVLW   PASS_V_1</code>
+<code>  XORWF   PASS_M_1, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    NO_ACCESS</code>
+<code></code>
+<code>  MOVLW   PASS_V_2</code>
+<code>  XORWF   PASS_M_2, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    NO_ACCESS</code>
+<code></code>
+<code>  MOVLW   PASS_V_3</code>
+<code>  XORWF   PASS_M_3, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    NO_ACCESS</code>
+<code></code>
+<code>  MOVLW   PASS_V_4</code>
+<code>  XORWF   PASS_M_4, 0</code>
+<code>  BTFSS   STATUS, Z</code>
+<code>  GOTO    NO_ACCESS</code>
+<code>  ;GOTO    YES_ACCESS</code>
+<code></code>
+<code>YES_ACCESS:</code>
+<code>  BSF     LED_GO</code>
+<code>  BSF     DOOR</code>
+<code>  CALL    WAIT_1_SECONDS</code>
+<code>  BCF     LED_GO</code>
+<code>  BCF     DOOR</code>
+<code>  GOTO    RESET_COUNTER  </code>
+<code></code>
+<code>NO_ACCESS:</code>
+<code>  BSF     LED_STOP</code>
+<code>  BCF     DOOR</code>
+<code>  CALL    WAIT_1_SECONDS</code>
+<code>  BCF     LED_STOP</code>
+<code>  ;GOTO    RESET_COUNTER</code>
+<code></code>
+<code>RESET_COUNTER:</code>
+<code>  MOVLW   PASS_M_1</code>
+<code>  MOVWF   COUNTER</code>
+<code></code>
+<code>CLEAR_FLAG_STATE_CHANGE:</code>
+<code>  BCF     INTCON, RBIF</code>
+<code></code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>  SWAPF   STATUS_TEMP, 0</code>
+<code>  MOVWF   STATUS</code>
+<code>  MOVF    W_TEMP, 0</code>
+<code>  RETFIE</code>
+<code></code>
+<code>WAIT_1_SECONDS:</code>
+<code>  NOP</code>
+<code>  RETURN</code>
+<code></code>
+<code>INICIAPARAMETROS:</code>
+<code>  BCF     STATUS, RP1</code>
+<code>  BSF     STATUS, RP0</code>
+<code></code>
+<code>  MOVLW   B'10000000'</code>
+<code>  MOVWF   OPTION_REG</code>
+<code></code>
+<code>  CLRF    PIE1</code>
+<code></code>
+<code>  MOVLW   B'11111000'</code>
+<code>  MOVWF   TRISA</code>
+<code></code>
+<code>  MOVLW   B'11110000'</code>
+<code>  MOVWF   TRISB</code>
+<code></code>
+<code>  BCF     STATUS, RP1</code>
+<code>  BCF     STATUS, RP0</code>
+<code></code>
+<code>  MOVLW   B'00000111'</code>
+<code>  MOVWF   CMCON</code>
+<code></code>
+<code>  MOVLW   PASS_M_1</code>
+<code>  MOVWF   COUNTER</code>
+<code></code>
+<code>  MOVLW   B'10001000'</code>
+<code>  MOVWF   INTCON</code>
+<code></code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>  BSF     ROW_1</code>
+<code>  CALL    ESPERA_1_MS</code>
+<code>  BCF     ROW_1</code>
+<code></code>
+<code>  BSF     ROW_2</code>
+<code>  CALL    ESPERA_1_MS</code>
+<code>  BCF     ROW_2</code>
+<code></code>
+<code>  BSF     ROW_3</code>
+<code>  CALL    ESPERA_1_MS</code>
+<code>  BCF     ROW_3</code>
+<code></code>
+<code>  BSF     ROW_4</code>
+<code>  CALL    ESPERA_1_MS</code>
+<code>  BCF     ROW_4</code>
+<code></code>
+<code>  GOTO    PROGRAMAPRINCIPAL</code>
+<code></code>
+<code>ESPERA_1_MS:</code>
+<code>  MOVLW   .250</code>
+<code>  MOVWF   VAR_TIME</code>
+<code>loop1:</code>
+<code>  NOP</code>
+<code>  DECFSZ  0x20</code>
+<code>  GOTO    loop1</code>
+<code>  RETURN</code>
+<code>  </code>
+<code>  END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2021</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O ponto forte no C&oacute;digo 13.1 est&aacute; na ativa&ccedil;&atilde;o da interrup&ccedil;&atilde;o pelos bits <span class="register">GIE</span> e <span class="register">RBIE</span> no registrador <span class="register">INTCON</span>, na verifica&ccedil;&atilde;o que a interrup&ccedil;&atilde;o gerada foi da mudan&ccedil;a de estados, dada pelo bit <span class="register">RBIF</span> do registrador <span class="register">INTCON</span>. As outras linhas no C&oacute;digo 13.1 relacionam com a configura&ccedil;&atilde;o do microcontrolador e tamb&eacute;m com a l&oacute;gica usada para mapear o teclado e verifica&ccedil;&atilde;o de valida&ccedil;&atilde;o da senha.</p>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_12.html">Voltar ao Epis&oacute;dio 12</a></p>
+			<p class="forwardPage"><a href="./Episode_14.html">Ir para Epis&oacute;dio 14</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
