@@ -1,14 +1,331 @@
-<h1 class="c75 c35" id="h.xyaq94augh8e"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.whu25b1s40xn"><span class="c28 c87">Epis&oacute;dio 15: Conhecendo a interrup&ccedil;&atilde;o por estouro em Timer1 (registradores TMR1H, TMR1L e T1CON de 8 bits) de 16 bits no PIC16F628A</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste episodio veremos o uso do modulo Timer1 como contador/temporizador de 16 bits e sua interrup&ccedil;&atilde;o associada.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O processo de configura&ccedil;&atilde; do modulo &eacute; semelante ao TImer0, sendo tratado pelo registrador T1CON (Timer1 Control Register)</p><p class="c11"><span>A configura&ccedil;&atilde;o &eacute; feita pelo registrador T1CON e pelos bits: T1CKPS1, T1CKPS0, </span><span class="c59">T1SYNC</span><span class="c5">, TMR1CS e TMR1ON</p><p class="c11"><span class="c5">A Figura X1 exibe o registrador </span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1</span><span class="c5">- Registrador T1CON e seus bits</span></p><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 64.00px;"><img src="images/image12.png" style="width: 604.72px; height: 64.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit TMR1ON ser&aacute; confkgurado com 1 se quisermos ativar o modulo Timer1, e com 0 se quisermos parar a atua&ccedil;&atilde;o do Timer1</p><p class="c11"><span><br>J&aacute; o bit TMR1CS seleciona a fonte de incremento, onde se esse bit tiver o valor igual a 1, a fonte ser&aacute; externa no pino RB6/T1OSO/T1CKI/PGC na borda de subida, enquanto se esse bit for 0, a fonte adv&eacute;m do clock interno (F</span><span class="c62">osc</span><span class="c5">/ 4).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Os bits T1CKP1 e T1CKP0 selecionam a taxa do Prescaler, onde pode-se ver os valores conforme Tabela 1</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela 1</span><span class="c5">- Tabela com combina&ccedil;&atilde;o de taxas de incremento</span></p><a id="t.0ce4935b4d07cc25c3c392eaecaab83821b74cb9"></a><a id="t.150"></a><table class="c56"><tbody><tr>
-								<td class="c32"><span class="c26">T1CKP1</span></p></td><td class="c32"><p class="c1"><span class="c26">T1CKP0</span></p></td><td class="c32"><p class="c1"><span class="c26">Valor Prescaler</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">1:1</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">1:2</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">1:4</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">1:8</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Agora o bit T1OSCEN &eacute; utilizado para ativa&ccedil;&atilde; de uso de clock externo nos pinos RB6/T1OSO e RB7/T1OSI ou n&atilde;o. Se esse bit for igual a 1 est&aacute; ativado o uso do oscilador e 0 caso o contr&aacute;rio.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Por ultimo temos o bit </span><span class="c59">T1SYNC</span><span class="c5">reponsavel pelo controle de sincroniza&ccedil;&atilde;o de entrada do clock externo do Timer1. Assim, se TMR1CS = 1, isto &eacute;, faz-se uso de clock externo, ent&atilde;o</span></p><ul class="c80 lst-kix_371ulc8krm8k-0 start"><li><span class="c5">T1SYNC = 1, se n&atilde;o quer sincronizar com o clock externo de entrada;</span></li><li><span class="c5">T1SYNC = 0, se quer sincronizar com o clock externo de entrada.</span></li></ul><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Porem se TMR1CS = 0, T1SYNC &eacute; ignorado, pois Timer1 faz uso do clock interno.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Ap&oacute;s as devidas configura&ccedil;&otilde;es dos bits anterioes, pode-se a configura&ccedil;&atilde;o dos dois registradores que compoem os 16 bits do Timer1, os registradores TMR1H e TMR1L, onde TMR1H s&atilde;o os 8 bits mais significativos e TMR1L s&atilde;o os 8 bits menos sifnigicativos do n&uacute;mero de 16 bits, sendo que este numero come&ccedil;a em 0x0000 (0) at&eacute; 0xFFFF (65535), sendo que pode ser atribuido Prescaler para aumentar o intervalo de contagem ou temporaizador.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c42 c39 c34 c50">Exemplo semelhante ao do Timer 1, s&oacute; com contagem maior</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 15: Conhecendo a interrup&ccedil;&atilde;o por estouro em Timer1 (registradores <span class="register">TMR1H</span>, <span class="register">TMR1L</span> e <span class="register">T1CON</span> de 8 bits) de 16 bits no PIC16F628A</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_14.html">Voltar ao Epis&oacute;dio 14</a></p>
+			<p class="forwardPage"><a href="./Episode_16.html">Ir para Epis&oacute;dio 16</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste episodio veremos o uso do modulo Timer1 como contador/temporizador de 16 bits e sua interrup&ccedil;&atilde;o associada.</p>
+			
+			<p class="principal">O processo de configura&ccedil;&atilde; do modulo &eacute; semelante ao TImer0, sendo tratado pelo registrador <span class="register">T1CON</span> (Timer1 Control Register).</p>
+			
+			<p class="principal">A configura&ccedil;&atilde;o &eacute; feita pelo registrador <span class="register">T1CON</span> e pelos bits: <span class="register">T1CKPS1</span>, <span class="register">T1CKPS0</span>, <span class="register">T1SYNC</span>, <span class="register">TMR1CS</span> e <span class="register">TMR1ON</span>, e a Figura 15.1 exibe o registrador <span class="register">T1CON</span>.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 15.1 -</span> Registrador <span class="register">T1CON</span> e seus bits
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/register_T1CON.png" style="width: 604.72px; height: 64.00px;" title="T1CON register" alt="T1CON register"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O bit <span class="register">TMR1ON</span> ser&aacute; configurado com 1 se quisermos ativar o modulo Timer1, e com 0 se quisermos parar a atua&ccedil;&atilde;o do Timer1.</p>
+			
+			<p class="principal">J&aacute; o bit <span class="register">TMR1CS</span> seleciona a fonte de incremento, onde se esse bit tiver o valor igual a 1, a fonte ser&aacute; externa no pino <span class="register">RB6</span>/<span class="register">T1OSO</span>/<span class="register">T1CKI</span>/<span class="register">PGC</span> na borda de subida, enquanto se esse bit for 0, a fonte adv&eacute;m do clock interno (F<sub>osc</sub>/ 4).</p>
+			
+			<p class="principal">Os bits <span class="register">T1CKP1</span> e <span class="register">T1CKP0</span> selecionam a taxa do Prescaler, onde pode-se ver os valores conforme Tabela 15.1.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 15.1 -</span> Tabela com combina&ccedil;&atilde;o de taxas de incremento
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">T1CKP1</span></th>
+										<th><span class="register">T1CKP0</span></th>
+										<th>VALOR PRESCALER</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>1:1</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>1</td>
+										<td>1:2</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>0</td>
+										<td>1:4</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>1:8</span></p></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2021)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Agora o bit <span class="register">T1OSCEN</span> &eacute; utilizado para ativa&ccedil;&atilde; de uso de clock externo nos pinos <span class="register">RB6</span>/<span class="register">T1OSO</span> e <span class="register">RB7</span>/<span class="register">T1OSI</span> ou n&atilde;o. Se esse bit for igual a 1 est&aacute; ativado o uso do oscilador e 0 caso o contr&aacute;rio.</p>
+			
+			<p class="principal">Por ultimo temos o bit <span class="register">T1SYNC</span> reponsavel pelo controle de sincroniza&ccedil;&atilde;o de entrada do clock externo do Timer1. Assim, se <span class="register">TMR1CS</span> = 1, isto &eacute;, faz-se uso de clock externo, ent&atilde;o:</p>
+			
+			<ul class="list">
+				<li>
+					<span class="register">T1SYNC</span> = 1, se n&atilde;o quer sincronizar com o clock externo de entrada;</li>
+				
+				<li>
+					<span class="register">T1SYNC</span> = 0, se quer sincronizar com o clock externo de entrada.</li>
+			</ul>
+			
+			<p class="principal">Porem se <span class="register">TMR1CS</span> = 0, <span class="register">T1SYNC</span> &eacute; ignorado, pois Timer1 faz uso do clock interno.</p>
+			
+			<p class="principal">Ap&oacute;s as devidas configura&ccedil;&otilde;es dos bits anterioes, pode-se a configura&ccedil;&atilde;o dos dois registradores que compoem os 16 bits do Timer1, os registradores <span class="register">TMR1H</span> e <span class="register">TMR1L</span>, onde <span class="register">TMR1H</span> s&atilde;o os 8 bits mais significativos e <span class="register">TMR1L</span> s&atilde;o os 8 bits menos sifnigicativos do n&uacute;mero de 16 bits, sendo que este numero come&ccedil;a em <span class="number">0x0000</span> (0) at&eacute; <span class="number">0xFFFF</span> (65535), sendo que pode ser atribuido Prescaler para aumentar o intervalo de contagem ou temporaizador.</p>
+			
+			<p class="principal important"><span class="important">COLOCAR EXEMPLO SEMELHANTE AO DO TIMER0, QUE NO CASO SERIA UMA CONTAGEM MAIOR PELO REGISTRADOR DE 16 BITS</span></p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 15.1 -</span> C&oacute;digo do exemplo de uso da interrup&ccedil;&atilde;o do Timer1
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>    ; CONFIGURACOES INICIAS</code>
+<code>    ; D:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</code>
+<code>    ; D:\Program Files (x86)\Microchip\xc8\v2.10\mpasmx\p16f628a.inc</code>
+<code>    #INCLUDE &lt;P16F628A.INC></code>
+<code>    LIST P=16F628A</code>
+<code>    ; REGISTER 14-1: CONFIGURATION WORD REGISTER</code>
+<code>    ;    CP: Flash Program Memory Code Protection bit</code>
+<code>    ;   LVP: Low-Voltage Programming Enable bit</code>
+<code>    ; BOREN: Brown-out Reset Enable bit</code>
+<code>    ; MCLRE: RA5/MCLR/V PP Pin Function Select bit</code>
+<code>    ; PWRTE: Power-up Timer Enable bit</code>
+<code>    ;  WDTE: Watchdog Timer Enable bit</code>
+<code>    ;    XT: Max 4 MHz crystal</code>
+<code>    __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & INTOSC & _CP_OFF & _PWRTE_ON</code>
+<code></code>
+<code>    #DEFINE W_TEMP      0x20</code>
+<code>    #DEFINE STATUS_TEMP 0x21</code>
+<code></code>
+<code>    ORG     0x00        ; TRATAMENTO DO RESET</code>
+<code>    GOTO    INICIAPARAMETROS</code>
+<code></code>
+<code>    ORG     0x04        ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>    MOVWF   W_TEMP</code>
+<code>    SWAPF   STATUS, 0</code>
+<code>    MOVWF   STATUS_TEMP</code>
+<code></code>
+<code>    BTFSS   PIR1, TMR1IF ; INTERRUPCAO DOS PERIFERICOS (TIMER 1 - SECAO 7.0)</code>
+<code>    GOTO    SAIDA_INTERRUPCAO</code>
+<code>    BCF     PIR1, TMR1IF</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO</code>
+<code>    ;</code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>    SWAPF   STATUS_TEMP, 0</code>
+<code>    MOVWF   STATUS</code>
+<code>    MOVF    W_TEMP, 0</code>
+<code>    RETFIE</code>
+<code></code>
+<code>INICIAPARAMETROS:</code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code></code>
+<code>    MOVLW   B'10000000' ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>              ; 1 - 'RBPU       -> DESATIVA RESISTORES PULL-UP</code>
+<code>              ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>              ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>              ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>              ;(0)- PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>              ;(1)              -> PRESCALER ASSOCIADO AO WDT</code>
+<code>    MOVWF   OPTION_REG  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:1</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISA</code>
+<code>              ; 0 - PINO RA7 COMO ENTRADA</code>
+<code>              ; 0 - PINO RA6 COMO ENTRADA</code>
+<code>              ; 0 - PINO RA5 COMO ENTRADA</code>
+<code>              ; 1 - PINO RA4 COMO ENTRADA</code>
+<code>              ; 1 - PINO RA3 COMO ENTRADA</code>
+<code>              ; 1 - PINO RA2 COMO ENTRADA</code>
+<code>              ; 1 - PINO RA1 COMO ENTRADA</code>
+<code>              ; 1 - PINO RA0 COMO ENTRADA</code>
+<code>    MOVWF   TRISA       ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISB</code>
+<code>              ; 1 - PINO RB7 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB6 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB5 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB4 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB3 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB2 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB1 COMO ENTRADA</code>
+<code>              ; 1 - PINO RB0 COMO ENTRADA</code>
+<code>    MOVWF   TRISB       ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code></code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0 ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code></code>
+<code>    ; CMCON - COMPARATOR CONFIGURATION REGISTER</code>
+<code>    ;    C2OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;    C1OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;    C2INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;    C1INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;    CIS     -> COMUTA A ENTRADA DO COMPARADOR DEPENDENDO DA CONFIGURACAO</code>
+<code>    ;    CM&lt;2:0> -> BITS DE CONFIGURACAO DOS MODOS DOS COMPARADOES</code>
+<code>    ;       000  -> Comparators Reset (POR Default Value)</code>
+<code>    ;       111  -> Comparators Off</code>
+<code>    ;       100  -> Two Independent Comparators</code>
+<code>    ;       010  -> Four Inputs Multiplexed to Two Comparators</code>
+<code>    ;       011  -> Two Common Reference Comparators</code>
+<code>    ;       110  -> Two Common Reference Comparators with Outputs</code>
+<code>    ;       101  -> One Independent Comparator</code>
+<code>    ;       001  -> Three Inputs Multiplexed to Two Comparators</code>
+<code>    MOVLW   B'00000111'     ; DEFINE O COMPORTAMENTO DOS COMPARADORES</code>
+<code>    MOVWF   CMCON</code>
+<code></code>
+<code>    MOVLW   B'00001001' ; CONFIGURACOES DO TIMER 1</code>
+<code>    ;  0 - NAO IMPLEMENTADO</code>
+<code>    ;  0 - NAO IMPLEMENTADO</code>
+<code>    ;  0 - T1CKPS<1:0>: Timer1 Input Clock Prescale Select</code>
+<code>    ;              11 = 1:8 Prescale value</code>
+<code>    ;              10 = 1:4 Prescale value</code>
+<code>    ;              01 = 1:2 Prescale value</code>
+<code>    ;              00 = 1:1 Prescale value</code>
+<code>    ;  1 - T1OSCEN: Timer1 Oscillator Enable Control bit</code>
+<code>    ;      1 = Oscillator is enabled</code>
+<code>    ;      0 = Oscillator is shut off (1)</code>
+<code>    ;  0 - 'T1SYNC: Timer1 External Clock Input Synchronization Control</code>
+<code>    ;      TMR1CS = 1</code>
+<code>    ;      1 = Do not synchronize external clock input</code>
+<code>    ;      0 = Synchronize external clock input</code>
+<code>    ;      TMR1CS = 0</code>
+<code>    ;      This bit is ignored. Timer1 uses the internal clock when TMR1CS = 0.</code>
+<code>    ;  0 - TMR1CS: Timer1 Clock Source Select bit</code>
+<code>    ;      1 = External clock from pin RB6/T1OSO/T1CKI/PGC (on the rising edge)</code>
+<code>    ;      0 = Internal clock (F_OSC /4)</code>
+<code>    ;  1 - TMR1ON: Timer1 On bit</code>
+<code>    ;      1 = Enables Timer1</code>
+<code>    ;      0 = Stops Timer1</code>
+<code>    MOVWF   T1CON</code>
+<code></code>
+<code>    MOVLW   B'11000000' ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>    ;       ; 1 - GIE  -> ATIVA INT./CHAVE GERAL</code>
+<code>    ;       ; 1 - PEIE -> ATIVA INT. DOS PERIFERICOS</code>
+<code>    ;       ; 1 - T0IE -> ATIVA INT. NO TMR0</code>
+<code>    ;       ; 0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>    ;       ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>    ;       ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>    ;       ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>    MOVWF   INTCON      ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code></code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0     ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code>    MOVLW   B'00000001' ; CONFIGURACOES REG. DE INTERRUPCAO DE PERIFERICOS</code>
+<code>    ;       ; 0 - EEIE   -> DESATIVA INT. ESCRITA COMPLETA EEPROM</code>
+<code>    ;       ; 0 - CMIE   -> DESATIVA INT. DO COMPARADOR</code>
+<code>    ;       ; 0 - RCIE   -> DESATIVA INT. DO USART</code>
+<code>    ;       ; 0 - TXIE   -> DESATIVA INT. DE TRASMISSAO DO USART</code>
+<code>    ;       ; 0 -        -> Unimplemented: Read as ?0?</code>
+<code>    ;       ; 0 - CCP1IE -> DESATIVA INT. NO MODULO CCP1</code>
+<code>    ;       ; 0 - TMR2IE -> DESATIVA INT. TMR2 PARA PR2</code>
+<code>    ;       ; 1 - TMR1IE -> ATIVA INT POR OVERFLOW EM TMR1</code>
+<code>    MOVWF   PIE1</code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0     ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code></code>
+<code>    ; TIMER 1 => TMR1H "+" TMR1L => 0xFF "+" 0xFF => 0xFFFF => 65535</code>
+<code>    ;                            => 0xFFFF => 0xFF * "16^2" + 0xFF</code>
+<code>    ;                            => 255 * 256 + 255 => 65535</code>
+<code>    CLRF    TMR1H</code>
+<code>    CLRF    TMR1L</code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>    NOP ; CICLO "1"</code>
+<code>    NOP ; CICLO "2"</code>
+<code>    NOP ; CICLO "3"</code>
+<code>    NOP ; CICLO "4"</code>
+<code>    NOP ; CICLO "5"</code>
+<code>    NOP ; CICLO "6"</code>
+<code>    NOP ; CICLO "7"</code>
+<code>    NOP ; CICLO "8"</code>
+<code>    NOP ; CICLO "9"</code>
+<code>    NOP ; CICLO "10"</code>
+<code>    NOP ; CICLO "11"</code>
+<code>    NOP ; CICLO "12"</code>
+<code>    NOP ; CICLO "13"</code>
+<code>    NOP ; CICLO "14"</code>
+<code>    NOP ; CICLO "15"</code>
+<code>    NOP ; CICLO "16"</code>
+<code>    NOP ; CICLO "17"</code>
+<code>    NOP ; CICLO "18"</code>
+<code>    NOP ; CICLO "19"</code>
+<code>    NOP ; CICLO "20"</code>
+<code>    NOP ; CICLO "21"</code>
+<code>    GOTO    PROGRAMAPRINCIPAL</code>
+<code></code>
+<code>    END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_14.html">Voltar ao Epis&oacute;dio 14</a></p>
+			<p class="forwardPage"><a href="./Episode_16.html">Ir para Epis&oacute;dio 16</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>

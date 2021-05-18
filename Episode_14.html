@@ -20,12 +20,35 @@
 			
 			<p class="principal">O registrador <span class="register">TMR0</span> pode ser zerado (limpo - clear) usando a instru&ccedil;&atilde;o <span class="instruction">CLRF</span> <span class="register">TMR0</span> como tamb&eacute;m pode ser atualizado para um valor pelas instru&ccedil;&otilde;es:</p>
 			
-			<ol class="list">
-				<li>
-					<span class="instruction">MOVLW</span> <span class="constant">0x0A</span>;</li>
-				<li>
-					<span class="instruction">MOVWF</span> <span class="register">TMR0</span>;</li>
-			</ol>
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 14.1 -</span> Incremento de transi&ccedil;&atilde;o de alto para baixo sobre o pino RA4/T0CKI</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>MOVLW 0xEA ; coloca o valor 0xEA (234 em decimal)</code>
+<code>           ; no registrador W</code>
+<code></code>
+<code>MOVWF TMR0 ; coloca o valor 0xEA (234 em decimal)</code>
+<code>           ; do registrador W no registrador TMR0</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2021</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
 			
 			<p class="principal">A escolha para a defini&ccedil;&atilde;o de qual ser&aacute; a fonte de incremento &eacute; dada por:</p>
 			
@@ -39,7 +62,7 @@
 						<thead>
 							<tr>
 								<th>
-									<span class="codeTitle">C&oacute;digo 14.1 -</span> Incremento de transi&ccedil;&atilde;o de alto para baixo sobre o pino RA4/T0CKI</span>
+									<span class="codeTitle">C&oacute;digo 14.2 -</span> Incremento de transi&ccedil;&atilde;o de alto para baixo sobre o pino RA4/T0CKI</span>
 								</th>
 							</tr>
 						</thead>
@@ -76,7 +99,7 @@
 						<thead>
 							<tr>
 								<th>
-									<span class="codeTitle">C&oacute;digo 14.2 -</span> Incremento pelo uso do clock interno do microcontrolador</span>
+									<span class="codeTitle">C&oacute;digo 14.3 -</span> Incremento pelo uso do clock interno do microcontrolador</span>
 								</th>
 							</tr>
 						</thead>
@@ -253,7 +276,7 @@
 				<thead>
 					<tr>
 						<th>
-							<span class="codeTitle">C&oacute;digo 14.3 -</span> Implementa&ccedil;&atilde;o do exemplo de aplica&ccedil;&atilde;o da int. de mudan&ccedil;a de estados
+							<span class="codeTitle">C&oacute;digo 14.4 -</span> Implementa&ccedil;&atilde;o do exemplo de aplica&ccedil;&atilde;o da int. de estouro do registrador <span class="instruction">TMR0</span>
 						</th>
 					</tr>
 				</thead>
@@ -264,7 +287,7 @@
 <code>  ; DESENVOLVIDO POR EVERTON P. CRUZ</code>
 <code>  ; COM O PROPOSITO DE USO BASE PARA OS EPISODIOS</code>
 <code>  ; DA SERIE CONHECENDO O MICROCONTROLADOR PIC16F628A</code>
-<code>  #INCLUDE <P16F628A.INC></code>
+<code>  #INCLUDE &lt;P16F628A.INC></code>
 <code>  LIST P=16F628A</code>
 <code>  __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & INTOSC & _CP_OFF & _PWRTE_ON</code>
 <code>  </code>
