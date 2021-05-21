@@ -1,43 +1,415 @@
-<h1 class="c75 c35" id="h.vzy36oqgfrmh"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.y6ftgzimznq0"><span class="c28 c87">Epis&oacute;dio 16: Conhecendo a interrup&ccedil;&atilde;o por coincid&ecirc;ncia em Timer2 (registrador TMR2, PR2 e T2CON de 8 bits) de 8 bits no PIC16F628A</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste episodio conheceremos o modulo Timer2 que &eacute; um temporizador de 8 bits com Prescaler e Postcaler e por um periodo definido pelo desenvolvedor.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">As configura&ccedil;&otilde;es come&ccedil;a pelo registrador T2CON (Timer2 Control Register) o qual &eacute; reponsavel pela configura&ccedil;&atilde;o do Prescaler, Postcaler e se o Timer2 est&aacute; ligado ou delsigado.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Os bits do registrador T2CON est&aacute; disposto na Figura X1</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Bits do registrador T2CON</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 60.00px;"><img src="images/image64.png" style="width: 604.72px; height: 60.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A configura&ccedil;&atilde;o do Prescaler tem o mesmo proposito visto nos Timer0 (episodio 14) e Timer1 (episodio 15) e &eacute; dada pela Tabela X1</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X1 -</span><span class="c5">Rela&ccedil;&atilde;o do Prescaler para o Timer2</span></p><a id="t.4210952902d31a6b01b08b325d82743be690e878"></a><a id="t.151"></a><table class="c56"><tbody><tr>
-								<td class="c32"><span class="c26">T2CKPS1</span></p></td><td class="c32"><p class="c1"><span class="c26">T2CKPS0</span></p></td><td class="c32"><p class="c1"><span class="c26">valor do Prescaler</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">1:1</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">0</span></p></td><td class="c32"><p class="c1"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">1:4</td>
-</tr>
-<tr>
-								<td class="c32"><span class="c5">1</span></p></td><td class="c32"><p class="c1"><span class="c5">x</span></p></td><td class="c32"><p class="c1"><span class="c5">1:16</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit TMR2CON de T2CON &eacute; responsavel por ligar (se setado - valor 1) ou desligar (se limpo - valor 0) enquanto que os bits TOUTPS&lt;3:0&gt; s&atilde;o responsaveis pela configura&ccedil;&atilde;o do Postcaler conforme Tabela X2</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><a id="t.cbd33c525d5b58e01d61cbf14d70b624a27e29e4"></a><a id="t.152"></a><table class="c56"><tbody><tr><td class="c27"><p class="c1"><span class="c26">TOUTPS3</span></p></td><td class="c27"><p class="c1"><span class="c26">TOUTPS2</span></p></td><td class="c27"><p class="c1"><span class="c26">TOUTPS1</span></p></td><td class="c27"><p class="c1"><span class="c26">TOUTPS0</span></p></td><td class="c107"><p class="c1"><span class="c26">valor do Postcaler</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:1</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:2</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:3</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:4</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:5</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:6</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:7</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:8</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:9</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:10</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:11</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:12</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:13</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:14</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">0</span></p></td><td class="c107"><p class="c1"><span class="c5">1:15</td>
-</tr>
-<tr><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c27"><p class="c1"><span class="c5">1</span></p></td><td class="c107"><p class="c1"><span class="c5">1:16</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 16: Conhecendo a interrup&ccedil;&atilde;o por coincid&ecirc;ncia em Timer2 (registrador <span class="register">TMR2</span>, <span class="register">PR2</span> e <span class="register">T2CON</span> de 8 bits) de 8 bits no PIC16F628A</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_15.html">Voltar ao Epis&oacute;dio 15</a></p>
+			<p class="forwardPage"><a href="./Episode_17.html">Ir para Epis&oacute;dio 17</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste episodio conheceremos o modulo Timer2 que &eacute; um temporizador de 8 bits com Prescaler e Postcaler e por um periodo definido pelo desenvolvedor.</p>
+			
+			<p class="principal">As configura&ccedil;&otilde;es come&ccedil;a pelo registrador <span class="register">T2CON</span> (Timer2 Control Register) o qual &eacute; reponsavel pela configura&ccedil;&atilde;o do Prescaler, Postcaler e se o Timer2 est&aacute; ligado ou delsigado.</p>
+			
+			<p class="principal">Os bits do registrador <span class="register">T2CON</span> est&aacute; disposto na Figura 16.1</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 16.1 -</span> Bits do registrador <span class="register">T2CON</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/Register_T2CON.png" style="width: 604.72px; height: 60.00px;" title="Register T2CON" alt="Register T2CON"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>-----------------------------------------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A configura&ccedil;&atilde;o do Prescaler tem o mesmo proposito visto nos Timer0 (episodio 14) e Timer1 (episodio 15) e &eacute; dada pela Tabela 16.1</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 16.1 -</span> Rela&ccedil;&atilde;o do Prescaler para o Timer2
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">T2CKPS1</span></th>
+										<th><span class="register">T2CKPS0</span></th>
+										<th>VALOR PRESCALER</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>1:1</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>1</td>
+										<td>1:4</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>x</td>
+										<td>1:16</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>----------------------------------------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O bit TMR2CON de <span class="register">T2CON</span> &eacute; responsavel por ligar (se setado - valor 1) ou desligar (se limpo - valor 0) enquanto que os bits TOUTPS&lt;3:0&gt; s&atilde;o responsaveis pela configura&ccedil;&atilde;o do Postscaler conforme Tabela 16.2.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 16.2 -</span> Rela&ccedil;&atilde;o do Postcaler para o Timer2
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">TOUTPS3</span></th>
+										<th><span class="register">TOUTPS2</span></th>
+										<th><span class="register">TOUTPS1</span></th>
+										<th><span class="register">TOUTPS0</span></th>
+										<th>VALOR POSTSCALER</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>0</td><td>1:1</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>0</td><td>1</td><td>1:2</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>0</td><td>1:3</td>
+									</tr>
+									<tr>
+										<td>0</td><td>0</td><td>1</td><td>1</td><td>1:4</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td><td>1:5</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>1</td><td>1:6</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>1</td><td>0</td><td>1:7</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>1</td><td>1</td><td>1:8</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>0</td><td>1:9</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td><td>0</td><td>1</td><td>1:10</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td><td>1</td><td>0</td><td>1:11</td>
+									</tr>
+									<tr>
+										<td>1</td><td>0</td><td>1</td><td>1</td><td>1:12</td>
+									</tr>
+									<tr>
+										<td>1</td><td>1</td><td>0</td><td>0</td><td>1:13</td>
+									</tr>
+									<tr>
+										<td>1</td><td>1</td><td>0</td><td>1</td><td>1:14</td>
+									</tr>
+									<tr>
+										<td>1</td><td>1</td><td>1</td><td>0</td><td>1:15</td>
+									</tr>
+									<tr>
+										<td>1</td><td>1</td><td>1</td><td>1</td><td>1:16</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2021)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 16.1 -</span> C&oacute;digo do exemplo de uso da interrup&ccedil;&atilde;o do Timer2
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>    ; CONFIGURACOES INICIAS</code>
+<code>    ; D:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</code>
+<code>    ; D:\Program Files (x86)\Microchip\xc8\v2.10\mpasmx\p16f628a.inc</code>
+<code>    #INCLUDE <P16F628A.INC></code>
+<code>    LIST P=16F628A</code>
+<code>    ; REGISTER 14-1: CONFIGURATION WORD REGISTER</code>
+<code>    ;    CP: Flash Program Memory Code Protection bit</code>
+<code>    ;   LVP: Low-Voltage Programming Enable bit</code>
+<code>    ; BOREN: Brown-out Reset Enable bit</code>
+<code>    ; MCLRE: RA5/MCLR/V PP Pin Function Select bit</code>
+<code>    ; PWRTE: Power-up Timer Enable bit</code>
+<code>    ;  WDTE: Watchdog Timer Enable bit</code>
+<code>    ;    XT: Max 4 MHz crystal</code>
+<code>    __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & INTOSC & _CP_OFF & _PWRTE_ON</code>
+<code></code>
+<code>    #DEFINE W_TEMP      0x20</code>
+<code>    #DEFINE STATUS_TEMP 0x21</code>
+<code></code>
+<code>    ORG     0x00        ; TRATAMENTO DO RESET</code>
+<code>    GOTO    INICIAPARAMETROS</code>
+<code></code>
+<code>    ORG     0x04        ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>    MOVWF   W_TEMP</code>
+<code>    SWAPF   STATUS, 0</code>
+<code>    MOVWF   STATUS_TEMP</code>
+<code></code>
+<code>    BTFSS   PIR1, TMR2IF ; INTERRUPCAO DOS PERIFERICOS SECAO 8.0</code>
+<code>    GOTO    SAIDA_INTERRUPCAO</code>
+<code>    BCF     PIR1, TMR2IF</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO</code>
+<code>    ;</code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>    SWAPF   STATUS_TEMP, 0</code>
+<code>    MOVWF   STATUS</code>
+<code>    MOVF    W_TEMP, 0</code>
+<code>    RETFIE</code>
+<code></code>
+<code>INICIAPARAMETROS:</code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code></code>
+<code>    MOVLW   B'10000000' ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>    ;     ; 1 - 'RBPU       -> DESATIVA RESISTORES PULL-UP</code>
+<code>    ;     ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>    ;     ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>    ;     ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>    ;     ;(0)- PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>    ;                       ;(1)              -> PRESCALER ASSOCIADO AO WDT</code>
+<code>    MOVWF   OPTION_REG  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:1</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISA</code>
+<code>    ;     ; 0 - PINO RA7 COMO ENTRADA</code>
+<code>    ;     ; 0 - PINO RA6 COMO ENTRADA</code>
+<code>    ;     ; 0 - PINO RA5 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RA4 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RA3 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RA2 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RA1 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RA0 COMO ENTRADA</code>
+<code>    MOVWF   TRISA       ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISB</code>
+<code>    ;     ; 1 - PINO RB7 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB6 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB5 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB4 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB3 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB2 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB1 COMO ENTRADA</code>
+<code>    ;     ; 1 - PINO RB0 COMO ENTRADA</code>
+<code>    MOVWF   TRISB        ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code></code>
+<code>    MOVLW   B'00000010' ; CONFIGURACOES REG. DE INTERRUPCAO DE PERIFERICOS</code>
+<code>    ;     ; 0 - EEIE   -> DESATIVA INT. ESCRITA COMPLETA EEPROM</code>
+<code>    ;     ; 0 - CMIE   -> DESATIVA INT. DO COMPARADOR</code>
+<code>    ;     ; 0 - RCIE   -> DESATIVA INT. DO USART</code>
+<code>    ;     ; 0 - TXIE   -> DESATIVA INT. DE TRASMISSAO DO USART</code>
+<code>    ;     ; 0 -        -> Unimplemented: Read as ?0?</code>
+<code>    ;     ; 0 - CCP1IE -> DESATIVA INT. NO MODULO CCP1</code>
+<code>    ;     ; 1 - TMR2IE -> ATIVA INT. TMR2 PARA PR2</code>
+<code>    ;     ; 0 - TMR1IE -> DESATIVA INT POR OVERFLOW EM TMR1</code>
+<code>    MOVWF   PIE1</code>
+<code></code>
+<code>    MOVLW   D'10'   ; ATUALIZA O REGISTRADOR PR2 PARA LIMITE DE </code>
+<code>    MOVWF   PR2     ; ESTOURO DO TIMER 2</code>
+<code>    </code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0     ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code>    </code>
+<code>    ; CMCON - COMPARATOR CONFIGURATION REGISTER</code>
+<code>    ;   C2OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;   C1OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;   C2INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;   C1INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;   CIS     -> COMUTA A ENTRADA DO COMPARADOR DEPENDENDO DA CONFIGURACAO</code>
+<code>    ;   CM<2:0> -> BITS DE CONFIGURACAO DOS MODOS DOS COMPARADOES</code>
+<code>    ;              000 - Comparators Reset (POR Default Value)</code>
+<code>    ;              111 - Comparators Off</code>
+<code>    ;              100 - Two Independent Comparators</code>
+<code>    ;              010 - Four Inputs Multiplexed to Two Comparators</code>
+<code>    ;              011 - Two Common Reference Comparators</code>
+<code>    ;              110 - Two Common Reference Comparators with Outputs</code>
+<code>    ;              101 - One Independent Comparator</code>
+<code>    ;              001 - Three Inputs Multiplexed to Two Comparators</code>
+<code>    MOVLW   B'00000111'    ; DEFINE O COMPORTAMENTO DOS COMPARADORES</code>
+<code>    MOVWF   CMCON</code>
+<code></code>
+<code>    MOVLW   B'11000000' ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>    ;       ; 1 - GIE  -> ATIVA INT./CHAVE GERAL</code>
+<code>    ;       ; 1 - PEIE -> ATIVA INT. DOS PERIFERICOS</code>
+<code>    ;       ; 1 - T0IE -> ATIVA INT. NO TMR0</code>
+<code>    ;       ; 0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>    ;       ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>    ;       ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>    ;       ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>    MOVWF   INTCON      ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code></code>
+<code>    MOVLW   B'00001100' ; CONFIGURACOES DO TIMER 2</code>
+<code>    ;       ; 0 - NAO IMPLEMENTADO</code>
+<code>    ;       ; 0 - TOUTPS<3->: Timer2 Output Postscale Select bits</code>
+<code>    ;       ; 0 - TOUTPS<2>: Timer2 Output Postscale Select bits</code>
+<code>    ;       ; 0 - TOUTPS<1>: Timer2 Output Postscale Select bits</code>
+<code>    ;       ; 0 - TOUTPS<0>: Timer2 Output Postscale Select bits</code>
+<code>    ;       ;       0000 = 1:1 Postscale Value</code>
+<code>    ;       ;       0001 = 1:2 Postscale Value</code>
+<code>    ;       ;       .</code>
+<code>    ;       ;       .</code>
+<code>    ;       ;       .</code>
+<code>    ;       ;       1111 = 1:16 Postscale</code>
+<code>    ;       ; 1 - TMR2ON: Timer2 On bit</code>
+<code>    ;       ;       1 = Timer2 is on</code>
+<code>    ;       ;       0 = Timer2 is off</code>
+<code>    ;       ; 0 - T2CKPS<1>: Timer2 Clock Prescale Select bits</code>
+<code>    ;       ; 0 - T2CKPS<0>: Timer2 Clock Prescale Select bits</code>
+<code>    ;       ;       00 = 1:1 Prescaler Value</code>
+<code>    ;       ;       01 = 1:4 Prescaler Value</code>
+<code>    ;       ;       1x = 1:16 Prescaler Value</code>
+<code>    MOVWF   T2CON</code>
+<code></code>
+<code>    ; The TMR2 register value increments from 00h until it</code>
+<code>    ; matches the PR2 register value and then resets to 00h</code>
+<code>    ; on the next increment cycle.</code>
+<code>    CLRF    TMR2</code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>    NOP ; CICLO "1"</code>
+<code>    NOP ; CICLO "2"</code>
+<code>    NOP ; CICLO "3"</code>
+<code>    NOP ; CICLO "4"</code>
+<code>    NOP ; CICLO "5"</code>
+<code>    NOP ; CICLO "6"</code>
+<code>    NOP ; CICLO "7"</code>
+<code>    NOP ; CICLO "8"</code>
+<code>    NOP ; CICLO "9"</code>
+<code>    NOP ; CICLO "10"</code>
+<code>    NOP ; CICLO "11"</code>
+<code>    NOP ; CICLO "12"</code>
+<code>    NOP ; CICLO "13"</code>
+<code>    NOP ; CICLO "14"</code>
+<code>    NOP ; CICLO "15"</code>
+<code>    NOP ; CICLO "16"</code>
+<code>    NOP ; CICLO "17"</code>
+<code>    NOP ; CICLO "18"</code>
+<code>    NOP ; CICLO "19"</code>
+<code>    NOP ; CICLO "20"</code>
+<code>    NOP ; CICLO "20"</code>
+<code>    NOP ; CICLO "21"</code>
+<code>    NOP ; CICLO "22"</code>
+<code>    NOP ; CICLO "23"</code>
+<code>    NOP ; CICLO "24"</code>
+<code>    NOP ; CICLO "25"</code>
+<code>    NOP ; CICLO "26"</code>
+<code>    NOP ; CICLO "27"</code>
+<code>    NOP ; CICLO "28"</code>
+<code>    NOP ; CICLO "29"</code>
+<code>    NOP ; CICLO "30"</code>
+<code>    NOP ; CICLO "31"</code>
+<code>    NOP ; CICLO "32"</code>
+<code>    NOP ; CICLO "33"</code>
+<code>    NOP ; CICLO "34"</code>
+<code>    NOP ; CICLO "35"</code>
+<code>    NOP ; CICLO "36"</code>
+<code>    NOP ; CICLO "37"</code>
+<code>    NOP ; CICLO "38"</code>
+<code>    NOP ; CICLO "39"</code>
+<code>    NOP ; CICLO "40"</code>
+<code>    NOP ; CICLO "41"</code>
+<code>    NOP ; CICLO "42"</code>
+<code>    NOP ; CICLO "43"</code>
+<code>    NOP ; CICLO "44"</code>
+<code>    NOP ; CICLO "45"</code>
+<code>    NOP ; CICLO "46"</code>
+<code>    NOP ; CICLO "47"</code>
+<code>    NOP ; CICLO "48"</code>
+<code>    NOP ; CICLO "49"</code>
+<code>    NOP ; CICLO "50"</code>
+<code>    GOTO    PROGRAMAPRINCIPAL</code>
+<code></code>
+<code>    END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_15.html">Voltar ao Epis&oacute;dio 15</a></p>
+			<p class="forwardPage"><a href="./Episode_17.html">Ir para Epis&oacute;dio 17</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>

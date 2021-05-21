@@ -1,11 +1,377 @@
-<h1 class="c75 c35" id="h.pq58ai1onyv"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.m8rchl8n16k9"><span class="c28 c87">Epis&oacute;dio 17: Conhecendo o m&oacute;dulo CCP - Modo capturar e a interrup&ccedil;&atilde;o associada</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste episodio veremos o uso do m&oacute;dulo CCP (Capture/Compare/PWM) e especificamente o modo Capture (Capturar).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O modo Capture tem um registrador de 16 bits composto pelos registradores de 8 bits CCPR1H e CCPR1L, no qual captura a quantidade de ciclos (tempo) sobre o registrador TMR1 quando um evento ocorre sobre o pino RB3/CCP1.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Conforme o datasheet (</span><span class="c39 c34">colocar link</span><span class="c5">) um evento &eacute; definido neste modo como decorrente:</span></p><ul class="c80 lst-kix_pztu7jw0yxmt-0 start"><li><span>de uma borda de descida </span><span class="c42 c39 c44 c50">(colocar imagem)</span></li><li><span>de uma borda de subida </span><span class="c39">(colocar imagem)</span></li><li><span>da 4&ordf; borda de subida </span><span class="c39">(colocar imagem)</span></li><li><span>da 16&ordf; borda de subida </span><span class="c39">(colocar imagem)</span></li></ul><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O registrador CCP1CON &eacute; o registrador respons&aacute;vel pelo m&oacute;dulo CCP e neste episodio focaremos nele para o modo de captura.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O registrador CCP1ON &eacute; visto na Figura X1 abaixo</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Registrador CCP1ON</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 61.33px;"><img src="images/image75.png" style="width: 604.72px; height: 61.33px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A primeira configura&ccedil;&atilde;o &eacute; feita tornando o pino RB3/CCp1 um pino de entrada.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Outra informa&ccedil;&atilde;o importante &eacute; que o modulo Timer1 &eacute; usado pelo modo capturar, conforme Figura X2</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X2 -</span><span class="c5">Diagrama de bloco de opera&ccedil;&atilde;o do modo de captura</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 302.67px;"><img src="images/image55.png" style="width: 604.72px; height: 302.67px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Assim, para definir o comportamento do evento, utiliza-se a Tabela X1.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X1 -</span><span class="c5">Bits de sele&ccedil;&atilde;o do modo capturar</span></p><a id="t.046932ab868df5494f248b4a63d01780b671dfa1"></a><a id="t.153"></a><table class="c56"><tbody><tr><td class="c202"><p class="c1"><span class="c26">CCP1M3</span></p></td><td class="c70"><p class="c1"><span class="c26">CCP1M2</span></p></td><td class="c194"><p class="c1"><span class="c26">CCP1M1</span></p></td><td class="c161"><p class="c1"><span class="c26">CCP1M0</span></p></td><td class="c120"><p class="c1"><span class="c26">Fun&ccedil;&atilde;o</td>
-</tr>
-<tr><td class="c202"><p class="c1"><span class="c5">0</span></p></td><td class="c70"><p class="c1"><span class="c5">0</span></p></td><td class="c194"><p class="c1"><span class="c5">0</span></p></td><td class="c161"><p class="c1"><span class="c5">0</span></p></td><td class="c120"><p class="c1"><span class="c5">desliga o modo capturar</td>
-</tr>
-<tr><td class="c202"><p class="c1"><span class="c5">0</span></p></td><td class="c70"><p class="c1"><span class="c5">1</span></p></td><td class="c194"><p class="c1"><span class="c5">0</span></p></td><td class="c161"><p class="c1"><span class="c5">0</span></p></td><td class="c120"><p class="c1"><span class="c5">modo capturar ativo com borda de descida</td>
-</tr>
-<tr><td class="c202"><p class="c1"><span class="c5">0</span></p></td><td class="c70"><p class="c1"><span class="c5">1</span></p></td><td class="c194"><p class="c1"><span class="c5">0</span></p></td><td class="c161"><p class="c1"><span class="c5">1</span></p></td><td class="c120"><p class="c1"><span class="c5">modo capturar ativo com borda de subida</td>
-</tr>
-<tr><td class="c202"><p class="c1"><span class="c5">0</span></p></td><td class="c70"><p class="c1"><span class="c5">1</span></p></td><td class="c194"><p class="c1"><span class="c5">1</span></p></td><td class="c161"><p class="c1"><span class="c5">0</span></p></td><td class="c120"><p class="c1"><span class="c5">modo capturar ativo com 4&ordf; borda de subida</td>
-</tr>
-<tr><td class="c202"><p class="c1"><span class="c5">0</span></p></td><td class="c70"><p class="c1"><span class="c5">1</span></p></td><td class="c194"><p class="c1"><span class="c5">1</span></p></td><td class="c161"><p class="c1"><span class="c5">1</span></p></td><td class="c120"><p class="c1"><span class="c5">modo capturar ativo com 16&ordf; borda de subida</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Timer1 deve estar executando no modo Timer ou contador sincronizado.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O tratamento da interrup&ccedil;&atilde;o associado a esse modo &eacute; no bit CCP1IF (bit do registrador PIR1) enquanto sua ativa&ccedil;&atilde;o &eacute; feita no bit CCP1IE (bit do registrador PIE1).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="register">Exemplo:</span><span class="c5">C&aacute;lculo da frequencia da rede eletrica.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 17: Conhecendo o m&oacute;dulo CCP - Modo capturar e a interrup&ccedil;&atilde;o associada</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_16.html">Voltar ao Epis&oacute;dio 16</a></p>
+			<p class="forwardPage"><a href="./Episode_18.html">Ir para Epis&oacute;dio 18</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste episodio veremos o uso do m&oacute;dulo CCP (Capture/Compare/PWM) e especificamente o modo Capture (Capturar).</p>
+			
+			<p class="principal">O modo Capture tem um registrador de 16 bits composto pelos registradores de 8 bits CCPR1H e CCPR1L, no qual captura a quantidade de ciclos (tempo) sobre o registrador TMR1 quando um evento ocorre sobre o pino RB3/CCP1.</p>
+			
+			<p class="principal">Conforme o datasheet (</span><span class="c39 c34">colocar link</span><span class="c5">) um evento &eacute; definido neste modo como decorrente:</p>
+			
+			<ul class="list">
+				<li>
+					de uma borda de descida <span class="c42 c39 c44 c50">(colocar imagem)</span></li>
+				<li>
+					de uma borda de subida <span class="c39">(colocar imagem)</span></li>
+				<li>
+					da 4&ordf; borda de subida <span class="c39">(colocar imagem)</span></li>
+				<li>
+					da 16&ordf; borda de subida <span class="c39">(colocar imagem)</span></li>
+			</ul>
+				
+			<p class="principal">O registrador CCP1CON &eacute; o registrador respons&aacute;vel pelo m&oacute;dulo CCP e neste episodio focaremos nele para o modo de captura.</p>
+			
+			<p class="principal">O registrador CCP1ON &eacute; visto na Figura 17.1.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 17.1 -</span> Registrador <span class="register">CCP1ON</span> e seus bits
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/register_CCP1ON.png" style="width: 604.72px; height: 61.33px;" title="register CCP1ON" alt="register CCP1ON"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>----------------------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A primeira configura&ccedil;&atilde;o &eacute; feita tornando o pino RB3/CCp1 um pino de entrada.</p>
+			
+			<p class="principal">Outra informa&ccedil;&atilde;o importante &eacute; que o modulo Timer1 &eacute; usado pelo modo capturar, conforme Figura 17.2</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 17.2 -</span> Diagrama de bloco de opera&ccedil;&atilde;o do modo de captura
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/blocks_Timer2_capture.png" style="width: 604.72px; height: 302.67px;" title="blocks Timer2 capture" alt="blocks Timer2 capture"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>----------------------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Assim, para definir o comportamento do evento, utiliza-se a Tabela 17.1.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 17.1 -</span> Bits de sele&ccedil;&atilde;o do modo capturar
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">CCP1M3</span></th>
+										<th><span class="register">CCP1M2</span></th>
+										<th><span class="register">CCP1M1</span></th>
+										<th><span class="register">CCP1M0</span></th>
+										<th>Fun&ccedil;&atilde;o</td></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td><td>0</td><td>0</p></td><td>0</td><td>desliga o modo capturar</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>0</td><td>0</td><td>modo capturar ativo com borda de descida</td>
+									</tr>
+									<tr>
+										<td>0</span></p></td><td>1</span></p></td><td>0</td><td>1</td><td>modo capturar ativo com borda de subida</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>1</td><td>0</td><td>modo capturar ativo com 4&ordf; borda de subida</td>
+									</tr>
+									<tr>
+										<td>0</td><td>1</td><td>1</td><td>1</td><td>modo capturar ativo com 16&ordf; borda de subida</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2021)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+								
+			<p class="principal">Timer1 deve estar executando no modo Timer ou contador sincronizado.</p>
+			
+			<p class="principal">O tratamento da interrup&ccedil;&atilde;o associado a esse modo &eacute; no bit <span class="register">CCP1IF</span> (bit do registrador <span class="register">PIR1</span>) enquanto sua ativa&ccedil;&atilde;o &eacute; feita no bit <span class="register">CCP1IE</span> (bit do registrador <span class="register">PIE1</span>).</p>
+			
+			<p class="important"><span class="important">Exemplo:</span> C&aacute;lculo da frequencia da rede eletrica.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 17.1 -</span> C&oacute;digo do exemplo de uso do m&acute;odulo CCP - Capture
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>    ; CONFIGURACOES INICIAS</code>
+<code>    ; D:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</code>
+<code>    ; D:\Program Files (x86)\Microchip\xc8\v2.10\mpasmx\p16f628a.inc</code>
+<code>    #INCLUDE <P16F628A.INC></code>
+<code>    LIST P=16F628A</code>
+<code>    ; REGISTER 14-1: CONFIGURATION WORD REGISTER</code>
+<code>    ;    CP: Flash Program Memory Code Protection bit</code>
+<code>    ;   LVP: Low-Voltage Programming Enable bit</code>
+<code>    ; BOREN: Brown-out Reset Enable bit</code>
+<code>    ; MCLRE: RA5/MCLR/V PP Pin Function Select bit</code>
+<code>    ; PWRTE: Power-up Timer Enable bit</code>
+<code>    ;  WDTE: Watchdog Timer Enable bit</code>
+<code>    ;    XT: Max 4 MHz crystal</code>
+<code>    __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & _XT_OSC & _CP_OFF & _PWRTE_ON</code>
+<code>    </code>
+<code>    #DEFINE	W_TEMP	    0x20</code>
+<code>    #DEFINE	STATUS_TEMP 0x21</code>
+<code></code>
+<code>    ORG		0x00	    ; TRATAMENTO DO RESET</code>
+<code>    GOTO	INICIAPARAMETROS</code>
+<code>    </code>
+<code>    ORG		0x04	    ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>    MOVWF	W_TEMP</code>
+<code>    SWAPF	STATUS, 0</code>
+<code>    MOVWF	STATUS_TEMP</code>
+<code>    </code>
+<code>    BTFSS	PIR1, TMR1IF; INTERRUPCAO DOS PERIFERICOS (TIMER 1 - SECAO 7.0)</code>
+<code>    GOTO	INTERRUPCAO_CCP</code>
+<code>    BCF		PIR1, TMR1IF</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO DO TIMER 1</code>
+<code>    ;</code>
+<code>INTERRUPCAO_CCP:</code>
+<code>    BTFSS	PIR1, CCP1IF ; INTERRUPCAO DOS PERIFERICOS (CCP 1 - SECAO 9.0)</code>
+<code>    GOTO	SAIDA_INTERRUPCAO</code>
+<code>    BCF		PIR1, CCP1IF</code>
+<code>    CLRF	TMR1H</code>
+<code>    CLRF	TMR1L</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO DO MODULO CCP</code>
+<code>    ;</code>
+<code>    </code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>    SWAPF	STATUS_TEMP, 0</code>
+<code>    MOVWF	STATUS</code>
+<code>    MOVF	W_TEMP, 0</code>
+<code>    RETFIE</code>
+<code>    </code>
+<code>INICIAPARAMETROS:</code>
+<code>    BCF		STATUS, RP1</code>
+<code>    BSF		STATUS, RP0  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code>    </code>
+<code>    MOVLW	B'10000000' ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>    ;			    ; 1 - 'RBPU       -> DESATIVA RESISTORES PULL-UP</code>
+<code>    ;			    ; 0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>    ;			    ; 0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>    ;			    ; 0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>    ;			    ;(0)- PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>    ;                       ;(1)              -> PRESCALER ASSOCIADO AO WDT</code>
+<code>    MOVWF	OPTION_REG  ; 0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:1</code>
+<code>    </code>
+<code>    MOVLW	B'00000101' ; CONFIGURACOES REG. DE INTERRUPCAO DE PERIFERICOS</code>
+<code>    ;			    ; 0 - EEIE   -> DESATIVA INT. ESCRITA COMPLETA EEPROM</code>
+<code>    ;			    ; 0 - CMIE   -> DESATIVA INT. DO COMPARADOR</code>
+<code>    ;			    ; 0 - RCIE   -> DESATIVA INT. DO USART</code>
+<code>    ;			    ; 0 - TXIE   -> DESATIVA INT. DE TRASMISSAO DO USART</code>
+<code>    ;			    ; 0 -        -> Unimplemented: Read as ?0?</code>
+<code>    ;			    ; 1 - CCP1IE -> ATIVA INT. NO MODULO CCP1</code>
+<code>    ;			    ; 0 - TMR2IE -> DESATIVA INT. TMR2 PARA PR2</code>
+<code>    ;			    ; 1 - TMR1IE -> ATIVA INT POR OVERFLOW EM TMR1</code>
+<code>    MOVWF	PIE1</code>
+<code>    </code>
+<code>    MOVLW	B'11111111' ; CONFIGURAÇÕES DO TRISA</code>
+<code>    			    ; 0 - PINO RA7 COMO ENTRADA</code>
+<code>    			    ; 0 - PINO RA6 COMO ENTRADA</code>
+<code>    			    ; 0 - PINO RA5 COMO ENTRADA</code>
+<code>    			    ; 1 - PINO RA4 COMO ENTRADA</code>
+<code>    			    ; 1 - PINO RA3 COMO ENTRADA</code>
+<code>    			    ; 1 - PINO RA2 COMO ENTRADA</code>
+<code>    			    ; 1 - PINO RA1 COMO ENTRADA</code>
+<code>    			    ; 1 - PINO RA0 COMO ENTRADA</code>
+<code>    MOVWF	TRISA	    ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code>    </code>
+<code>    MOVLW	B'11111111' ; CONFIGURAÇÕES DO TRISB</code>
+<code>			    ; 1 - PINO RB7 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB6 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB5 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB4 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB3 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB2 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB1 COMO ENTRADA</code>
+<code>			    ; 1 - PINO RB0 COMO ENTRADA</code>
+<code>    MOVWF   TRISB	    ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code>    </code>
+<code>    BCF	    STATUS, RP1</code>
+<code>    BCF	    STATUS, RP0	    ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code>    </code>
+<code>    ; CMCON ? COMPARATOR CONFIGURATION REGISTER</code>
+<code>    ;	C2OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;	C1OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;	C2INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;	C1INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;	CIS     -> COMUTA A ENTRADA DO COMPARADOR DEPENDENDO DA CONFIGURACAO</code>
+<code>    ;   CM<2:0> -> BITS DE CONFIGURACAO DOS MODOS DOS COMPARADOES</code>
+<code>    ;	           000 - Comparators Reset (POR Default Value)</code>
+<code>    ;	           111 - Comparators Off</code>
+<code>    ;	           100 - Two Independent Comparators</code>
+<code>    ;	           010 - Four Inputs Multiplexed to Two Comparators</code>
+<code>    ;	           011 - Two Common Reference Comparators</code>
+<code>    ;	           110 - Two Common Reference Comparators with Outputs</code>
+<code>    ;	           101 - One Independent Comparator [Vin-(RA1) and Vin+(RA2)]</code>
+<code>    ;	           001 - Three Inputs Multiplexed to Two Comparators</code>
+<code>    MOVLW   B'00000111'	    ; DEFINE O COMPORTAMENTO DOS COMPARADORES</code>
+<code>    MOVWF   CMCON</code>
+<code>    </code>
+<code>    ; CCP1CON ? CCP CONFIGURATION REGISTER</code>
+<code>    ; bit 7 - Unimplemented: Read as '0'</code>
+<code>    ; bit 6 - Unimplemented: Read as '0'</code>
+<code>    ; bit 5 - CCP1X: PWM Least Significant bits</code>
+<code>    ; bit 4 - CCP1Y: PWM Least Significant bits</code>
+<code>    ;		Capture Mode</code>
+<code>    ;		    Unused</code>
+<code>    ;		Compare Mode</code>
+<code>    ;		    Unused</code>
+<code>    ;		PWM Mode</code>
+<code>    ;		    These bits are the two LSbs of the PWM duty cycle. The eight</code>
+<code>    ;		    MSbs are found in CCPRxL.</code>
+<code>    ; bit 3-0 CCP1M<3:0>: CCPx Mode Select bits</code>
+<code>    ;		0000 = Capture/Compare/PWM off (resets CCP1 module)</code>
+<code>    ;		0100 = Capture mode, every falling edge</code>
+<code>    ;		0101 = Capture mode, every rising edge</code>
+<code>    ;		0110 = Capture mode, every 4th rising edge</code>
+<code>    ;		0111 = Capture mode, every 16th rising edge</code>
+<code>    ;		1000 = Compare mode, set output on match (CCP1IF bit is set)</code>
+<code>    ;		1001 = Compare mode, clear output on match (CCP1IF bit is set)</code>
+<code>    ;		1010 = Compare mode, generate software interrupt on match </code>
+<code>    ;		       (CCP1IF bit is set, CCP1 pin is unaffected)</code>
+<code>    ;		1011 = Compare mode, trigger special event (CCP1IF bit is set; </code>
+<code>    ;                  CCP1 resets TMR1</code>
+<code>    ;		11xx = PWM mode</code>
+<code>    MOVLW	B'00000101'</code>
+<code>    MOVWF	CCP1CON</code>
+<code>    </code>
+<code>    MOVLW	B'00001001' ; CONFIGURACOES DO TIMER 1</code>
+<code>    ;			    ; 0 - NAO IMPLEMENTADO</code>
+<code>    ;			    ; 0 - NAO IMPLEMENTADO</code>
+<code>    ;			    ; 0 - T1CKPS<1>: Timer1 Input Clock Prescale Select</code>
+<code>    ;			    ; 0 - T1CKPS<0>: Timer1 Input Clock Prescale Select</code>
+<code>    ;			    ;	    11 = 1:8 Prescale value</code>
+<code>    ;			    ;	    10 = 1:4 Prescale value</code>
+<code>    ;			    ;	    01 = 1:2 Prescale value</code>
+<code>    ;			    ;	    00 = 1:1 Prescale value</code>
+<code>    ;			    ; 1 - T1OSCEN: Timer1 Oscillator Enable Control bit</code>
+<code>    ;			    ;	    1 = Oscillator is enabled</code>
+<code>    ;			    ;	    0 = Oscillator is shut off (1)</code>
+<code>    ;			    ; 0 - 'T1SYNC: Timer1 External Clock Input Synchronization Control</code>
+<code>    ;			    ;	    TMR1CS = 1</code>
+<code>    ;			    ;		1 = Do not synchronize external clock input</code>
+<code>    ;			    ;		0 = Synchronize external clock input</code>
+<code>    ;			    ;	    TMR1CS = 0</code>
+<code>    ;			    ;		This bit is ignored. Timer1 uses the internal clock when TMR1CS = 0.</code>
+<code>    ;			    ; 0 - TMR1CS: Timer1 Clock Source Select bit</code>
+<code>    ;			    ;	    1 = External clock from pin RB6/T1OSO/T1CKI/PGC (on the rising edge)</code>
+<code>    ;			    ;	    0 = Internal clock (F_OSC /4)</code>
+<code>    ;			    ; 1 - TMR1ON: Timer1 On bit</code>
+<code>    ;			    ;	    1 = Enables Timer1</code>
+<code>    ;			    ;	    0 = Stops Timer1</code>
+<code>    MOVWF	T1CON</code>
+<code>    </code>
+<code>    MOVLW	B'11000000' ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>    ;			    ; 1 - GIE  -> ATIVA INT./CHAVE GERAL</code>
+<code>    ;			    ; 1 - PEIE -> ATIVA INT. DOS PERIFERICOS</code>
+<code>    ;			    ; 0 - T0IE -> DESATIVA INT. NO TMR0</code>
+<code>    ;			    ; 0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>    ;			    ; 0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>    ;			    ; 0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>    ;			    ; 0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>    MOVWF	INTCON	    ; 0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code>    </code>
+<code>    ; TIMER 1 => TMR1H "+" TMR1L => 0xFF "+" 0xFF => 0xFFFF => 65535</code>
+<code>    ;                            => 0xFFFF => 0xFF * "16^2" + 0xFF</code>
+<code>    ;                            => 255 * 256 + 255 => 65535</code>
+<code>    CLRF	TMR1H</code>
+<code>    CLRF	TMR1L</code>
+<code>    ; C/C 1 => CCPR1H "+" CCPR1L => 0xFF "+" 0xFF => 0xFFFF => 65535</code>
+<code>    ;                            => 0xFFFF => 0xFF * "16^2" + 0xFF</code>
+<code>    ;                            => 255 * 256 + 255 => 65535</code>
+<code>    CLRF	CCPR1H</code>
+<code>    CLRF	CCPR1L</code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    GOTO    PROGRAMAPRINCIPAL</code>
+<code>    </code>
+<code>    END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_16.html">Voltar ao Epis&oacute;dio 16</a></p>
+			<p class="forwardPage"><a href="./Episode_18.html">Ir para Epis&oacute;dio 18</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
