@@ -1,21 +1,746 @@
-<h1 class="c75 c35" id="h.5yohiqb4mhvt"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.j74nqk8f0mt0"><span class="c28 c87">Epis&oacute;dio 19: Conhecendo o m&oacute;dulo CCP - Modo de Modula&ccedil;&atilde;o por Largura de Pulso (PWM)</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Neste episodio falaremos sobre o ultimo modo sobre o modulo CCP. O modo abordado neste episodio sera o modo PWM</span><sup><a href="#ftnt1" id="ftnt_ref1">[1]</a></sup><span class="c5">(Pulse Width Modulation - Modula&ccedil;&atilde;o por Largura de Pulso) sobre o pino RB3 que deve ser configurado como pino de sa&iacute;da.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A configura&ccedil;&atilde;o do registrador CCP1CON para trabalhar no modo PWM &eacute; dada pela Tabela X1.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X1 -</span><span class="c5">Bits de sele&ccedil;&atilde;o do modo PWM</span></p><a id="t.7edab6bfd70b3c8b4909ec3ef098ee8f88563ee0"></a><a id="t.155"></a><table class="c7"><tbody><tr><td class="c72"><p class="c1"><span class="c26">CCP1M3</span></p></td><td class="c72"><p class="c1"><span class="c26">CCP1M2</span></p></td><td class="c72"><p class="c1"><span class="c26">CCP1M1</span></p></td><td class="c72"><p class="c1"><span class="c26">CCP1M0</span></p></td><td class="c112"><p class="c1"><span class="c26">Fun&ccedil;&atilde;o</td>
-</tr>
-<tr><td class="c72"><p class="c1"><span class="c5">0</span></p></td><td class="c72"><p class="c1"><span class="c5">0</span></p></td><td class="c72"><p class="c1"><span class="c5">0</span></p></td><td class="c72"><p class="c1"><span class="c5">0</span></p></td><td class="c112"><p class="c1"><span class="c5">desliga o modoPWM</td>
-</tr>
-<tr><td class="c72"><p class="c1"><span class="c5">1</span></p></td><td class="c72"><p class="c1"><span class="c5">1</span></p></td><td class="c72"><p class="c1"><span class="c5">x</span></p></td><td class="c72"><p class="c1"><span class="c5">x</span></p></td><td class="c112"><p class="c1"><span class="c5">liga (ativa) modo PWM</span></p></td></tr></tbody></table><p class="c12 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Conforme Figura X1, a configura&ccedil;&atilde;o &eacute; feita sobre os registradores CCPR1L, os bits CCP1X e CCP1Y (do registrador CCP1CON) e PR2. Tamb&eacute;m h&aacute; a necessidade do Prescaler do Timer2.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Uma sa&iacute;da PWM no pino RB3/CCP1 &eacute; dada pela Figura X2, e assim o calculo do periodo PWM em segundos &eacute; dada pela equa&ccedil;&atilde;o</span></p><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 556.00px; height: 75.00px;"><img src="images/image60.png" style="width: 556.00px; height: 75.00px;" title=""></span></p><p class="c11"><span class="c5">A frequencia PWM &eacute; dada por</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="c5">frequencia PWM = 1 / (PWM period)</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Se o valor do registrador TMR2 for igual ao valor do registrador PR2, podem ocorrer 3 eventos no proximo ciclo de incremento</span></p><ul class="c80 lst-kix_uq15rfd2l17e-0 start"><li><span class="c5">o registrador TMR2 &eacute; limpo;</span></li><li><span class="c5">O pino RB3/CCP1 est&aacute; setado (excess&atilde;o: Se o dutty cycle for igual a 0%, o pino RB3/CCP1 n&atilde;o ser&aacute; setado);</span></li><li><span class="c5">O dutty cycle do sinal PWm &eacute; colocado do registrador CCPR1L dentro do registrador CCPR1H.</span></li></ul><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O dutty cycle PWM em segundos &eacute; calculado por</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 531.00px; height: 120.00px;"><img src="images/image3.png" style="width: 531.00px; height: 120.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Note que CCPR1L:CCP1CON&lt;5:4&gt; gera um numero de 10 bits, logo cada intervalo ser&aacute; de V</span><span class="c62">DD</span><span class="c5">/1024.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A maxima resolu&ccedil;&atilde;o PWM em bits para uma frequencia PWM</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 520.00px; height: 110.00px;"><img src="images/image26.png" style="width: 520.00px; height: 110.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Conforme o datasheet, o processo de configura&ccedil;&atilde;o da opera&ccedil;&atilde;o PWM &eacute;:</span></p><ol class="c80 lst-kix_n6uxz2i6taog-0 start" start="1"><li><span class="c5">Configure o periodo do PWM escrevendo-se no registrador PR2;</span></li><li><span class="c5">Configure o dutty cycle do PWM escrevendo-se no registrador CCPR1L e CCP1CON&lt;5:4&gt;;</span></li><li><span class="c5">Fa&ccedil;a o pino RB3/CCP1 como pino de sa&iacute;da, limpando o bit TRISB&lt;3&gt;;</span></li><li><span class="c5">Configure o vlaor do Prescaler de TMR2 e ative o TImer2 ativando escrevendo em T2CON.</span></li></ol><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Vejamos um exemplo para f</span><span class="c62">osc</span><span class="c5">=20 MHz, Timer Prescaler=16 e PR2=0xFF</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c2">Periodo PWM = (PR2 + 1) * 4 * Tosc * (Timer2 Prescaler)</span></p><p class="c11"><span class="c2">      = (255 + 1) * 4 * (1/20*10^6) * 16</span></p><p class="c11"><span class="c2">      = (256 * 16 * 10^-6)/5</span></p><p class="c11"><span class="c2">      = 819,2 * 10^-6 s</span></p><p class="c11"><span class="c2">      = 819,2 &mu;s</span></p><p class="c11 c14"><span class="c2"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c2">Frequencia PWM = 1 / (Periodo PWM)</span></p><p class="c11"><span class="c2">       = 1 / (819,2 &mu;s)</span></p><p class="c11"><span class="c2">       = 1 / (819,2 * 10^-6 s)</span></p><p class="c11"><span class="c2">       = 1220,703125 Hz</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Como a tens&atilde;o VDD = 5 V, se quisermos aproximadamente 1,7 V na saida (pino RB3/CCP1) teremos que aplicar uma regra de 3</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c24"><span class="c2">5,0 V      1023</span></p><p class="c24"><span class="c2">1,7 V      n</span></p><p class="c24 c14"><span class="c2"></span></p><p class="c24"><span class="c2">5 V / 1,7 V = 1023 / n</span></p><p class="c24 c14"><span class="c2"></span></p><p class="c24"><span class="c2">n = (1,7 V / 5 V) * 1023</span></p><p class="c24"><span class="c2">n = 347,82</span></p><p class="c24 c14"><span class="c2"></span></p><p class="c24"><span class="c2">Por&eacute;m esse valor deve ser um numero natural, assim temos dois casos a analizar:</span></p><ul class="c80 lst-kix_d0ecpr1v4udn-0 start"><li class="c24 c31 li-bullet-0"><span class="c2">n = 347, tem-se </span></li></ul><p class="c24 c49 c14"><span class="c2"></span></p><p class="c24 c23"><span class="c2">(5 V * (347 / 1023)) = 1,696 V</span></p><p class="c24 c14"><span class="c2"></span></p><ul class="c80 lst-kix_d0ecpr1v4udn-0"><li class="c24 c31 li-bullet-0"><span class="c2">n = 348, tem-se</span></li></ul><p class="c24 c49 c14"><span class="c2"></span></p><p class="c24 c23"><span class="c2">(5 V * (348 / 1023)) = 1,701 V</span></p><p class="c24 c14"><span class="c2"></span></p><p class="c11"><span class="c5">Supondo que queiramos fazer uso do valor 347, assim</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span>347</span><span class="c62">10</span><span>= 0101.0110.11</span><span class="c62">2</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Os dados para o dutty cycle PWM &eacute;</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c8">CCPR1L:CCP1CON&lt;5:4&gt; = 0101.0110.11</span><span class="c63 c8 c62 c53">2</span></p><p class="c11"><span class="c8">      CCPR1L = 0101.0110</span><span class="c63 c8 c62 c53">2</span></p><p class="c11"><span class="c8">   CCP1CON&lt;5:4&gt; = 11</span><span class="c63 c8 c62 c53">2</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Assim o dutty cycle PWM em segundos &eacute;</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c2">dutty cycle PWM = (347 / 1023) * Periodo PWM</span></p><p class="c11"><span class="c2">        = (347 / 1023) * 819,2 * 10^-6 s</span></p><p class="c11"><span class="c2">        = 277,871 * 10^-6 s</span></p><p class="c11"><span class="c8">        = 277,871 &mu;s</span></p><p class="c11 c14"><span class="c2"></span></p><p class="c11"><span class="c5">A m&aacute;xima resolu&ccedil;&atilde;o PWM &eacute;</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c2">max. resolu&ccedil;&atilde;o PWM = log( fosc / (fPWM * TMR2 Prescaler) ) / log(2)</span></p><p class="c11"><span class="c2">         = log( (20 * 10^6) / (1220,703125 * 16) ) / log(2)</span></p><p class="c11"><span class="c2">         = log( 1024 ) / log(2)</span></p><p class="c11"><span class="c2">         = 10 bits</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>A Tabela X3 mostra exemplos de frequencias e resolu&ccedil;&otilde;es PWM para f</span><span class="c62">osc</span><span>= 20 MHz</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X3 -</span><span class="c5">Tabela de frequencias e resolu&ccedil;&atilde;o para fosc = 20 MHz</span></p><a id="t.2639c2ef66086096e2edf254bc287943df9c26a5"></a><a id="t.156"></a><table class="c56"><tbody><tr><td class="c82"><p class="c1 c14"><span class="c5"></span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 1</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 2</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 3</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 4</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 5</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 6</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Timer Prescaler TMR2</span></p></td><td class="c82"><p class="c1"><span class="c5">16</span></p></td><td class="c82"><p class="c1"><span class="c5">4</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">PR2</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0x3F</span></p></td><td class="c82"><p class="c1"><span class="c5">0x1F</span></p></td><td class="c82"><p class="c1"><span class="c5">0x17</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Frequ&ecirc;ncia PWM</span></p></td><td class="c82"><p class="c1"><span class="c5">1,22 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">4,88 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">19,53 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">78,12 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">153,3 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">208,3 kHz</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Maxima Resolu&ccedil;&atilde;o PWM</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">8</span></p></td><td class="c82"><p class="c1"><span class="c5">7</span></p></td><td class="c82"><p class="c1"><span class="c5">6,5</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A Tabela X4 mostra exemplos de frequencias e resolu&ccedil;&otilde;es PWM para fosc = 4 MHz</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X -</span><span class="c5">Tabela de frequencias e resolu&ccedil;&atilde;o para fosc = 4 MHz</span></p><a id="t.9744092ef880f560735c75626ed4ec0373b16041"></a><a id="t.157"></a><table class="c56"><tbody><tr><td class="c82"><p class="c1 c14"><span class="c5"></span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 1</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 2</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 3</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 4</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 5</span></p></td><td class="c82"><p class="c1"><span class="c26">Exemplo 6</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Timer Prescaler TMR2</span></p></td><td class="c82"><p class="c1"><span class="c5">16</span></p></td><td class="c82"><p class="c1"><span class="c5">4</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</span></p></td><td class="c82"><p class="c1"><span class="c5">1</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">PR2</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0xFF</span></p></td><td class="c82"><p class="c1"><span class="c5">0x3F</span></p></td><td class="c82"><p class="c1"><span class="c5">0x1F</span></p></td><td class="c82"><p class="c1"><span class="c5">0x17</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Frequ&ecirc;ncia PWM</span></p></td><td class="c82"><p class="c1"><span class="c5">244,14 Hz</span></p></td><td class="c82"><p class="c1"><span class="c5">976,56 Hz</span></p></td><td class="c82"><p class="c1"><span class="c5">3,91 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">15,62 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">31,25 kHz</span></p></td><td class="c82"><p class="c1"><span class="c5">41,66 kHz</td>
-</tr>
-<tr><td class="c82"><p class="c1"><span class="c26">Maxima Resolu&ccedil;&atilde;o PWM</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">10</span></p></td><td class="c82"><p class="c1"><span class="c5">8</span></p></td><td class="c82"><p class="c1"><span class="c5">7</span></p></td><td class="c82"><p class="c1"><span class="c5">6,6</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c42 c39 c34 c50">Exemplo de aplica&ccedil;&atilde;o</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c42 c39 c34 c50">Codigo</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Diagrama de bloco de opera&ccedil;&atilde;o do modo de PWM</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 561.00px; height: 500.00px;"><img src="images/image57.png" style="width: 561.00px; height: 500.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X2 -</span><span class="c5">Saida PWM</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 531.00px; height: 294.00px;"><img src="images/image80.png" style="width: 531.00px; height: 294.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 19: Conhecendo o m&oacute;dulo CCP - Modo de Modula&ccedil;&atilde;o por Largura de Pulso (PWM)</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_18.html">Voltar ao Epis&oacute;dio 18</a></p>
+			<p class="forwardPage"><a href="./Episode_20.html">Ir para Epis&oacute;dio 20</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste episodio falaremos sobre o ultimo modo sobre o modulo CCP. O modo abordado neste episodio sera o modo PWM<sup><a href="#ftnt1" id="ftnt_ref1">[1] <span style="color:red;">olhar esta nota</a></a></sup> (Pulse Width Modulation - Modula&ccedil;&atilde;o por Largura de Pulso) sobre o pino <span class="register">RB3</span> que deve ser configurado como pino de sa&iacute;da.</p>
+			
+			<p class="principal">A configura&ccedil;&atilde;o do registrador <span class="register">CCP1CON</span> para trabalhar no modo PWM &eacute; dada pela Tabela 19.1.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 19.1 -</span> Bits de sele&ccedil;&atilde;o do modo PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">CCP1M3</span></th>
+										<th><span class="register">CCP1M2</span></th>
+										<th><span class="register">CCP1M1</span></th>
+										<th><span class="register">CCP1M0</span></th>
+										<th>Fun&ccedil;&atilde;o</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>desliga o modoPWM</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>x</td>
+										<td>x</td>
+										<td>liga (ativa) modo PWM</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>----------------------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Conforme Figura 19.1, a configura&ccedil;&atilde;o &eacute; feita sobre os registradores <span class="register">CCPR1L</span>, os bits <span class="register">CCP1X</span> e <span class="register">CCP1Y</span> (do registrador <span class="register">CCP1CON</span>) e <span class="register">PR2</span>. Tamb&eacute;m h&aacute; a necessidade do Prescaler do Timer2.</p>
+			
+			<p class="principal">Uma sa&iacute;da PWM no pino <span class="register">RB3</span>/<span class="register">CCP1</span> &eacute; dada pela Figura <span style="font-weight:bold;color:red;">19.x</span>, e assim o calculo do periodo PWM em segundos &eacute; dada pela equa&ccedil;&atilde;o:</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 19.1 -</span> Equacao do periodo do PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/period_equation.png" style="width: 556.00px; height: 75.00px;" title="period equation" alt="period equation" />
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A frequencia PWM &eacute; dada por</p>
+			
+			<p class="principal" style="text-align:center;">frequencia PWM = 1 / (PWM period)</p>
+			
+			<p class="principal">Se o valor do registrador <span class="register">TMR2</span> for igual ao valor do registrador <span class="register">PR2</span>, podem ocorrer 3 eventos no proximo ciclo de incremento.</p>
+			
+			<ul class="list">
+				<li>
+					O registrador <span class="register">TMR2</span> &eacute; limpo;</li>
+				<li>
+					O pino <span class="register">RB3</span>/<span class="register">CCP1</span> est&aacute; setado (excess&atilde;o: Se o dutty cycle for igual a 0%, o pino <span class="register">RB3</span>/<span class="register">CCP1</span> n&atilde;o ser&aacute; setado);</li>
+				<li>
+					O dutty cycle do sinal PWM &eacute; colocado do registrador <span class="register">CCPR1L</span> dentro do registrador <span class="register">CCPR1H</span>.</li>
+			</ul>
+			
+			<p class="principal">O dutty cycle PWM em segundos &eacute; calculado por:</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 15.2 -</span> Equacao do dutty cycle do PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/dutty_cycle_equation.png" style="width: 531.00px; height: 120.00px;" title="dutty cycle equation" alt="dutty cycle equation"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Note que <span class="register">CCPR1L</span>:<span class="register">CCP1CON&lt;5:4&gt;</span> gera um numero de 10 bits, logo cada intervalo ser&aacute; de V<sub>DD</sub>/1024.</p>
+			
+			<p class="principal">A maxima resolu&ccedil;&atilde;o PWM em bits para uma frequencia PWM:</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 15.3 -</span> Equacao do dutty cycle do PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/pwm_resolution_equation.png" style="width: 520.00px; height: 110.00px;" title="pwm resolution equation" alt="pwm resolution equation"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Conforme o datasheet, o processo de configura&ccedil;&atilde;o da opera&ccedil;&atilde;o PWM &eacute;:</p>
+			
+			<ol class="list">
+				<li>
+					Configure o periodo do PWM escrevendo-se no registrador <span class="register">PR2</span>;</li>
+				<li>
+					Configure o dutty cycle do PWM escrevendo-se no registrador <span class="register">CCPR1L</span> e <span class="register">CCP1CON&lt;5:4&gt;</span>;</li>
+				<li>
+					Fa&ccedil;a o pino <span class="register">RB3</span>/<span class="register">CCP1</span> como pino de sa&iacute;da, limpando o bit <span class="register">TRISB&lt;3&gt;</span>;</li>
+				<li>
+					Configure o valor do Prescaler de <span class="register">TMR2</span> e ative o Timer2 ativando escrevendo em <span class="register">T2CON</span>.</li>
+			</ol>
+			
+			<p class="principal">Vejamos um exemplo para f<sub>osc</sub> = 20 MHz, Timer Prescaler = 16 e <span class="register">PR2</span> = 0xFF.</p>
+			
+<pre>
+Periodo PWM = (PR2 + 1) * 4 * Tosc * (Timer2 Prescaler)
+            = (255 + 1) * 4 * (1/(20*10<sup>6</sup>)) * 16
+            = (256 * 16 * 10<sup>-6</sup>)/5
+            = 819,2 * 10<sup>-6</sup> s
+            = 819,2 &mu;s
+</pre>
+			
+<pre>
+Frequencia PWM = 1 / (Periodo PWM)
+               = 1 / (819,2 &mu;s)
+               = 1 / (819,2 * 10<sup>-6</sup> s)
+               = 1220,703125 Hz
+</pre>
+
+			<p class="principal">Como a tens&atilde;o V<sub>DD</sub> = 5 V, se quisermos aproximadamente 1,7 V na saida (pino <span class="register">RB3</span>/<span class="register">CCP1</span>) teremos que aplicar uma regra de 3:</p>
+			
+<pre>
+5,0 V      1023
+1,7 V      n
+
+5 V / 1,7 V = 1023 / n
+          n = (1,7 V / 5 V) * 1023
+          n = 347,82
+</pre>
+			
+			<p class="principal">Por&eacute;m esse valor deve ser um numero natural, assim temos dois casos a analizar:</p>
+			
+			<ul class="list">
+				<li>
+					n = 347, tem-se
+					<p style="text-align:center;">(5 V * (347 / 1023)) = 1,696 V</p></li>
+				<li>
+					n = 348, tem-se
+					<p style="text-align:center;">(5 V * (348 / 1023)) = 1,701 V</p></li>
+			</ul>
+			
+			<p class="principal">Supondo que queiramos fazer uso do valor 347, assim:</p>
+			
+<pre>347<sub>10</sub> = 0101.0110.11<sub>2</sub></pre>
+
+			<p class="principal">Os dados para o dutty cycle PWM &eacute;</p>
+			
+<pre>
+CCPR1L:CCP1CON&lt;5:4&gt; = 0101.0110.11<sub>2</sub>
+             CCPR1L = 0101.0110<sub>2</sub>
+       CCP1CON&lt;5:4&gt; = 11<sub>2</sub>
+</pre>
+
+			<p class="principal">Assim o dutty cycle PWM em segundos &eacute;</p>
+
+<pre>
+dutty cycle PWM = (347 / 1023) * Periodo PWM
+                = (347 / 1023) * 819,2 * 10<sup>-6</sup> s
+                = 277,871 * 10<sup>-6</sup> s
+                = 277,871 &mu;s
+</pre>
+
+			<p class="principal">A m&aacute;xima resolu&ccedil;&atilde;o PWM &eacute;</p>
+			
+<pre>
+max. resolu&ccedil;&atilde;o PWM = log( f<sub>osc</sub> / (f<sub>PWM</sub> * TMR2 Prescaler) ) / log(2)
+                   = log( (20 * 10<sup>6</sup>) / (1220,703125 * 16) ) / log(2)
+                   = log( 1024 ) / log(2)
+                   = 10 bits
+</pre>
+			
+			<p class="principal">A Tabela 19.2 mostra exemplos de frequencias e resolu&ccedil;&otilde;es PWM para f<sub>osc</sub> = 20 MHz</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 19.2 -</span> Tabela de frequencias e resolu&ccedil;&atilde;o para f<sub>osc</sub> = 20 MHz
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Exemplo 1</th>
+										<th>Exemplo 2</th>
+										<th>Exemplo 3</th>
+										<th>Exemplo 4</th>
+										<th>Exemplo 5</th>
+										<th>Exemplo 6</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><b>Timer Prescaler TMR2</b></td>
+										<td>16</td>
+										<td>4</td>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td><b>PR2</b></td>
+										<td>0xFF</td>
+										<td>0xFF</td>
+										<td>0xFF</td>
+										<td>0x3F</td>
+										<td>0x1F</td>
+										<td>0x17</td>
+									</tr>
+									<tr>
+										<td><b>Frequ&ecirc;ncia PWM</b></td>
+										<td>1,22 kHz</td>
+										<td>4,88 kHz</td>
+										<td>19,53 kHz</td>
+										<td>78,12 kHz</td>
+										<td>153,3 kHz</td>
+										<td>208,3 kHz</td>
+									</tr>
+									<tr>
+										<td><b>Maxima Resolu&ccedil;&atilde;o PWM</b></td>
+										<td>10</td>
+										<td>10</td>
+										<td>10</td>
+										<td>8</td>
+										<td>7</td>
+										<td>6,5</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>-----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A Tabela 19.3 mostra exemplos de frequencias e resolu&ccedil;&otilde;es PWM para f<sub>osc</sub> = 4 MHz.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 19.3 -</span> Tabela de frequencias e resolu&ccedil;&atilde;o para f<sub>osc</sub> = 4 MHz
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Exemplo 1</th>
+										<th>Exemplo 2</th>
+										<th>Exemplo 3</th>
+										<th>Exemplo 4</th>
+										<th>Exemplo 5</th>
+										<th>Exemplo 6</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><b>Timer Prescaler TMR2</b></td>
+										<td>16</td>
+										<td>4</td>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+									</tr>
+									<tr>
+										<td><b>PR2</b></td>
+										<td>0xFF</td>
+										<td>0xFF</td>
+										<td>0xFF</td>
+										<td>0x3F</td>
+										<td>0x1F</td>
+										<td>0x17</td>
+									</tr>
+									<tr>
+										<td><b>Frequ&ecirc;ncia PWM</b></td>
+										<td>244,14 Hz</td>
+										<td>976,56 Hz</td>
+										<td>3,91 kHz</td>
+										<td>15,62 kHz</td>
+										<td>31,25 kHz</td>
+										<td>41,66 kHz</td>
+									</tr>
+									<tr>
+										<td><b>Maxima Resolu&ccedil;&atilde;o PWM</b></td>
+										<td>10</td>
+										<td>10</td>
+										<td>10</td>
+										<td>8</td>
+										<td>7</td>
+										<td>6,6</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>-----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 19.4 -</span> Diagrama de bloco de opera&ccedil;&atilde;o do modo de PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/block_pwm.png" style="width: 561.00px; height: 500.00px;" title="">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>-------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 19.5 -</span> Saida PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/period_and_dutty_cycle_pwm.png" style="width: 531.00px; height: 294.00px;" title="period and dutty cycle pwm">
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>-------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal important">Exemplo de aplica&ccedil;&atilde;o</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 19.1 -</span> C&oacute;digo do exemplo de uso do perif&eacute;rico PWM
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>    ; CONFIGURACOES INICIAS</code>
+<code>    ; D:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</code>
+<code>    ; D:\Program Files (x86)\Microchip\xc8\v2.10\mpasmx\p16f628a.inc</code>
+<code>    #INCLUDE <P16F628A.INC></code>
+<code>    LIST P=16F628A</code>
+<code>    ; REGISTER 14-1: CONFIGURATION WORD REGISTER</code>
+<code>    ;    CP: Flash Program Memory Code Protection bit</code>
+<code>    ;   LVP: Low-Voltage Programming Enable bit</code>
+<code>    ; BOREN: Brown-out Reset Enable bit</code>
+<code>    ; MCLRE: RA5/MCLR/V PP Pin Function Select bit</code>
+<code>    ; PWRTE: Power-up Timer Enable bit</code>
+<code>    ;  WDTE: Watchdog Timer Enable bit</code>
+<code>    ;    XT: Max 4 MHz crystal</code>
+<code>    __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & _XT_OSC & _CP_OFF & _PWRTE_ON</code>
+<code></code>
+<code>    #DEFINE W_TEMP      0x20</code>
+<code>    #DEFINE STATUS_TEMP 0x21</code>
+<code></code>
+<code>    ORG     0x00        ; TRATAMENTO DO RESET</code>
+<code>    GOTO    INICIAPARAMETROS</code>
+<code></code>
+<code>    ORG     0x04        ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>    MOVWF   W_TEMP</code>
+<code>    SWAPF   STATUS, 0</code>
+<code>    MOVWF   STATUS_TEMP</code>
+<code></code>
+<code>    BTFSS   PIR1, TMR2IF ; INTERRUPCAO PERIFERICOS (CCP 1/PWM - SECAO 9.0)</code>
+<code>    GOTO    SAIDA_INTERRUPCAO</code>
+<code>    BCF     PIR1, TMR2IF</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO DO MODULO CCP</code>
+<code>    ;</code>
+<code></code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>    SWAPF   STATUS_TEMP, 0</code>
+<code>    MOVWF   STATUS</code>
+<code>    MOVF    W_TEMP, 0</code>
+<code>    RETFIE</code>
+<code></code>
+<code>INICIAPARAMETROS:</code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code></code>
+<code>    MOVLW   B'10000000' ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>    ;       1 - 'RBPU       -> DESATIVA RESISTORES PULL-UP</code>
+<code>    ;       0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>    ;       0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>    ;       0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>    ;      (0)- PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>    ;      (1)              -> PRESCALER ASSOCIADO AO WDT</code>
+<code>    ;       0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:1</code>
+<code>    MOVWF   OPTION_REG</code>
+<code></code>
+<code>    MOVLW   B'00000010' ; CONFIGURACOES REG. DE INTERRUPCAO DE PERIFERICOS</code>
+<code>    ;       0 - EEIE   -> DESATIVA INT. ESCRITA COMPLETA EEPROM</code>
+<code>    ;       0 - CMIE   -> DESATIVA INT. DO COMPARADOR</code>
+<code>    ;       0 - RCIE   -> DESATIVA INT. DO USART</code>
+<code>    ;       0 - TXIE   -> DESATIVA INT. DE TRASMISSAO DO USART</code>
+<code>    ;       0 -        -> Unimplemented: Read as ?0?</code>
+<code>    ;       1 - CCP1IE -> DESATIVA INT. NO MODULO CCP1</code>
+<code>    ;       0 - TMR2IE -> ATIVA INT. TMR2 PARA PR2</code>
+<code>    ;       1 - TMR1IE -> DESATIVA INT POR OVERFLOW EM TMR1</code>
+<code>    MOVWF   PIE1</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISA</code>
+<code>    ;       1 - PINO RA7 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA6 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA5 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA4 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA3 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA2 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA1 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA0 COMO ENTRADA</code>
+<code>    MOVWF   TRISA ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code></code>
+<code>    MOVLW   B'11110111' ; CONFIGURAÇÕES DO TRISB</code>
+<code>    ;       1 - PINO RB7 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB6 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB5 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB4 COMO ENTRADA</code>
+<code>    ;       0 - PINO RB3 COMO SAIDA</code>
+<code>    ;       1 - PINO RB2 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB1 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB0 COMO ENTRADA</code>
+<code>    MOVWF   TRISB ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code></code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0 ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code></code>
+<code>    ; CMCON - COMPARATOR CONFIGURATION REGISTER</code>
+<code>    ;         C2OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;         C1OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;         C2INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;         C1INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;         CIS     -> COMUTA A ENTRADA DO COMPARADOR DEPENDENDO DA CONFIGURACAO</code>
+<code>    ;         CM<2:0> -> BITS DE CONFIGURACAO DOS MODOS DOS COMPARADOES</code>
+<code>    ;                    000 - Comparators Reset (POR Default Value)</code>
+<code>    ;                    111 - Comparators Off</code>
+<code>    ;                    100 - Two Independent Comparators</code>
+<code>    ;                    010 - Four Inputs Multiplexed to Two Comparators</code>
+<code>    ;                    011 - Two Common Reference Comparators</code>
+<code>    ;                    110 - Two Common Reference Comparators with Outputs</code>
+<code>    ;                    101 - One Independent Comparator [Vin-(RA1) and Vin+(RA2)]</code>
+<code>    ;                    001 - Three Inputs Multiplexed to Two Comparators</code>
+<code>    MOVLW   B'00000111'  ; DEFINE O COMPORTAMENTO DOS COMPARADORES</code>
+<code>    MOVWF   CMCON</code>
+<code></code>
+<code>    ; CCP1CON - CCP CONFIGURATION REGISTER</code>
+<code>    ;   bit 7 - Unimplemented: Read as '0'</code>
+<code>    ;   bit 6 - Unimplemented: Read as '0'</code>
+<code>    ;   bit 5 - CCP1X: PWM Least Significant bits</code>
+<code>    ;   bit 4 - CCP1Y: PWM Least Significant bits</code>
+<code>    ;           Capture Mode</code>
+<code>    ;               Unused</code>
+<code>    ;           Compare Mode</code>
+<code>    ;               Unused</code>
+<code>    ;           PWM Mode</code>
+<code>    ;               These bits are the two LSbs of the PWM duty cycle.</code>
+<code>    ;               The eight MSbs are found in CCPRxL.</code>
+<code>    ;   bit 3-0 CCP1M<3:0>: CCPx Mode Select bits</code>
+<code>    ;           0000 = Capture/Compare/PWM off (resets CCP1 module)</code>
+<code>    ;           0100 = Capture mode, every falling edge</code>
+<code>    ;           0101 = Capture mode, every rising edge</code>
+<code>    ;           0110 = Capture mode, every 4th rising edge</code>
+<code>    ;           0111 = Capture mode, every 16th rising edge</code>
+<code>    ;           1000 = Compare mode, set output on match (CCP1IF bit is set)</code>
+<code>    ;           1001 = Compare mode, clear output on match (CCP1IF bit is set)</code>
+<code>    ;           1010 = Compare mode, generate software interrupt on match </code>
+<code>    ;                  (CCP1IF bit is set, CCP1 pin is unaffected)</code>
+<code>    ;           1011 = Compare mode, trigger special event (CCP1IF bit is set; </code>
+<code>    ;                  CCP1 resets TMR1</code>
+<code>    ;           11xx = PWM mode</code>
+<code>    MOVLW   B'00001100' ; PWM mode</code>
+<code>    MOVWF   CCP1CON</code>
+<code></code>
+<code>    MOVLW   B'00000101' ; CONFIGURACOES DO TIMER 2</code>
+<code>    ;       0 - NAO IMPLEMENTADO</code>
+<code>    ;       0 - TOUTPS<3>: Timer2 Output Postscale Select bits</code>
+<code>    ;       0 - TOUTPS<2>: Timer2 Output Postscale Select bits</code>
+<code>    ;       0 - TOUTPS<1>: Timer2 Output Postscale Select bits</code>
+<code>    ;       0 - TOUTPS<0>: Timer2 Output Postscale Select bits</code>
+<code>    ;             0000 = 1:1 Postscale Value</code>
+<code>    ;             0001 = 1:2 Postscale Value</code>
+<code>    ;             .</code>
+<code>    ;             .</code>
+<code>    ;             .</code>
+<code>    ;             1111 = 1:16 Postscale</code>
+<code>    ;       1 - TMR2ON: Timer2 On bit</code>
+<code>    ;             1 = Timer2 is on</code>
+<code>    ;             0 = Timer2 is off</code>
+<code>    ;       0 - T2CKPS<1>: Timer2 Clock Prescale Select bits</code>
+<code>    ;       0 - T2CKPS<0>: Timer2 Clock Prescale Select bits</code>
+<code>    ;             00 = 1:1 Prescaler Value</code>
+<code>    ;             01 = 1:4 Prescaler Value</code>
+<code>    ;             1x = 1:16 Prescaler Value</code>
+<code>    MOVWF   T2CON</code>
+<code></code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0 ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code>    ; PWM PERIOD</code>
+<code>    ; The PWM period is specified by writing to the PR2 register.</code>
+<code>    ; The PWM period can be calculated using the following formula:</code>
+<code>    ; PWM_period = [PR2 + 1] * 4 * Tosc * TMR2_prescale_value</code>
+<code>    ; PWM frequency is defined as 1/[PWM period].</code>
+<code>    ;</code>
+<code>    ; PWM DUTY CYCLE</code>
+<code>    ; The PWM duty cycle is specified by writing to the CCPR1L register</code>
+<code>    ; and to the CCP1CON<5:4> bits. Up to 10-bit resolution is available:</code>
+<code>    ; the CCPR1L contains the eight MSbs and the CCP1CON<5:4> contains the</code>
+<code>    ; two LSbs. This 10-bit value is represented by CCPR1L:CCP1CON<5:4>.</code>
+<code>    ; The following equation is used to calculate the PWM duty cycle in time:</code>
+<code>    ; PWM_duty_cycle = (CCPR1L:CCP1CON<5:4>) * Tosc * TMR2_prescale_value</code>
+<code>    ;</code>
+<code>    ; The CCPR1L contains the eight MSbs and the CCP1CON<5:4> contains the</code>
+<code>    ; two LSbs. This 10-bit value is represented by CCPR1L:CCP1CON<5:4></code>
+<code>    ;</code>
+<code>    ; EXEMPLO:</code>
+<code>    ; VEJA O EXEMPLO DA INSTRUÇÃO</code>
+<code>    ; https://www.arduino.cc/reference/pt/language/functions/analog-io/analogwrite/</code>
+<code>    ; DO ARDUINO USANDO PWM:</code>
+<code>    ; A frequência do sinal PWM na maioria dos pinos é aproximadamente 490 Hz.</code>
+<code>    ; No Uno e placas similares, pinos 5 e 6 usam uma frequência de </code>
+<code>    ; aproximadamente 980 Hz.</code>
+<code>    ; ASSIM:</code>
+<code>    ; PWM_frequency = 1/[PWM_period]</code>
+<code>    ;        980 Hz = 1/[PWM_period]</code>
+<code>    ;    PWM_period = 1/[980 Hz]</code>
+<code>    ;    PWM_period = [1/980] s</code>
+<code>    ;    PWM_period = [1000/980] ms</code>
+<code>    ;    PWM_period = [1000000/980] us</code>
+<code>    ;    PWM_period = 1020,408163265306 us</code>
+<code>    ;    PWM_period = 1020 us</code>
+<code>    ;    PWM_period = [PR2 + 1] * 4 * Tosc * TMR2_prescale_value</code>
+<code>    ; LEMBRE QUE NESTE CASO O CRISTAL EH 4 MHz E TEM-SE UM CICLO EM 1 us</code>
+<code>    ; USOU TMR2_prescale_value = 1 (1:1)</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 * (1/(4 MHz)) * 1</code>
+<code>    ;       1020 us = [PR2 + 1] * (4/(4 MHz))</code>
+<code>    ;       1020 us = [PR2 + 1] * (1/(1 MHz))</code>
+<code>    ;       1020 us = [PR2 + 1] * 1 us</code>
+<code>    ;          1020 = PR2 + 1</code>
+<code>    ;          1019 = PR2 --> AQUI HA UM PROBLEMA, POIS 0<= PR2 <= 255</code>
+<code>    ;</code>
+<code>    ; USA-SE AGORA TMR2_prescale_value = 4 (1:4)</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 * (1/(4 MHz)) * 4</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 * (4/(4 MHz))</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 * (1/(1 MHz))</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 * 1 us</code>
+<code>    ;       1020 us = [PR2 + 1] * 4 us</code>
+<code>    ;           255 = PR2 + 1</code>
+<code>    ;           254 = PR2</code>
+<code></code>
+<code>    ; PWM_duty_cycle = (CCPR1L:CCP1CON<5:4>) * Tosc * TMR2_prescale_value</code>
+<code>    ; PWM_duty_cycle = (CCPR1L:CCP1CON<5:4>) * Tosc * TMR2_prescale_value</code>
+<code></code>
+<code>    MOVLW   D'254'  ; ATUALIZA O REGISTRADOR PR2 PARA LIMITE DE </code>
+<code>    MOVWF   PR2     ; ESTOURO DO TIMER 2 - REGISTRO DE PERIODO</code>
+<code>    </code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0 ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code>    </code>
+<code>    MOVLW   B'11000000' ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>    ;       1 - GIE  -> ATIVA INT./CHAVE GERAL</code>
+<code>    ;       1 - PEIE -> ATIVA INT. DOS PERIFERICOS</code>
+<code>    ;       0 - T0IE -> DESATIVA INT. NO TMR0</code>
+<code>    ;       0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>    ;       0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>    ;       0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>    ;       0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>    ;       0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code>    MOVWF   INTCON</code>
+<code></code>
+<code>    ; 10-bit CCPR1L:CCP1CON<5:4></code>
+<code>    ; DUTTY CYCLE 50% => 1024 * 50% = 512 => B'1000.0000.00'</code>
+<code>    ; B'1000.0000.00' => CCPR1L=128 E CCP1CON<5:4>=0</code>
+<code>    MOVLW   B'10000000'</code>
+<code>    MOVWF   CCPR1L</code>
+<code>    BCF     CCP1CON, CCP1X ; CCP1CON<5></code>
+<code>    BCF     CCP1CON, CCP1Y ; CCP1CON<4></code>
+<code></code>
+<code>    ; 10-bit CCPR1L:CCP1CON<5:4></code>
+<code>    ; DUTTY CYCLE 50% => 1024 * 10% = 102,4 => 102 => B'0001.1001.10'</code>
+<code>    ; B'0001.1001.10' => CCPR1L=25(B'1.1001') E CCP1CON<5:4>=2(B'10')</code>
+<code>    ;MOVLW  B'00011001'</code>
+<code>    ;MOVWF  CCPR1L</code>
+<code>    ;BSF    CCP1CON, CCP1X ; CCP1CON<5></code>
+<code>    ;BCF    CCP1CON, CCP1Y ; CCP1CON<4></code>
+<code>    </code>
+<code>    ;MOVLW  B'11111111'</code>
+<code>    ;MOVWF  CCPR1L</code>
+<code>    ;BSF    CCP1CON, CCP1X ; CCP1CON<5></code>
+<code>    ;BSF    CCP1CON, CCP1Y ; CCP1CON<4></code>
+<code></code>
+<code>    CLRF    TMR2</code>
+<code></code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    GOTO    PROGRAMAPRINCIPAL</code>
+<code></code>
+<code>    END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_18.html">Voltar ao Epis&oacute;dio 18</a></p>
+			<p class="forwardPage"><a href="./Episode_20.html">Ir para Epis&oacute;dio 20</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
+			

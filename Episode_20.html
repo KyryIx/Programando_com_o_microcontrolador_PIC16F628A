@@ -1,17 +1,508 @@
-<h1 class="c75 c35" id="h.y1ta83frhrx6"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.m305xgcjv6z5"><span class="c28 c87">Epis&oacute;dio 20: Conhecendo o m&oacute;dulo Comparador e a interrup&ccedil;&atilde;o associada</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste episodio veremos o uso de 2 comparadores que compoem o modulo comparador, al&eacute;m de poder fazer uso de interrup&ccedil;&atilde;o associada a esse modulo.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Nos episodios anteriores, para podermos fazer uso dos exemplos, sempre foi feita o desligamento do mudulo comparador.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A configura&ccedil;&atilde;o do modulo comparador &eacute; feita pelo registrador CMCON (Comparator Configurator Register) enquanto os registradores INTCON (GIE e PEIE), PIE1 (CMIE), PIR1 (CMIF) e TRISA (TRISA&lt;3:0&gt;).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O registrador CMCON &eacute; visualizado na Figura X1</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Registrador CMCON</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 65.33px;"><img src="images/image39.png" style="width: 604.72px; height: 65.33px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">e os comparadores s&atilde;o conforme a Figura X2</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X2 -</span><span class="c5">Comparador e seu funcionamento</span></p><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 377.11px; height: 318.39px;"><img src="images/image43.png" style="width: 377.11px; height: 318.39px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Os bits de configura&ccedil;&atilde;o dos modos de trabalho possiveis s&atilde;o exibidos na Tabela X1</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X1 -</span><span class="c5">Modos de opera&ccedil;&atilde;o do modulo comparador</span></p><a id="t.219995c084533e9a3cbd686ed3e67b784721a007"></a><a id="t.158"></a><table class="c56"><tbody><tr><td class="c111"><p class="c1"><span class="c26">CM2</span></p></td><td class="c111"><p class="c1"><span class="c26">CM1</span></p></td><td class="c111"><p class="c1"><span class="c26">CM0</span></p></td><td class="c29"><p class="c1"><span class="c26">Modo</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c29"><p class="c19"><span class="c5">Comparadores em reset</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c29"><p class="c19"><span class="c5">Tr&ecirc;s entradas multiplexadas para dois comparadores</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c29"><p class="c19"><span class="c5">Quatro entradas multiplexadas para dois comparadores</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c29"><p class="c19"><span class="c5">Dois comparadores referencia comum</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c29"><p class="c19"><span class="c5">Dois comparadores independentes</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c29"><p class="c19"><span class="c5">Um comparador independente</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">0</span></p></td><td class="c29"><p class="c19"><span class="c5">Dois comparadores referencia comum com saidas</td>
-</tr>
-<tr><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c111"><p class="c1"><span class="c5">1</span></p></td><td class="c29"><p class="c19"><span class="c5">Comparadores desligados</span></p></td></tr></tbody></table><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste momento falaremos dos bits C1OUT, C2OUT, C1INV e C2INV do registrador CMCON pois s&atilde;o fundamentais para a leitura dos estados processados pelos comparadores.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Os bits C1OUT (C2OUT) &eacute; o bit repons&aacute;vel por armazenar o estado da sa&iacute;da do comparador C1 (C2). J&aacute; o bit C1INV (C2INV) &eacute; o bit com a fun&ccedil;&atilde;o de inverter o valor da sa&iacute;da em C1OUT (C2OUT).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="register">Exemplo:</span><span class="c5">Se a porta n&atilde;o-inversora (VIN+) do comparador 1 (C1) tiver uma tens&atilde;o eletrica aplicada nela de 3,3 V e na porta inversora (VIN-) tiver uma tens&atilde;o eletrica de 1,2 V aplicada, a sa&iacute;da C1OUT do comparador C1 ficar&aacute; em nivel alto - valor 1 se o valor do bit C1INV for igual a 0, por&eacute;m se C1INV for igual a 1 para as mesmas condi&ccedil;&otilde;es (VIN+ = 3,3 V e VIN- = 1,2 V) a sa&iacute;da C1OUT ficar&aacute; em n&iacute;vel baixo - valor 0.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O primeiro modo de trabalho do modulo comparador &eacute; o modo de reset quando CM&lt;2:0&gt; conforme Figura X1. Neste modo as saidas est&atilde;o em nivel baixo, isto &eacute;, as saidas dos comparadores C1 e C2 tem seus valores zero nos bits C1OUT e c2OUT de CMCON quando os bits C1INV e C2INV s&atilde;o iguais a 0 e os pinos estar&atilde;o trabalhando como pinos analogicos.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Modo reset do modulo comparador</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 244.00px;"><img src="images/image72.png" style="width: 604.72px; height: 244.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O segundo modo &eacute; quando CM&lt;2:0&gt; = 111, no qual os comparadores est&atilde;o desligados e os pinos RA0 e RA3 est&atilde;o trabalhando como pinos digitais e as sa&iacute;das e entradas dos comparadores est&atilde;o em nivel baixo conforme Figura X2.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X2 -</span><span class="c5">Modo desligado do modulo comparador</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 596.00px; height: 256.00px;"><img src="images/image36.png" style="width: 596.00px; height: 256.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Vejamos o caso onde h&aacute; necessidade de trabalhar com duas entradas multiplixedas conforme Figura X3 (CM&lt;2:0&gt; = 001) e Figura X4 (CM&lt;2:0&gt; = 010).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X3 -</span><span class="c5">Tr&ecirc;s entradas multiplexadas para dois comparadores</span></p><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 446.89px; height: 180.40px;"><img src="images/image68.png" style="width: 446.89px; height: 180.40px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X4 -</span><span>Quatro entradas multiplexadas para dois comparadores</span></p><p class="c12"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 458.00px; height: 224.00px;"><img src="images/image59.png" style="width: 458.00px; height: 224.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Na Figura X3 est&aacute; sendo usado o modo de tr&ecirc;s entradas multiplexadas CM&lt;2:0&gt; = 001, no qual os pinos RA0 e RA3 ser&atilde;o mupliplexadas, no qual esse controle &eacute; feito pelo bit CIS do registrador CMCON. Assim, se o bit CIS for igual a 0, o pino RA0 ser&aacute; conectador internamente a porta inversora do comparador 1, mas caso CIS for igual a 1, ser&aacute; o pino RA3 conectado internamente a porta inversora do comparador 1.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Existem outros modos e voc&ecirc; pode ve-los no datasheet do disposito no </span><span class="c39">[colocar link]</span><span class="c5">na p&aacute;gina 64.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Agora veremos um exemplo para monitorar temperatura por limite inferior e superior dado um sensor de temperatura LM35 com saida analogica e por dois potenciometros usados para em dois divisores de tens&otilde;a. conforme Figura X5 e fazendo uso do modo de dois comparadores referencia comum (CM&lt;2:0&gt; = 011)</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X5 -</span><span class="c5">Esquema eletrico do exemplo</span></p><p class="c12"><span class="c42 c39 c34 c50">COLOCAR AQUI O CIRCUITO ELETRONICO</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A regra &eacute; que quando a tens&atilde;o nos pinos RA2/RA3 (portas n&atilde;o-inversora):</span></p><ul class="c80 lst-kix_4fdctnvv1za8-0 start"><li><span class="c5">for menor que a tens&atilde;o no pino RA0 (porta inversora do comparador C1) ativar o pino RB4, sen&atilde;o desativa RB4;</span></li><li><span class="c5">for maior que a tens&atilde;o no pino RA1 (porta inversora do comparador C2) ativa o pino RB5, sen&atilde;o desativa RB5.</span></li></ul><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A solu&ccedil;&atilde;o &eacute; dada pelo segunte c&acute;dogio:</span></p><p class="c12"><span class="c39 c34">COLOCAR AQUI O CIRCUITO ELETRONICO</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Veremos agora como utilizar a interrup&ccedil;&atilde;o associada a esse modulo.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">A interrup&ccedil;&atilde;o sobre o modulo comparador ocorre quando h&aacute; uma troca de estados nos bits C1OUT ou C2OUT.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O primeiro bit a ser configurado (setados) &eacute; bit CMIE do registrador PIE1, ap&oacute;s o bit PEIE do registrador INTCON deve ser setado, a interrup&ccedil;&atilde;o j&aacute; estar&aacute; em funcionamento e o bit do registrador PIR1 tem o estado da interrup&ccedil;&atilde;o.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c39 c34">Nota:</span><span class="c42 c39 c50 c44">If a change in the CMCON register (C1OUT or C2OUT) should occur when a read operation is being executed (start of the Q2 cycle), then the CMIF (PIR1&lt;6&gt;) interrupt flag may not get set.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Exemplo: Modifica&ccedil;&atilde;o do exemplo __ aplicando o uso de interrup&ccedil;&atilde;o.</span></p><p class="c24 c14"><span class="c5"></span></p><p class="c24 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 20: Conhecendo o m&oacute;dulo Comparador e a interrup&ccedil;&atilde;o associada</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_19.html">Voltar ao Epis&oacute;dio 19</a></p>
+			<p class="forwardPage"><a href="./Episode_21.html">Ir para Epis&oacute;dio 21</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste episodio veremos o uso de 2 comparadores que compoem o modulo comparador, al&eacute;m de poder fazer uso de interrup&ccedil;&atilde;o associada a esse modulo.</p>
+			
+			<p class="principal">Nos episodios anteriores, para podermos fazer uso dos exemplos, sempre foi feita o desligamento do mudulo comparador.</p>
+			
+			<p class="principal">A configura&ccedil;&atilde;o do modulo comparador &eacute; feita pelo registrador <span class="register">CMCON</span> (Comparator Configurator Register) enquanto os registradores <span class="register">INTCON</span> (<span class="register">GIE</span> e <span class="register">PEIE</span>), <span class="register">PIE1</span> (<span class="register">CMIE</span>), <span class="register">PIR1</span> (<span class="register">CMIF</span>) e <span class="register">TRISA</span> (<span class="register">TRISA&lt;3:0&gt;</span>).</p>
+			
+			<p class="principal">O registrador <span class="register">CMCON</span> &eacute; visualizado na Figura 20.1.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.1 -</span> Registrador CMCON
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/CMCON_register.png" style="width: 604.72px; height: 65.33px;" title="CMCON register" alt="CMCON register"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">e o funcionamento dos comparadores s&atilde;o conforme a Figura 20.2.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.2 -</span> Comparador e seu funcionamento
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/comparator_and_your_execution.png" style="width: 377.11px; height: 318.39px;" title="comparator and your execution" alt="comparator and your execution"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Os bits de configura&ccedil;&atilde;o dos modos de trabalho possiveis s&atilde;o exibidos na Tabela 20.1.</p>
+			
+			<table class="data">
+				<thead>
+					<tr>
+						<th>
+							<span class="dataTitle">Tabela 20.1 -</span> Modos de opera&ccedil;&atilde;o do modulo comparador
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<table class="dataValues">
+								<thead>
+									<tr>
+										<th><span class="register">CM2</span></th>
+										<th><span class="register">CM1</span></th>
+										<th><span class="register">CM0</span></th>
+										<th>Modo</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>0</td>
+										<td>Comparadores em reset</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>0</td>
+										<td>1</td>
+										<td>Tr&ecirc;s entradas multiplexadas para dois comparadores</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>1</td>
+										<td>0</td>
+										<td>Quatro entradas multiplexadas para dois comparadores</td>
+									</tr>
+									<tr>
+										<td>0</td>
+										<td>1</td>
+										<td>1</td>
+										<td>Dois comparadores referencia comum</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>0</td>
+										<td>0</td>
+										<td>Dois comparadores independentes</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>0</td>
+										<td>1</td>
+										<td>Um comparador independente</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>0</td>
+										<td>Dois comparadores referencia comum com saidas</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>1</td>
+										<td>1</td>
+										<td>Comparadores desligados</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoData">
+							<span>Fonte:</span> <span>-----</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Neste momento falaremos dos bits <span class="register">C1OUT</span>, <span class="register">C2OUT</span>, <span class="register">C1INV</span> e <span class="register">C2INV</span> do registrador <span class="register">CMCON</span> pois s&atilde;o fundamentais para a leitura dos estados processados pelos comparadores.</p>
+			
+			<p class="principal">Os bits <span class="register">C1OUT</span> (<span class="register">C2OUT</span>) &eacute; o bit repons&aacute;vel por armazenar o estado da sa&iacute;da do comparador C1 (C2). J&aacute; o bit <span class="register">C1INV</span> (<span class="register">C2INV</span>) &eacute; o bit com a fun&ccedil;&atilde;o de inverter o valor da sa&iacute;da em <span class="register">C1OUT</span> (<span class="register">C2OUT</span>).</p>
+			
+			<p class="principal">Exemplo: Se a porta n&atilde;o-inversora (VIN+) do comparador 1 (C1) tiver uma tens&atilde;o eletrica aplicada nela de 3,3 V e na porta inversora (VIN-) tiver uma tens&atilde;o eletrica de 1,2 V aplicada, a sa&iacute;da <span class="register">C1OUT</span> do comparador C1 ficar&aacute; em nivel alto - valor 1 se o valor do bit <span class="register">C1INV</span> for igual a 0, por&eacute;m se <span class="register">C1INV</span> for igual a 1 para as mesmas condi&ccedil;&otilde;es (VIN+ = 3,3 V e VIN- = 1,2 V) a sa&iacute;da <span class="register">C1OUT</span> ficar&aacute; em n&iacute;vel baixo - valor 0.</p>
+			
+			<p class="principal">O primeiro modo de trabalho do modulo comparador &eacute; o modo de reset quando <span class="register">CM&lt;2:0&gt;</span> conforme Figura 20.3. Neste modo as saidas est&atilde;o em nivel baixo, isto &eacute;, as saidas dos comparadores C1 e C2 tem seus valores zero nos bits <span class="register">C1OUT</span> e <span class="register">C2OUT</span> de <span class="register">CMCON</span> quando os bits <span class="register">C1INV</span> e <span class="register">C2INV</span> s&atilde;o iguais a 0 e os pinos estar&atilde;o trabalhando como pinos analogicos.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.3 -</span> Modo reset do modulo comparador
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/reset_mode_comparator_module.png" style="width: 604.72px; height: 244.00px;" title="reset mode in comparator module" alt="reset mode in comparator module"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>--------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O segundo modo &eacute; quando <span class="register">CM&lt;2:0&gt;</span> = 111, no qual os comparadores est&atilde;o desligados e os pinos <span class="register">RA0</span> e <span class="register">RA3</span> est&atilde;o trabalhando como pinos digitais e as sa&iacute;das e entradas dos comparadores est&atilde;o em nivel baixo conforme Figura 20.4.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.4 -</span> Modo desligado do modulo comparador
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/off_mode_comparator_module.png" style="width: 596.00px; height: 256.00px;" title="off mode comparator module" alt="off mode comparator module"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>--------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Vejamos o caso onde h&aacute; necessidade de trabalhar com duas entradas multiplixedas conforme Figura 20.5 (<span class="register">CM&lt;2:0&gt;</span> = 001) e Figura 20.6 (<span class="register">CM&lt;2:0&gt;</span> = 010) com tr&ecirc;s.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.5 -</span> Tr&ecirc;s entradas multiplexadas para dois comparadores <span style="color:red;">olhar a definicao de quantas entrada multiplexadas</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/two_multiplexed_inputs_mode_comparator_module.png" style="width: 446.89px; height: 180.40px;" title="two multiplexed inputs mode comparator module" alt="two multiplexed inputs mode comparator module"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>--------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.6 -</span> Quatro entradas multiplexadas para dois comparadores <span style="color:red;">olhar a definicao de quantas entrada multiplexadas</span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/three_multiplexed_inputs_mode_comparator_module.png" style="width: 458.00px; height: 224.00px;" title="three multiplexed inputs mode comparator module" alt="two multiplexed inputs mode comparator module"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>--------</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Na Figura 20.x est&aacute; sendo usado o modo de tr&ecirc;s entradas multiplexadas <span class="register">CM&lt;2:0&gt;</span> = 001, no qual os pinos <span class="register">RA0</span> e <span class="register">RA3</span> ser&atilde;o mupliplexadas, no qual esse controle &eacute; feito pelo bit <span class="register">CIS</span> do registrador <span class="register">CMCON</span>. Assim, se o bit <span class="register">CIS</span> for igual a 0, o pino <span class="register">RA0</span> ser&aacute; conectador internamente a porta inversora do comparador 1, mas caso <span class="register">CIS</span> for igual a 1, ser&aacute; o pino <span class="register">RA3</span> conectado internamente a porta inversora do comparador 1.</p>
+			
+			<p class="principal">Existem outros modos e voc&ecirc; pode ve-los no datasheet do disposito no <span class="c39">[colocar link]</span> na p&aacute;gina 64.</p>
+			
+			<p class="principal">Agora veremos um exemplo para monitorar temperatura por limite inferior e superior dado um sensor de temperatura LM35 com saida analogica e por dois potenciometros usados para em dois divisores de tens&otilde;a. conforme Figura 20.7 e fazendo uso do modo de dois comparadores referencia comum (<span class="register">CM&lt;2:0&gt;</span> = 011).</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.7 -</span> Esquema eletrico do exemplo
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/schematic" style="width: 604.72px; height: 64.00px;" title="colocar esquema eletrico" alt="colocar esquema eletrico"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">A regra &eacute; que quando a tens&atilde;o nos pinos <span class="register">RA2</span>/<span class="register">RA3</span> (portas n&atilde;o-inversora):</p>
+			
+			<ul class="list">
+				<li>
+					for menor que a tens&atilde;o no pino <span class="register">RA0</span> (porta inversora do comparador C1) ativar o pino <span class="register">RB4</span>, sen&atilde;o desativa <span class="register">RB4</span>;</li>
+				<li>
+					for maior que a tens&atilde;o no pino <span class="register">RA1</span> (porta inversora do comparador C2) ativa o pino <span class="register">RB5</span>, sen&atilde;o desativa <span class="register">RB5</span>.</li>
+			</ul>
+			
+			<p class="principal">A solu&ccedil;&atilde;o &eacute; dada pelo segunte c&acute;dogio:</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 20.8 -</span> COLOCAR AQUI O CIRCUITO ELETRONICO
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/schematic" style="width: 604.72px; height: 64.00px;" title="COLOCAR AQUI O CIRCUITO ELETRONICO" alt="COLOCAR AQUI O CIRCUITO ELETRONICO"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>Pr&oacute;prio autor (2020)</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Veremos agora como utilizar a interrup&ccedil;&atilde;o associada a esse modulo.</p>
+			
+			<p class="principal">A interrup&ccedil;&atilde;o sobre o modulo comparador ocorre quando h&aacute; uma troca de estados nos bits <span class="register">C1OUT</span> ou <span class="register">C2OUT</span>.</p>
+			
+			<p class="principal">O primeiro bit a ser configurado (setados) &eacute; bit CMIE do registrador <span class="register">PIE1</span>, ap&oacute;s o bit <span class="register">PEIE</span> do registrador <span class="register">INTCON</span> deve ser setado, a interrup&ccedil;&atilde;o j&aacute; estar&aacute; em funcionamento e o bit do registrador <span class="register">PIR1</span> tem o estado da interrup&ccedil;&atilde;o.</p>
+			
+			<p class="principal">Nota: <span class="c42 c39 c50 c44">If a change in the CMCON register (C1OUT or C2OUT) should occur when a read operation is being executed (start of the Q2 cycle), then the CMIF (PIR1&lt;6&gt;) interrupt flag may not get set.</span></p>
+			
+			<p class="principal">Exemplo: Modifica&ccedil;&atilde;o do exemplo __ aplicando o uso de interrup&ccedil;&atilde;o.</p>
+			
+			<table class="code">
+				<thead>
+					<tr>
+						<th>
+							<span class="codeTitle">C&oacute;digo 15.1 -</span> C&oacute;digo do exemplo de uso da interrup&ccedil;&atilde;o do Timer1
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+<pre class="code">
+<code>    ; CONFIGURACOES INICIAS</code>
+<code>    ; D:\Program Files (x86)\Microchip\MPLABX\v5.30\mpasmx\p16f628a.inc</code>
+<code>    ; D:\Program Files (x86)\Microchip\xc8\v2.10\mpasmx\p16f628a.inc</code>
+<code>    #INCLUDE &lt;P16F628A.INC></code>
+<code>    LIST P=16F628A</code>
+<code>    ; REGISTER 14-1: CONFIGURATION WORD REGISTER</code>
+<code>    ;    CP: Flash Program Memory Code Protection bit</code>
+<code>    ;   LVP: Low-Voltage Programming Enable bit</code>
+<code>    ; BOREN: Brown-out Reset Enable bit</code>
+<code>    ; MCLRE: RA5/MCLR/V PP Pin Function Select bit</code>
+<code>    ; PWRTE: Power-up Timer Enable bit</code>
+<code>    ;  WDTE: Watchdog Timer Enable bit</code>
+<code>    ;    XT: Max 4 MHz crystal</code>
+<code>    __CONFIG _BODEN_ON & _MCLRE_ON & _LVP_OFF & _WDT_OFF & _XT_OSC & _CP_OFF & _PWRTE_ON</code>
+<code></code>
+<code>    #DEFINE W_TEMP      0x20</code>
+<code>    #DEFINE STATUS_TEMP 0x21</code>
+<code></code>
+<code>    ORG     0x00        ; TRATAMENTO DO RESET</code>
+<code>    GOTO    INICIAPARAMETROS</code>
+<code></code>
+<code>    ORG     0x04        ; TRATAMENTO DAS INTERRUPCOES</code>
+<code>    MOVWF   W_TEMP</code>
+<code>    SWAPF   STATUS, 0</code>
+<code>    MOVWF   STATUS_TEMP</code>
+<code></code>
+<code>    BTFSS   PIR1, CMIF ; INTERRUPCAO MUD. ESTADOS TRATADA NA SECAO 10.0</code>
+<code>    GOTO    SAIDA_INTERRUPCAO</code>
+<code>    BCF     PIR1, CMIF</code>
+<code>    ;</code>
+<code>    ; LINHAS PARA TRATAMENTO DA INTERRUPCAO</code>
+<code>    ;</code>
+<code>SAIDA_INTERRUPCAO:</code>
+<code>    SWAPF   STATUS_TEMP, 0</code>
+<code>    MOVWF   STATUS</code>
+<code>    MOVF    W_TEMP, 0</code>
+<code>    RETFIE</code>
+<code></code>
+<code>INICIAPARAMETROS:</code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BSF     STATUS, RP0  ; SELECIONA O BANCO 1 DE MEMORIA</code>
+<code></code>
+<code>    MOVLW   B'10000000' ; CONFIGURACOES DO REGISTRADOR OPTION</code>
+<code>    ;       1 - 'RBPU       -> DESATIVA RESISTORES PULL-UP</code>
+<code>    ;       0 - INTDEG      -> INT. ATIV. BORDA DE DESCIDA RB0</code>
+<code>    ;       0 - TOCS        -> O CLOCK DO TIMER 0 EH INTERNO</code>
+<code>    ;       0 - TOSE        -> BORDA DE SUBIDA NO TIMER 0, RA4</code>
+<code>    ;      (0)- PSA         -> PRESCALER ASSOCIADO AO TIMER 0</code>
+<code>    ;      (1)              -> PRESCALER ASSOCIADO AO WDT</code>
+<code>    ;       0 - PS2,PS1,PS0 -> TIMER 0 COM RAZAO 1:1</code>
+<code>    MOVWF   OPTION_REG</code>
+<code></code>
+<code>    MOVLW   B'00000000' ; CONFIGURACOES REG. DE INTERRUPCAO DE PERIFERICOS</code>
+<code>    ;       0 - EEIE   -> DESATIVA INT. ESCRITA COMPLETA EEPROM</code>
+<code>    ;       1 - CMIE   -> ATIVA INT. DO COMPARADOR</code>
+<code>    ;       0 - RCIE   -> DESATIVA INT. DO USART</code>
+<code>    ;       0 - TXIE   -> DESATIVA INT. DE TRASMISSAO DO USART</code>
+<code>    ;       0 -        -> Unimplemented: Read as ?0?</code>
+<code>    ;       0 - CCP1IE -> DESATIVA INT. NO MODULO CCP1</code>
+<code>    ;       0 - TMR2IE -> DESATIVA INT. TMR2 PARA PR2</code>
+<code>    ;       0 - TMR1IE -> DESATIVA INT POR OVERFLOW EM TMR1</code>
+<code>    MOVWF   PIE1</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISA</code>
+<code>    ;       1 - PINO RA7 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA6 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA5 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA4 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA3 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA2 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA1 COMO ENTRADA</code>
+<code>    ;       1 - PINO RA0 COMO ENTRADA</code>
+<code>    MOVWF   TRISA  ; MODIFICA O COMPORTAMENTO DA PORTA</code>
+<code></code>
+<code>    MOVLW   B'11111111' ; CONFIGURAÇÕES DO TRISB</code>
+<code>    ;       1 - PINO RB7 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB6 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB5 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB4 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB3 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB2 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB1 COMO ENTRADA</code>
+<code>    ;       1 - PINO RB0 COMO ENTRADA</code>
+<code>    MOVWF   TRISB  ; MODIFICA O COMPORTAMENTO DA PORTB</code>
+<code></code>
+<code>    BCF     STATUS, RP1</code>
+<code>    BCF     STATUS, RP0  ; SELECIONA O BANCO 0 DE MEMORIA</code>
+<code></code>
+<code>    ; CMCON - COMPARATOR CONFIGURATION REGISTER</code>
+<code>    ;   C2OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;   C1OUT   -> ESTADO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;   C2INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 2</code>
+<code>    ;   C1INV   -> ESTADO INVERSO DO BIT DA SAIDA DO COMPARADOR 1</code>
+<code>    ;   CIS     -> COMUTA A ENTRADA DO COMPARADOR DEPENDENDO DA CONFIGURACAO</code>
+<code>    ;   CM<2:0> -> BITS DE CONFIGURACAO DOS MODOS DOS COMPARADOES</code>
+<code>    ;              000 - Comparators Reset (POR Default Value)</code>
+<code>    ;              111 - Comparators Off</code>
+<code>    ;              100 - Two Independent Comparators</code>
+<code>    ;              010 - Four Inputs Multiplexed to Two Comparators</code>
+<code>    ;              011 - Two Common Reference Comparators</code>
+<code>    ;              110 - Two Common Reference Comparators with Outputs</code>
+<code>    ;              101 - One Independent Comparator [Vin-(RA1) and Vin+(RA2)]</code>
+<code>    ;              001 - Three Inputs Multiplexed to Two Comparators</code>
+<code>    MOVLW   B'00000101'  ; DEFINE O COMPORTAMENTO DOS COMPARADORES</code>
+<code>    MOVWF   CMCON</code>
+<code></code>
+<code>    MOVLW   B'11000000'  ; CONFIGURACOES DE INTERRUPCOES</code>
+<code>    ;       1 - GIE  -> ATIVA INT./CHAVE GERAL</code>
+<code>    ;       1 - PEIE -> ATIVA INT. DOS PERIFERICOS</code>
+<code>    ;       0 - T0IE -> DESATIVA INT. NO TMR0</code>
+<code>    ;       0 - INTE -> DESATIVA INT. NO RB0/INT</code>
+<code>    ;       0 - RBIE -> DESATIVA INT. MUDANCA RB<7:4></code>
+<code>    ;       0 - T0IF -> FLAG DE TRANSBORDO DO TMR0</code>
+<code>    ;       0 - INTF -> FLAG DE RESPOSTA INT. RB0/INT</code>
+<code>    ;       0 - RBIF -> FLAG DE RESPOSTA INT EM RB<7:4></code>
+<code>    MOVWF   INTCON</code>
+<code></code>
+<code>PROGRAMAPRINCIPAL:</code>
+<code>    BTFSC   CMCON, C2OUT</code>
+<code>    CALL    TRATAMENTOSENSOR</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    GOTO    PROGRAMAPRINCIPAL</code>
+<code></code>
+<code>TRATAMENTOSENSOR:</code>
+<code>    NOP</code>
+<code>    NOP</code>
+<code>    RETURN</code>
+<code></code>
+<code>    END</code>
+</pre>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoCode">
+							<span>Fonte:</span> <span>Autor 2020</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_19.html">Voltar ao Epis&oacute;dio 19</a></p>
+			<p class="forwardPage"><a href="./Episode_21.html">Ir para Epis&oacute;dio 21</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
+			
+			
