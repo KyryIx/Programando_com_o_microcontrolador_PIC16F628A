@@ -1,1 +1,263 @@
-<h1 class="c75 c35" id="h.jpbduj1wgg5x"><span class="c28 c87"></span></h1><h1 class="c95 c35" id="h.lku7dftewsau"><span class="c28 c87">Epis&oacute;dio 23: Conhecendo o m&oacute;dulo USART - Transmiss&atilde;o ass&iacute;ncrona e a interrup&ccedil;&atilde;o associada</span></h1><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Neste episodio conheceremos o modulo USART (Universal Synchronous Asynchronous Receiver Transmitter) e trabalharemos especificamente neste episodio no modo de transmissao assincrona.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O modulo USART &eacute; muito importante para trablhar com dispositivos como modulos GSM, GPS, IHM, computadores, entre outros, e utilizam desse meio de comunuca&ccedil;&atilde;o para trocas de dados.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Conforme a Figura X1 exibe o diagrama de transmiss&atilde;o por USART no qual pode-se ver os elementos que o compoem, enquanto que a Figura X2 v&ecirc;-se o processo de envio da informa&ccedil;&atilde;o.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X1 -</span><span class="c5">Diagrama de de transmiss&atilde;o do modulo USART</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 277.33px;"><img src="images/image78.png" style="width: 604.72px; height: 277.33px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X2 -</span><span class="c5">Transmiss&atilde;o assincrona do modulo USART</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 197.33px;"><img src="images/image65.png" style="width: 604.72px; height: 197.33px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O primeiro registrador usado no processo de transmiss&atilde;o de dados por USART &eacute; o registrador TXSTA (Transmit Status and Control Register) visto na Figura X3.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Figura X3 -</span><span class="c5">Registrador TXSTA</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 64.00px;"><img src="images/image63.png" style="width: 604.72px; height: 64.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit CSRC &eacute; o bit responsavel pela sele&ccedil;&atilde;o do clock do processo, no qual n&atilde;o &eacute; aplicado para modo assincrono [COLOCAR AQUI O MOTIVO] usado neste episodio. Se houver uso no modo sincrono, se CSRC for igual a 1, o clock ser&aacute; gerado internamente pelo BRG (USART Baud Rate Generator) no modo Master, mas se CSRC for igual a 0 o clock gerado &eacute; externo e modo &eacute; Slave.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">J&aacute; o bit TX9 &eacute; responsavel por ativar ou n&atilde;o o envio do nono (9&ordm;) bit. Assim se TX9 for igual a 1, o 9&ordm; bit &eacute; que &eacute; o bit TX9D do registrador TXSTA &eacute; enviado, j&aacute; se TX9 for igual a 0 s&atilde;o enviados apenas os 8 bits do registrador TXREG (registrador que armazenado os dados a ser enviados).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit TXEN &eacute; o bit responsavel pela transmissao, pois quando TXEN &eacute; igual a 1 a transmissa&otilde; est&aacute; ativa, enquanto TXEN for igual a 0 a transmiss&atilde;o est&aacute; desativada.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit SYNC &eacute; o bit de sele&ccedil;&atilde;o de modo do modulo USART usado, onde SYNC &eacute; igual a 1 para uso no modo sincrono ou igual a 0 no modo assincrono.(utilizado neste episodio).</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit BRGH &eacute; o bit da sele&ccedil;&atilde;o de taxa &ldquo;baud&rdquo; alta, onde esse bit &eacute; aplicado somente no modo assincrono. Se esse bit for igual a 1 a taxa ser&aacute; alta, e 0 caso o contrario. Veremos o uso dele posteriormente.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">O bit TRMT &eacute; o bit de status associado ao registrador TSR (registrador de dados a ser enviados). Se esse bit &eacute; 0 o registrador TSR est&aacute; cheio e se TRMT &eacute; igual a 1 o registrador est&aacute; vazio.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Outro importante registrador &eacute; o registrador SPBRG que &eacute; o registrador gerador de taxa de &ldquo;baud&rdquo; e o valor dele &eacute; dado pelas tr&ecirc;s situa&ccedil;&otilde;es a seguir:</span></p><p class="c11 c14"><span class="c5"></span></p><ul class="c80 lst-kix_8qyc6ap9kl6j-0 start"><li><span class="c5">modo assincrono ativo (SYNC = 0)</span></li></ul><ul class="c80 lst-kix_8qyc6ap9kl6j-1 start"><li class="c11 c23 c173 li-bullet-0"><span class="c5">baixa velocidade (BRGH = 0)</span></li></ul><p class="c24 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (64 * (SPBRG + 1))</span></p><p class="c24 c23 c14"><span class="c5"></span></p><ul class="c80 lst-kix_8qyc6ap9kl6j-1"><li class="c11 c23 c173 li-bullet-0"><span class="c5">alta velocidade (BRGH = 1)</span></li></ul><p class="c11 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (16 * (SPBRG + 1))</span></p><p class="c11 c23 c14"><span class="c5"></span></p><ul class="c80 lst-kix_8qyc6ap9kl6j-0"><li><span class="c5">modo sincrono ativo (SYNC = 1)</span></li></ul><p class="c11 c49 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (4 * (SPBRG + 1))</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">onde 0 &le; SPBRG &le; 255.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span>Vejamos o exemplo para uma comunica&ccedil;&atilde;o (transmiss&atilde;o) USART de 9600 bps com bit de sele&ccedil;&atilde;o de </span><span class="c37">baud rate</span><span class="c5">baixo e frequencia oscila&ccedil;&atilde;o de 16 MHz. Assim, o valor do registrador SPBRG e o erro cometido &eacute;:</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (64 * (SPBRG + 1))</span></p><p class="c12 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">9600 = (16 * 10^6) / (64 * (SPBRG + 1))</span></p><p class="c12 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">SPBRG + 1 = (16 * 10^6) / (64 * 9600)</span></p><p class="c12 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">SPBRG + 1 = (16 * 10^6) / (64 * 9600) - 1</span></p><p class="c12 c23 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">SPBRG = 25,0416...</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Assim, se SPBRG = 25</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (64 * (SPBRG + 1))</span></p><p class="c12 c23"><span class="c5">Baud rate = (16 * 10^6)/ (64 * (25 + 1))</span></p><p class="c12 c23"><span class="c5">Baud rate = 9615,384615</span></p><p class="c12 c23"><span class="c5">Baud rate &asymp; 9615</span></p><p class="c24 c14"><span class="c5"></span></p><p class="c24"><span class="c5">Logo o erro &eacute; calculado como </span></p><p class="c24 c14"><span class="c5"></span></p><p class="c12"><span class="c5">erro = (valor calculado - valor desejado) / valor desejado</span></p><p class="c12"><span class="c5">erro = (9615 - 9600) / 9600</span></p><p class="c12"><span class="c5">erro = 15 / 9600</span></p><p class="c12"><span class="c5">erro = 0,0015625</span></p><p class="c12"><span class="c5">erro &equiv; 0,16 %</span></p><p class="c24 c14"><span class="c5"></span></p><p class="c24"><span class="c5">Agora, se SPBRG = 26</span></p><p class="c24 c14"><span class="c5"></span></p><p class="c12 c23"><span class="c5">Baud rate = Fosc / (64 * (SPBRG + 1))</span></p><p class="c12 c23"><span class="c5">Baud rate = (16 * 10^6)/ (64 * (26 + 1))</span></p><p class="c12 c23"><span class="c5">Baud rate = 9259,259...</span></p><p class="c12 c23"><span class="c5">Baud rate &asymp; 9259</span></p><p class="c24 c14"><span class="c5"></span></p><p class="c24"><span class="c5">Logo o erro &eacute; calculado como </span></p><p class="c24 c14"><span class="c5"></span></p><p class="c12"><span class="c5">erro = (valor calculado - valor desejado) / valor desejado</span></p><p class="c12"><span class="c5">erro = (9259 - 9600) / 9600</span></p><p class="c12"><span class="c5">erro = -341 / 9600</span></p><p class="c12"><span class="c5">erro = -0,035520833</span></p><p class="c12"><span>erro &equiv; -3,5520833 %</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Portanto, o menor erro ocorre para SPBRG = 25 como se observar pelos calculos.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c39 c34">IMPORTANTE:</span><span class="c5">Quando se escreve um novo valor no registrador SPBRG, esse processo provoca o reset (limpa) do timer BRG.</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">As Tabelas X1 e X2 que mostram exemplos de valores calculados de SPBRG para algumas frequencias</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X1 -</span><span class="c5">Modo assincrono para baixa velocidade</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 769.33px;"><img src="images/image11.png" style="width: 604.72px; height: 769.33px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c12"><span class="register">Tabela X2 -</span><span class="c5">Modo assincrono para alta velocidade</span></p><p class="c11"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 604.72px; height: 624.00px;"><img src="images/image54.png" style="width: 604.72px; height: 624.00px;" title=""></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Assim, conforme se&ccedil;&atilde;o 12,2 (USART Asynchronous Mode) os passos para transmiss&atilde;o no modo assincrono s&atilde;o:</span></p><p class="c11 c14"><span class="c5"></span></p><ol class="c80 lst-kix_j9bzkmn6g15o-0 start" start="1"><li><span class="c5">COnfigure o pino RB2/TX como pino de sa&iacute;da;</span></li><li><span class="c5">Inicialize o registrador SPBRG com o valor adequado. Seu bit de alta velocidade (bit BRGH do registrador TXSTA) deve ser setado se necess&aacute;rio;</span></li><li><span class="c5">Ative a porta serial assincrona limpando o bit SYNC de TXSTA e &ldquo;sete&rdquo; o bit SPEN do registrador RCSTA (veremos no proximo episodio);</span></li><li><span class="c5">Se as interrup&ccedil;&otilde;es est&atilde;o ativas, &ldquo;sete&rdquo; o bit TXIE do registrador PIE1, registrador para tratar interrup&ccedil;&otilde;es de transmiss&atilde;o de bytes;</span></li><li><span class="c5">Se deseja trabalhar com transmiss&atilde;o de 9 bits, &ldquo;sete&rdquo; o bit TX9 em TXSTA;</span></li><li><span class="c5">Ative a transmiss&atilde;o &ldquo;setando&rdquo; o bit TXEN de TXSTA no qual tamb&eacute;m &ldquo;seta&rdquo; o bit TXIF do registrador PIR1;</span></li><li><span class="c5">Se utilzar 9 bits na transmiss&atilde;o, escreva o valor do 9&ordm; bit no bit TX9D do registrador TXSTA;</span></li><li><span class="c5">Carregue o valor a ser transmitido para o registrador TXREG. Ao escrever o valor, o processo de transmiss&atilde;o se inicia automaticamente.</span></li></ol><p class="c11 c14"><span class="c5"></span></p><p class="c11"><span class="c5">Exemplo: Envio de estados de bot&otilde;es pressionados</span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><p class="c11 c14"><span class="c5"></span></p><hr style="page-break-before:always;display:none;">
+<html>
+	<head>
+		<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+		<link rel="stylesheet" href="./style.css">
+		<script src="./functions.js"></script>
+	</head>
+	<body>
+		<div class="page" id="top">
+			<p class="title">
+				<span class="titlePrincipal">Epis&oacute;dio 23: Conhecendo o m&oacute;dulo USART - Transmiss&atilde;o ass&iacute;ncrona e a interrup&ccedil;&atilde;o associada</span></p>
+			
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+			<p class="backPage"><a href="./Episode_22.html">Voltar ao Epis&oacute;dio 22</a></p>
+			<p class="forwardPage"><a href="./Episode_24.html">Ir para Epis&oacute;dio 24</a></p>
+			<hr class="indice"/>
+			
+			<p class="principal">Neste epis&oacute;dio conheceremos o modulo USART (<i>Universal Synchronous Asynchronous Receiver Transmitter</i>) e trabalharemos especificamente neste epis&oacute;dio no modo de transmiss&atilde;o assincrona.</p>
+			
+			<p class="principal">O modulo USART &eacute; muito importante para trablhar com dispositivos como modulos GSM, GPS, IHM, computadores, entre outros, e utilizam desse meio de comunuca&ccedil;&atilde;o para trocas de dados.</p>
+			
+			<p class="principal">Conforme a Figura 23.1 exibe o diagrama de transmiss&atilde;o por USART no qual pode-se ver os elementos que o compoem, enquanto que a Figura 23.2 v&ecirc;-se o processo de envio da informa&ccedil;&atilde;o.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 23.1 -</span> Diagrama de de transmiss&atilde;o do modulo USART
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/USART_transmission_USART.png" style="width: 604.72px; height: 277.33px;" title="USART_transmission_USART.png" alt="USART_transmission_USART.png"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>xxxxx</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 23.2 -</span> Transmiss&atilde;o assincrona do modulo USART
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/assyncron_transmission.png" style="width: 604.72px; height: 197.33px;" title="assyncron transmission" alt="assyncron transmission"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>xxxxx</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>		
+			
+			<p class="principal">O primeiro registrador usado no processo de transmiss&atilde;o de dados por USART &eacute; o registrador <span class="register">TXSTA</span> (<i>Transmit Status and Control Register</i>) visto na Figura 23.3.</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura 23.3 -</span> Registrador TXSTA
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/TXSTA_register.png" style="width: 604.72px; height: 64.00px;" title="TXSTA register" alt="TXSTA register"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>xxxxx</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">O bit  <span class="register">CSRC</span>  &eacute; o bit responsavel pela sele&ccedil;&atilde;o do clock do processo, no qual n&atilde;o &eacute; aplicado para modo assincrono [COLOCAR AQUI O MOTIVO] usado neste episodio. Se houver uso no modo sincrono, se  <span class="register">CSRC</span>  for igual a 1, o clock ser&aacute; gerado internamente pelo <span class="register">BRG</span> (<i>USART Baud Rate Generator</i>) no modo Master, mas se  <span class="register">CSRC</span>  for igual a 0 o clock gerado &eacute; externo e modo &eacute; Slave.</p>
+			
+			<p class="principal">J&aacute; o bit <span class="register">TX9</span> &eacute; responsavel por ativar ou n&atilde;o o envio do nono (9&ordm;) bit. Assim se <span class="register">TX9</span> for igual a 1, o 9&ordm; bit &eacute; que &eacute; o bit <span class="register">TX9D</span> do registrador <span class="register">TXSTA</span> &eacute; enviado, j&aacute; se <span class="register">TX9</span> for igual a 0 s&atilde;o enviados apenas os 8 bits do registrador <span class="register">TXREG</span> (registrador que armazenado os dados a ser enviados).</p>
+			
+			<p class="principal">O bit <span class="register">TXEN</span> &eacute; o bit responsavel pela transmissao, pois quando <span class="register">TXEN</span> &eacute; igual a 1 a transmissa&otilde; est&aacute; ativa, enquanto <span class="register">TXEN</span> for igual a 0 a transmiss&atilde;o est&aacute; desativada.</p>
+			
+			<p class="principal">O bit <span class="register">SYNC</span> &eacute; o bit de sele&ccedil;&atilde;o de modo do modulo USART usado, onde <span class="register">SYNC</span> &eacute; igual a 1 para uso no modo sincrono ou igual a 0 no modo assincrono.(utilizado neste episodio).</p>
+			
+			<p class="principal">O bit <span class="register">BRGH</span> &eacute; o bit da sele&ccedil;&atilde;o de taxa &ldquo;baud&rdquo; alta, onde esse bit &eacute; aplicado somente no modo assincrono. Se esse bit for igual a 1 a taxa ser&aacute; alta, e 0 caso o contrario. Veremos o uso dele posteriormente.</p>
+			
+			<p class="principal">O bit <span class="register">TRMT</span> &eacute; o bit de status associado ao registrador <span class="register">TSR</span> (registrador de dados a ser enviados). Se esse bit &eacute; 0 o registrador <span class="register">TSR</span> est&aacute; cheio e se <span class="register">TRMT</span> &eacute; igual a 1 o registrador est&aacute; vazio.</p>
+			
+			<p class="principal">Outro importante registrador &eacute; o registrador <span class="register">SPBRG</span> que &eacute; o registrador gerador de taxa de &ldquo;baud&rdquo; e o valor dele &eacute; dado pelas tr&ecirc;s situa&ccedil;&otilde;es a seguir:</p>
+			
+			<ul class="list">
+				<li>
+					modo assincrono ativo (<span class="register">SYNC</span> = 0)
+					<ul>
+						<li>
+							baixa velocidade (<span class="register">BRGH</span> = 0)
+							<p><span class="equation" style="text-align:center;">Baud rate = Fosc / (64 * (SPBRG + 1))</span></p></li>
+						<li>
+							alta velocidade (<span class="register">BRGH</span> = 1)
+							<p><span class="equation" style="text-align:center;">Baud rate = Fosc / (16 * (SPBRG + 1))</span></p></li>
+					</ul>
+				</li>
+				<li>
+					modo sincrono ativo (<span class="register">SYNC</span> = 1)
+					<p><span class="equation" style="text-align:center;">Baud rate = Fosc / (4 * (SPBRG + 1))</span></p> <p>onde 0 &le; <span class="register">SPBRG</span> &le; 255.</p>
+				</li> 
+			</ul>
+			
+			<p class="principal">Vejamos o exemplo para uma comunica&ccedil;&atilde;o (transmiss&atilde;o) USART de 9600 bps com bit de sele&ccedil;&atilde;o de <span class="c37">baud rate</span> baixo e frequencia oscila&ccedil;&atilde;o de 16 MHz. Assim, o valor do registrador <span class="register">SPBRG</span> e o erro cometido &eacute;:</p>
+			
+<pre class="equation">
+Baud rate = Fosc / (64 * (<span class="register">SPBRG</span> + 1))
+     9600 = (16 * 10^6) / (64 * (<span class="register">SPBRG</span> + 1))
+<span class="register">SPBRG</span> + 1 = (16 * 10^6) / (64 * 9600)
+<span class="register">SPBRG</span> + 1 = (16 * 10^6) / (64 * 9600) - 1
+    <span class="register">SPBRG</span> = 25,0416...
+</pre>
+
+			<p class="principal">Assim, se <span class="register">SPBRG</span> = 25</p>
+			
+<pre class="equation">
+Baud rate = Fosc / (64 * (<span class="register">SPBRG</span> + 1))
+Baud rate = (16 * 10^6)/ (64 * (25 + 1))
+Baud rate = 9615,384615
+Baud rate &asymp; 9615
+</pre>
+
+			<p class="principal">Logo o erro &eacute; calculado como</p>
+			
+<pre class="equation">
+erro = (valor calculado - valor desejado) / valor desejado
+erro = (9615 - 9600) / 9600
+erro = 15 / 9600
+erro = 0,0015625
+erro &equiv; 0,16 %
+</pre>
+
+			<p class="principal">Agora, se <span class="register">SPBRG</span> = 26</p>
+			
+<pre class="equation">
+Baud rate = Fosc / (64 * (<span class="register">SPBRG</span> + 1))
+Baud rate = (16 * 10^6)/ (64 * (26 + 1))
+Baud rate = 9259,259...
+Baud rate &asymp; 9259
+</pre>
+
+			<p class="principal">Logo o erro &eacute; calculado como</p>
+			
+<pre class="equation">
+erro = (valor calculado - valor desejado) / valor desejado
+erro = (9259 - 9600) / 9600
+erro = -341 / 9600
+erro = -0,035520833
+erro &equiv; -3,5520833 %
+</pre>
+
+			<p class="principal">Portanto, o menor erro ocorre para <span class="register">SPBRG</span> = 25 como se observar pelos calculos.</p>
+			
+			<p class="important"><span class="important">IMPORTANTE:</span>Quando se escreve um novo valor no registrador SPBRG, esse processo provoca o reset (limpa) do timer BRG.</p>
+			
+			<p class="principal">As Tabelas X1 e X2 que mostram exemplos de valores calculados de <span class="register">SPBRG</span> para algumas frequencias</p>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura/Tabela X1 23.3 -</span> Modo assincrono para baixa velocidade
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/assyncron_low_velocity.png" style="width: 604.72px; height: 769.33px;" title="assyncron low velocity" alt="assyncron low velocity"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>xxxxx</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<table class="image">
+				<thead>
+					<tr>
+						<th>
+							<span class="figureTitle">Figura/Tabela X1 23.3 -</span> Modo assincrono para alta velocidade
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<img src="./figures/assyncron_high_velocity.png" style="width: 604.72px; height: 624.00px;" title="assyncron high velocity" alt="assyncron high velocity"/>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td class="citacaoFigura">
+							<span>Fonte:</span> <span>xxxxx</span>
+						</td>
+					</td>
+				</tfoot>
+			</table>
+			
+			<p class="principal">Assim, conforme se&ccedil;&atilde;o 12,2 (USART Asynchronous Mode) os passos para transmiss&atilde;o no modo assincrono s&atilde;o:</p>
+			
+			<ol class="list">
+				<li>
+					Configure o pino RB2/TX como pino de sa&iacute;da;</li>
+				<li>
+					Inicialize o registrador <span class="register">SPBRG</span> com o valor adequado. Seu bit de alta velocidade (bit <span class="register">BRGH</span> do registrador TXSTA) deve ser setado se necess&aacute;rio;</li>
+				<li>
+					Ative a porta serial assincrona limpando o bit <span class="register">SYNC</span> de <span class="register">TXSTA</span> e "sete" o bit SPEN do registrador RCSTA (veremos no proximo episodio);</li>
+				<li>
+					Se as interrup&ccedil;&otilde;es est&atilde;o ativas, &ldquo;sete&rdquo; o bit TXIE do registrador PIE1, registrador para tratar interrup&ccedil;&otilde;es de transmiss&atilde;o de bytes;</li>
+				<li>
+					Se deseja trabalhar com transmiss&atilde;o de 9 bits, &ldquo;sete&rdquo; o bit <span class="register">TX9</span> em TXSTA;</li>
+				<li>
+					Ative a transmiss&atilde;o &ldquo;setando&rdquo; o bit <span class="register">TXEN</span> de <span class="register">TXSTA</span> no qual tamb&eacute;m &ldquo;seta&rdquo; o bit TXIF do registrador PIR1;</li>
+				<li>
+					Se utilzar 9 bits na transmiss&atilde;o, escreva o valor do 9&ordm; bit no bit <span class="register">TX9D</span> do registrador TXSTA;</li>
+				<li>
+					Carregue o valor a ser transmitido para o registrador TXREG. Ao escrever o valor, o processo de transmiss&atilde;o se inicia automaticamente.</li>
+			</ol>
+			
+			<p class="principal">Exemplo: Envio de estados de bot&otilde;es pressionados</p>
+			
+			<p style="color:red;background-color:black;font-size:24pt;">Colocar o exemplo aqui</p>
+			
+			<hr class="indice"/>
+			<p class="backPage"><a href="#top">Voltar ao topo da p&aacute;gina</a></p>
+			<p class="backPage"><a href="./Episode_22.html">Voltar ao Epis&oacute;dio 22</a></p>
+			<p class="forwardPage"><a href="./Episode_24.html">Ir para Epis&oacute;dio 24</a></p>
+			<p class="backPage"><a href="./Summary.html">Voltar ao &iacute;ndice</a></p>
+		</div>
+	</body>
+</html>
